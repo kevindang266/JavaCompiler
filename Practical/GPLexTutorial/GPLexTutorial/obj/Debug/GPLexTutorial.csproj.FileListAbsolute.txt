@@ -1,0 +1,10 @@
+C:\Users\Wayne\Dropbox\Clean Compiler Tutorials\GPLexTutorial\GPLexTutorial\bin\Debug\GPLexTutorial.exe.config
+C:\Users\Wayne\Dropbox\Clean Compiler Tutorials\GPLexTutorial\GPLexTutorial\bin\Debug\GPLexTutorial.exe
+C:\Users\Wayne\Dropbox\Clean Compiler Tutorials\GPLexTutorial\GPLexTutorial\bin\Debug\GPLexTutorial.pdb
+C:\Users\Wayne\Dropbox\Clean Compiler Tutorials\GPLexTutorial\GPLexTutorial\obj\Debug\GPLexTutorial.exe
+C:\Users\Wayne\Dropbox\Clean Compiler Tutorials\GPLexTutorial\GPLexTutorial\obj\Debug\GPLexTutorial.pdb
+C:\Users\kellyw\Dropbox\Clean Compiler Tutorials\GPLexTutorial\GPLexTutorial\bin\Debug\GPLexTutorial.exe.config
+C:\Users\kellyw\Dropbox\Clean Compiler Tutorials\GPLexTutorial\GPLexTutorial\obj\Debug\GPLexTutorial.exe
+C:\Users\kellyw\Dropbox\Clean Compiler Tutorials\GPLexTutorial\GPLexTutorial\obj\Debug\GPLexTutorial.pdb
+C:\Users\kellyw\Dropbox\Clean Compiler Tutorials\GPLexTutorial\GPLexTutorial\bin\Debug\GPLexTutorial.exe
+C:\Users\kellyw\Dropbox\Clean Compiler Tutorials\GPLexTutorial\GPLexTutorial\bin\Debug\GPLexTutorial.pdb
