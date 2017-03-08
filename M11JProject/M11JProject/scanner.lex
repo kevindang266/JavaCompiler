@@ -12,9 +12,8 @@ public string Foo()		// kevin test method
 
 %%
 
-// kevin's working on boolean token implement
-boolean							{ return (int)Tokens.BOOLEAN; }	
-true|false						{ yylval.val = yytext; return (int)Tokens.BOOLEANVALUE; }
+boolean							{ return (int)Tokens.BOOLEAN; }			// kevin's working on boolean token implement
+true|false						{ yylval.val = yytext; return (int)Tokens.BOOLEANVALUE; }	// kevin's working on boolean token implement
 
 {letter}({letter}|{digit})*		{ yylval.val = yytext; return (int)Tokens.IDENTIFIER; }
 {digit}+						{ yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER; }
