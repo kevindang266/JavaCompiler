@@ -1,0 +1,52 @@
+
+// ==========================================================================
+//  GPLEX error listing for lex source file <scanner.lex>
+// ==========================================================================
+//  Version:  1.2.2
+//  Machine:  KIENDANG-PC
+//  DateTime: 3/7/2017 7:43:48 PM
+//  UserName: KienDang
+// ==========================================================================
+
+
+%namespace GPLexTutorial
+
+digit [0-9]
+letter [a-zA-Z]
+
+%%
+
+if                           { return (int)Tokens.IF; }
+else                         { return (int)Tokens.ELSE; }
+int                          { return (int)Tokens.INT; }
+bool                         { return (int)Tokens.BOOL; }
+true|false					 { yylval.val = bool.Parse(yytext); return (int)Tokens.BOOLVAL; }
+null						 { return 'NULL'; }
+//------------------^----^
+// Error: Illegal character in this context
+// Error: Illegal character in this context
+// ----------------------------------------
+
+{letter}({letter}|{digit})*  { yylval.name = yytext; return (int)Tokens.IDENT; }
+{digit}+	                 { yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER; }
+
+"="                          { return '='; }
+"+"                          { return '+'; }
+"<"                          { return '<'; }
+"("                          { return '('; }
+")"                          { return ')'; }
+"{"                          { return '{'; }
+"}"                          { return '}'; }
+";"                          { return ';'; }
+
+[ \r\n\t]                    /* skip whitespace */
+
+.                            { 
+                                 throw new Exception(
+                                     String.Format(
+                                         "unexpected character '{0}'", yytext)); 
+                             }
+
+%%
+// ==========================================================================
+

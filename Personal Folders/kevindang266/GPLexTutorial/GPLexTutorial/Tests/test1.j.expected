@@ -1,0 +1,20 @@
+﻿INT
+IDENT (foo2)
+'='
+NUMBER (0)
+';'
+IF
+'('
+IDENT (foo2)
+'<'
+NUMBER (31)
+')'
+'{'
+IDENT (foo2)
+'='
+IDENT (foo2)
+'+'
+NUMBER (42)
+';'
+'}'
+EOF
