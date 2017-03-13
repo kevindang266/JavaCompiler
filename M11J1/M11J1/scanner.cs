@@ -5,10 +5,10 @@
 //  See accompanying file GPLEXcopyright.rtf.
 //
 //  GPLEX Version:  1.2.2
-//  Machine:  KIENDANG-PC
-//  DateTime: 3/13/2017 7:58:52 PM
-//  UserName: KienDang
-//  GPLEX input file <scanner.lex - 3/13/2017 7:57:13 PM>
+//  Machine:  JWHSJIA-PC
+//  DateTime: 2017-03-14 오전 5:01:54
+//  UserName: JWHSJIA
+//  GPLEX input file <scanner.lex - 2017-03-14 오전 5:01:18>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -124,8 +124,8 @@ namespace M11J1
         
         enum Result {accept, noMatch, contextFound};
 
-        const int maxAccept = 3;
-        const int initial = 4;
+        const int maxAccept = 53;
+        const int initial = 54;
         const int eofNum = 0;
         const int goStart = -1;
         const int INITIAL = 0;
@@ -162,45 +162,103 @@ namespace M11J1
         }
     };
 
-    static int[] startState = new int[] {4, 0};
+    static int[] startState = new int[] {54, 0};
 
 #region CompressedCharacterMap
     //
-    // There are 8 equivalence classes
+    // There are 33 equivalence classes
     // There are 2 character sequence regions
-    // There are 1 tables, 112 entries
+    // There are 1 tables, 127 entries
     // There are 1 runs, 0 singletons
     // Decision tree depth is 1
     //
-    static sbyte[] mapC0 = new sbyte[112] {
-/*     '\0' */ 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 0, 7, 7, 7, 7, 7, 
-/*   '\x10' */ 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 
-/*   '\x20' */ 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 
-/*      '0' */ 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 
-/*      '@' */ 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 
-/*      'P' */ 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 
-/*      '`' */ 7, 5, 1, 7, 7, 4, 7, 7, 7, 7, 7, 7, 3, 7, 6, 2 };
+    static sbyte[] mapC0 = new sbyte[127] {
+/*     '\0' */ 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 0, 32, 32, 32, 32, 32, 
+/*   '\x10' */ 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 
+/*   '\x20' */ 32, 21, 32, 32, 32, 31, 25, 32, 7, 8, 28, 27, 14, 24, 15, 29, 
+/*      '0' */ 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 17, 13, 19, 18, 20, 23, 
+/*      '@' */ 16, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 
+/*      'P' */ 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 11, 32, 12, 30, 32, 
+/*      '`' */ 32, 5, 1, 32, 32, 4, 32, 32, 32, 32, 32, 32, 3, 32, 6, 2, 
+/*      'p' */ 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 9, 26, 10, 22 };
 
     static sbyte MapC(int code)
     { // '\0' <= code <= '\U0010FFFF'
-      if (code < 112) // '\0' <= code <= 'o'
+      if (code < 127) // '\0' <= code <= '~'
         return mapC0[code - 0];
-      else // 'p' <= code <= '\U0010FFFF'
-        return (sbyte)7;
+      else // '\x7F' <= code <= '\U0010FFFF'
+        return (sbyte)32;
     }
 #endregion
 
-    static Table[] NxS = new Table[10] {
+    static Table[] NxS = new Table[61] {
 /* NxS[   0] */ new Table(0, 0, 0, null),
-/* NxS[   1] */ new Table(2, 1, -1, new sbyte[] {5}),
+/* NxS[   1] */ new Table(2, 1, -1, new sbyte[] {56}),
 /* NxS[   2] */ new Table(0, 0, -1, null),
 /* NxS[   3] */ new Table(0, 0, -1, null),
-/* NxS[   4] */ new Table(0, 2, 2, new sbyte[] {-1, 1}),
-/* NxS[   5] */ new Table(2, 1, -1, new sbyte[] {6}),
-/* NxS[   6] */ new Table(3, 1, -1, new sbyte[] {7}),
-/* NxS[   7] */ new Table(4, 1, -1, new sbyte[] {8}),
-/* NxS[   8] */ new Table(5, 1, -1, new sbyte[] {9}),
-/* NxS[   9] */ new Table(6, 1, -1, new sbyte[] {3}),
+/* NxS[   4] */ new Table(0, 0, -1, null),
+/* NxS[   5] */ new Table(0, 0, -1, null),
+/* NxS[   6] */ new Table(0, 0, -1, null),
+/* NxS[   7] */ new Table(0, 0, -1, null),
+/* NxS[   8] */ new Table(0, 0, -1, null),
+/* NxS[   9] */ new Table(0, 0, -1, null),
+/* NxS[  10] */ new Table(0, 0, -1, null),
+/* NxS[  11] */ new Table(15, 1, -1, new sbyte[] {55}),
+/* NxS[  12] */ new Table(0, 0, -1, null),
+/* NxS[  13] */ new Table(17, 1, -1, new sbyte[] {51}),
+/* NxS[  14] */ new Table(18, 1, -1, new sbyte[] {50}),
+/* NxS[  15] */ new Table(18, 2, -1, new sbyte[] {47, 48}),
+/* NxS[  16] */ new Table(18, 3, -1, new sbyte[] {42, -1, 43}),
+/* NxS[  17] */ new Table(18, 1, -1, new sbyte[] {41}),
+/* NxS[  18] */ new Table(0, 0, -1, null),
+/* NxS[  19] */ new Table(0, 0, -1, null),
+/* NxS[  20] */ new Table(18, 7, -1, new sbyte[] {38, -1, 39, -1, -1, -1, 
+          40}),
+/* NxS[  21] */ new Table(18, 8, -1, new sbyte[] {36, -1, -1, -1, -1, -1, 
+          -1, 37}),
+/* NxS[  22] */ new Table(18, 9, -1, new sbyte[] {34, -1, -1, -1, -1, -1, 
+          -1, -1, 35}),
+/* NxS[  23] */ new Table(18, 10, -1, new sbyte[] {32, -1, -1, -1, -1, -1, 
+          -1, -1, -1, 33}),
+/* NxS[  24] */ new Table(18, 1, -1, new sbyte[] {31}),
+/* NxS[  25] */ new Table(18, 1, -1, new sbyte[] {30}),
+/* NxS[  26] */ new Table(18, 1, -1, new sbyte[] {29}),
+/* NxS[  27] */ new Table(18, 1, -1, new sbyte[] {28}),
+/* NxS[  28] */ new Table(0, 0, -1, null),
+/* NxS[  29] */ new Table(0, 0, -1, null),
+/* NxS[  30] */ new Table(0, 0, -1, null),
+/* NxS[  31] */ new Table(0, 0, -1, null),
+/* NxS[  32] */ new Table(0, 0, -1, null),
+/* NxS[  33] */ new Table(0, 0, -1, null),
+/* NxS[  34] */ new Table(0, 0, -1, null),
+/* NxS[  35] */ new Table(0, 0, -1, null),
+/* NxS[  36] */ new Table(0, 0, -1, null),
+/* NxS[  37] */ new Table(0, 0, -1, null),
+/* NxS[  38] */ new Table(0, 0, -1, null),
+/* NxS[  39] */ new Table(0, 0, -1, null),
+/* NxS[  40] */ new Table(0, 0, -1, null),
+/* NxS[  41] */ new Table(0, 0, -1, null),
+/* NxS[  42] */ new Table(0, 0, -1, null),
+/* NxS[  43] */ new Table(18, 3, -1, new sbyte[] {44, -1, 45}),
+/* NxS[  44] */ new Table(0, 0, -1, null),
+/* NxS[  45] */ new Table(18, 1, -1, new sbyte[] {46}),
+/* NxS[  46] */ new Table(0, 0, -1, null),
+/* NxS[  47] */ new Table(0, 0, -1, null),
+/* NxS[  48] */ new Table(18, 1, -1, new sbyte[] {49}),
+/* NxS[  49] */ new Table(0, 0, -1, null),
+/* NxS[  50] */ new Table(0, 0, -1, null),
+/* NxS[  51] */ new Table(0, 0, -1, null),
+/* NxS[  52] */ new Table(0, 0, -1, null),
+/* NxS[  53] */ new Table(0, 0, -1, null),
+/* NxS[  54] */ new Table(7, 28, 2, new sbyte[] {3, 4, 5, 6, 7, 8, 
+          9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 
+          25, 26, 27, 2, -1, 1}),
+/* NxS[  55] */ new Table(15, 1, -1, new sbyte[] {52}),
+/* NxS[  56] */ new Table(2, 1, -1, new sbyte[] {57}),
+/* NxS[  57] */ new Table(3, 1, -1, new sbyte[] {58}),
+/* NxS[  58] */ new Table(4, 1, -1, new sbyte[] {59}),
+/* NxS[  59] */ new Table(5, 1, -1, new sbyte[] {60}),
+/* NxS[  60] */ new Table(6, 1, -1, new sbyte[] {53}),
     };
 
 int NextState() {
@@ -210,7 +268,7 @@ int NextState() {
         unchecked {
             int rslt;
             int idx = MapC(code) - NxS[state].min;
-            if (idx < 0) idx += 8;
+            if (idx < 0) idx += 33;
             if ((uint)idx >= (uint)NxS[state].rng) rslt = NxS[state].dflt;
             else rslt = NxS[state].nxt[idx];
             return rslt;
@@ -638,6 +696,156 @@ int NextState() {
 throw new Exception(String.Format("unexpected character '{0}'", yytext));
             break;
         case 3:
+return '(';
+            break;
+        case 4:
+return ')';
+            break;
+        case 5:
+return '{';
+            break;
+        case 6:
+return '}';
+            break;
+        case 7:
+return '[';
+            break;
+        case 8:
+return ']';
+            break;
+        case 9:
+return ';';
+            break;
+        case 10:
+return ',';
+            break;
+        case 11:
+return '.';
+            break;
+        case 12:
+return '@';
+            break;
+        case 13:
+return ':';
+            break;
+        case 14:
+return '=';
+            break;
+        case 15:
+return '<';
+            break;
+        case 16:
+return '>';
+            break;
+        case 17:
+return '!';
+            break;
+        case 18:
+return '~';
+            break;
+        case 19:
+return '?';
+            break;
+        case 20:
+return '-';
+            break;
+        case 21:
+return '&';
+            break;
+        case 22:
+return '|';
+            break;
+        case 23:
+return '+';
+            break;
+        case 24:
+return '*';
+            break;
+        case 25:
+return '/';
+            break;
+        case 26:
+return '^';
+            break;
+        case 27:
+return '%';
+            break;
+        case 28:
+return (int)Tokens.MODULUS_AND;
+            break;
+        case 29:
+return (int)Tokens.BITWISE_EXCLUSIVE_OR;
+            break;
+        case 30:
+return (int)Tokens.DIVIDE_AND;
+            break;
+        case 31:
+return (int)Tokens.MULTIPLY_AND;
+            break;
+        case 32:
+return (int)Tokens.ADD_AND;
+            break;
+        case 33:
+return (int)Tokens.INCREMENT;
+            break;
+        case 34:
+return (int)Tokens.BITWISE_INCLUSIVE_OR;
+            break;
+        case 35:
+return (int)Tokens.CONDITION_OR;
+            break;
+        case 36:
+return (int)Tokens.BITWISE_AND;
+            break;
+        case 37:
+return (int)Tokens.CONDITION_AND;
+            break;
+        case 38:
+return (int)Tokens.SUBTRACT_AND;
+            break;
+        case 39:
+return (int)Tokens.SELECTION;
+            break;
+        case 40:
+return (int)Tokens.DECREMENT;
+            break;
+        case 41:
+return (int)Tokens.NOT_EQUAL_TO;
+            break;
+        case 42:
+return (int)Tokens.GREATER_THAN_OR_EQUAL_TO;
+            break;
+        case 43:
+return (int)Tokens.SINGED_RIGHT_SHIFT;
+            break;
+        case 44:
+return (int)Tokens.RIGHT_SHIFT_AND;
+            break;
+        case 45:
+return (int)Tokens.UNSIGNED_RIGHT_SHFIT;
+            break;
+        case 46:
+return (int)Tokens.SHIFT_RIGHT_ZERO_FILL;
+            break;
+        case 47:
+return (int)Tokens.LESS_THAN_OR_EUAL_TO;
+            break;
+        case 48:
+return (int)Tokens.SINGED_LEFT_SHIFT;
+            break;
+        case 49:
+return (int)Tokens.LEFT_SHIFT_AND;
+            break;
+        case 50:
+return (int)Tokens.EUQL_TO;
+            break;
+        case 51:
+return (int)Tokens.DOUBLE_COLON;
+            break;
+        case 52:
+return (int)Tokens.VARIABLE_ARGUMENTS;
+            break;
+        case 53:
 return (int)Tokens.BOOLEAN;
             break;
         default:
