@@ -4,7 +4,7 @@ digit [0-9]
 letter [a-zA-Z]
 
 %{
-public string Foo()		
+public string Foo()		// comment again
 {
 	return "super foo";
 }
