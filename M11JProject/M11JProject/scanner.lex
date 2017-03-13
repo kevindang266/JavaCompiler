@@ -4,7 +4,7 @@ digit [0-9]
 letter [a-zA-Z]
 
 %{
-public string Foo()		// kevin test method
+public string Foo()		
 {
 	return "super foo";
 }
