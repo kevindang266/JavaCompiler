@@ -3,18 +3,12 @@
 digit [0-9]
 letter [a-zA-Z]
 
-%{
-public string Foo()		// comment again
-{
-	return "super foo";
-}
-%}
-
 %%
 
-boolean							{ return (int)Tokens.BOOLEAN; }			// kevin's working on boolean token implement
-true|false						{ yylval.val = yytext; return (int)Tokens.BOOLEANVALUE; }	// kevin's working on boolean token implement
+boolean							{ return (int)Tokens.BOOLEAN; }			// Trung Kien Dang - Boolean Literal
 
+
+/* E group removal
 {letter}({letter}|{digit})*		{ yylval.val = yytext; return (int)Tokens.IDENTIFIER; }
 {digit}+						{ yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER; }
 /*E Group*/
@@ -31,7 +25,7 @@ true|false						{ yylval.val = yytext; return (int)Tokens.BOOLEANVALUE; }	// kev
 "{"								{ return '{'; }
 "}"								{ return '}'; }
 ";"								{ return ';'; }
-*/
+
 
 "(" 		{return '(';}
 ")" 		{return ')';}
@@ -51,7 +45,7 @@ true|false						{ yylval.val = yytext; return (int)Tokens.BOOLEANVALUE; }	// kev
 /* 38 
 =   >   <   !   ~   ?   :   ->
 ==  >=  <=  !=  &&  ||  ++  --
-*/
+
 
 "=" 		{return '=';}//ASSIGN
 "<"			{return '<';}   //LESS_THAN
@@ -74,7 +68,7 @@ true|false						{ yylval.val = yytext; return (int)Tokens.BOOLEANVALUE; }	// kev
 /*
 +   -   *   /   &   |   ^   %   <<   >>   >>>
 +=  -=  *=  /=  &=  |=  ^=  %=  <<=  >>=  >>>=
-*/
+
 
 "+" 		{return '+';} // ADDTION
 "-" 		{return '-';}  // SUBTRATION
@@ -100,10 +94,7 @@ true|false						{ yylval.val = yytext; return (int)Tokens.BOOLEANVALUE; }	// kev
 ">>="			{return (int)Tokens.RIGHT_SHIFT_AND;}
 ">>>="			{return (int)Tokens.SHIFT_RIGHT_ZERO_FILL;}
 
-
-
-
-[ \r\n\t]						/* skip whitespace */
+*/
 
 .								{
 									throw new Exception(String.Format("unexpected character '{0}'", yytext));
