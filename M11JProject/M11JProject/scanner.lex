@@ -6,7 +6,7 @@ letter [a-zA-Z]
 %%
 
 boolean							{ return (int)Tokens.BOOLEAN; }			// Trung Kien Dang - Boolean Literal
-
+char							{ char alpha = "A"; return (char)Tokens.CharacterLiteral; } //Castro Alfonso Miguel - Character Literal
 
 /* E group removal
 {letter}({letter}|{digit})*		{ yylval.val = yytext; return (int)Tokens.IDENTIFIER; }
