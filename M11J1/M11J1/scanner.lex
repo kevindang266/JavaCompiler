@@ -13,6 +13,16 @@ int                 {yylval.keyword = yytext; return (int)Tokens.KEYWORDS;}
 for                 {yylval.keyword = yytext; return (int)Tokens.KEYWORDS;}
 while               {yylval.keyword = yytext; return (int)Tokens.KEYWORDS;}
 
+/*Hiral and Vidhi  Group A*/
+/*comment & Whitespace*/
+
+[ \r\n\t]                    /* skip whitespace */
+
+\/\*(.|\n)*\*\/      /* eliminates multi line comments*/
+\/\/.*               /* eliminates single line comments*/
+
+
+
 /*BAEK, Hee Sook(Donna)(1/2) D Group * /
 /*Separator  (   )   {   }   [   ]   ;   ,   .   ...   @   ::*/
 
