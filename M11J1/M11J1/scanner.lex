@@ -6,6 +6,12 @@ letter [a-zA-Z]
 %%
 
 boolean							{ return (int)Tokens.BOOLEAN; }			// Trung Kien Dang - Boolean Literal
+/* Vinay and Tarandeep keywords */
+if                  {yylval.keyword = yytext; return (int)Tokens.KEYWORDS;}
+else                {yylval.keyword = yytext; return (int)Tokens.KEYWORDS;}
+int                 {yylval.keyword = yytext; return (int)Tokens.KEYWORDS;}
+for                 {yylval.keyword = yytext; return (int)Tokens.KEYWORDS;}
+while               {yylval.keyword = yytext; return (int)Tokens.KEYWORDS;}
 
 /*BAEK, Hee Sook(Donna)(1/2) D Group * /
 /*Separator  (   )   {   }   [   ]   ;   ,   .   ...   @   ::*/

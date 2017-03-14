@@ -6,12 +6,14 @@ namespace M11J1
     {
         public int num;
         public string val;
+	public string keyword; 
     };
 
     public enum Tokens
     {
         EOF = 264,
         BOOLEAN = 265,
+	KEYWORDS = 263,
 
         VARIABLE_ARGUMENTS = 300, // variable arguments : ...
         DOUBLE_COLON = 301, //double colon ::	
@@ -70,6 +72,9 @@ namespace M11J1
                             case Tokens.BOOLEAN:
                                 Console.WriteLine("BOOLEAN");
                                 break;
+			    case Tokens.KEYWORDS:
+                        	Console.WriteLine("KEYWORDS ({0})", scanner.yylval.keyword);
+                        	break;
                             case Tokens.EOF:
                                 Console.WriteLine("EOF");
                                 break;
