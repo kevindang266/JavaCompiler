@@ -5,15 +5,12 @@ namespace M11J1
     public struct MyValueType
     {
         public int num;
-        public string val;
-	public string keyword; 
+        public string name;
     };
 
     public enum Tokens
     {
         EOF = 264,
-        BOOLEAN = 265,
-	KEYWORDS = 263,
 
         VariableArguments = 300, // variable arguments : ...
         DoubleColon = 301, //double colon ::	
@@ -41,8 +38,20 @@ namespace M11J1
         LeftShiftAnd,                // <<=
         RightShiftAnd,     // >>=
         ShiftRightZeroFill,        // >>>=
-
-
+        Int,
+        Implements,
+        If,
+        Final,
+        Else,
+        Extends,
+        Static,
+        Boolean,
+        Public,
+        Class,
+        Void,
+        CharacterLiteral,
+        Number,
+        Identifier
     };
 
     public abstract class ScanBase
@@ -69,12 +78,12 @@ namespace M11J1
                         token = (Tokens)scanner.yylex();
                         switch (token)
                         {
-                            case Tokens.BOOLEAN:
-                                Console.WriteLine("BOOLEAN");
+			                case Tokens.CharacterLiteral:
+                        	    Console.WriteLine("Char ({0})", scanner.yylval.name);
+                        	    break;
+                            case Tokens.Boolean:
+                                Console.WriteLine("Boolean");
                                 break;
-			    case Tokens.KEYWORDS:
-                        	Console.WriteLine("KEYWORDS ({0})", scanner.yylval.keyword);
-                        	break;
                             case Tokens.EOF:
                                 Console.WriteLine("EOF");
                                 break;
@@ -174,6 +183,7 @@ namespace M11J1
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
+                Console.ReadLine();
             }
         }
     }
