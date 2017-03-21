@@ -4,7 +4,7 @@
 // ==========================================================================
 //  Version:  1.2.2
 //  Machine:  KIENDANG-PC
-//  DateTime: 3/7/2017 7:43:48 PM
+//  DateTime: 3/17/2017 9:19:55 AM
 //  UserName: KienDang
 // ==========================================================================
 
@@ -14,18 +14,25 @@
 digit [0-9]
 letter [a-zA-Z]
 
+%{
+int lines = 0;
+%}
+
+
 %%
 
 if                           { return (int)Tokens.IF; }
 else                         { return (int)Tokens.ELSE; }
 int                          { return (int)Tokens.INT; }
 bool                         { return (int)Tokens.BOOL; }
-true|false					 { yylval.val = bool.Parse(yytext); return (int)Tokens.BOOLVAL; }
-null						 { return 'NULL'; }
-//------------------^----^
-// Error: Illegal character in this context
-// Error: Illegal character in this context
-// ----------------------------------------
+true|false					 { yylval.bval = bool.Parse(yytext); return (int)Tokens.BOOLVAL; }
+null						 { return (int)Tokens.NULL; }
+
+'[a-zA-Z0-9]'				 { 
+								var c = char.Parse(yytext.Replace("'",""));
+								yylval.name = c.ToString(); 
+								return (int)Tokens.CHAR; 
+							 }
 
 {letter}({letter}|{digit})*  { yylval.name = yytext; return (int)Tokens.IDENT; }
 {digit}+	                 { yylval.num = int.Parse(yytext); return (int)Tokens.NUMBER; }
@@ -39,14 +46,38 @@ null						 { return 'NULL'; }
 "}"                          { return '}'; }
 ";"                          { return ';'; }
 
-[ \r\n\t]                    /* skip whitespace */
+[\n]						{ lines++;    }
+[ \t\r]						/* ignore other whitespace */
+
 
 .                            { 
+
                                  throw new Exception(
                                      String.Format(
                                          "unexpected character '{0}'", yytext)); 
                              }
-
+							 
+public override void yyerror( string format, params object[] args )
+{
+// Error: Invalid production rule
+// Error: Invalid single-line action
+// Error: Parser error <Syntax error, unexpected {> 
+// -------------------------------------------------
+    System.Console.Error.WriteLine("Error: line {0}, {1}", lines,
+//-------------------------------------------------------^
+// Error: Expected character <')'> 
+// --------------------------------
+        String.Format(format, args));
+//--------------------------^-----^^^
+// Error: Expected character <')'> 
+// Error: Invalid production rule
+// Error: Invalid single-line action
+// Error: Invalid production rule
+// Error: Invalid production rule
+// ---------------------------------
+}
+// Error: Invalid production rule
+// ------------------------------
 %%
 // ==========================================================================
 

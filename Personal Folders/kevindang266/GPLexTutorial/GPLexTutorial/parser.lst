@@ -1,0 +1,68 @@
+
+// ==========================================================================
+//  GPPG error listing for yacc source file <parser.y - 3/17/2017 2:27:37 PM>
+// ==========================================================================
+//  Version:  1.5.2
+//  Machine:  KIENDANG-PC
+//  DateTime: 3/17/2017 2:27:51 PM
+//  UserName: KienDang
+// ==========================================================================
+
+
+%namespace GPLexTutorial
+
+%union
+{
+    public int num;
+    public string name;
+}
+
+%token <num> Number
+%token <name> Identifier 
+%token If Else Int Boolean BooleanLiteral NullLiteral CharacterLiteral
+
+%left '='
+%nonassoc '<'
+%left '+'
+
+%%
+// Error: NonTerminal symbol "INT" has no productions
+// Error: NonTerminal symbol "BOOL" has no productions
+// Warning: Terminating BOOL fixes the following size-2 NonTerminal set
+   // {Type, BOOL}
+// Error: There are 3 non-terminating NonTerminal Symbols
+   //  {Type, INT, BOOL}
+// Warning: Terminating INT fixes the following size-2 NonTerminal set
+   // {Type, INT}
+// --------------------------------------------------------------------
+
+Program : Statement
+        ;
+
+Statement : If '(' Expression ')' Statement Else Statement
+          | '{' StatementList '}'
+          | Expression ';'
+          | Type Identifier ';'
+          ;
+
+Type : INT
+     | BOOL
+     ;
+
+StatementList : StatementList Statement
+              | /* empty */
+              ;
+
+Expression : Number
+           | Identifier
+           | Expression '=' Expression
+           | Expression '+' Expression
+           | Expression '<' Expression
+           ;
+
+%%
+
+public Parser(Scanner scanner) : base(scanner)
+{
+}// ==========================================================================
+
