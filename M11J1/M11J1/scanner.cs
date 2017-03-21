@@ -6,9 +6,9 @@
 //
 //  GPLEX Version:  1.2.2
 //  Machine:  JWHSJIA-PC
-//  DateTime: 2017-03-14 오전 5:01:54
+//  DateTime: 2017-03-21 오전 10:18:37
 //  UserName: JWHSJIA
-//  GPLEX input file <scanner.lex - 2017-03-14 오전 5:01:18>
+//  GPLEX input file <scanner.lex - 2017-03-21 오전 10:18:04>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -124,8 +124,8 @@ namespace M11J1
         
         enum Result {accept, noMatch, contextFound};
 
-        const int maxAccept = 53;
-        const int initial = 54;
+        const int maxAccept = 65;
+        const int initial = 66;
         const int eofNum = 0;
         const int goStart = -1;
         const int INITIAL = 0;
@@ -162,73 +162,74 @@ namespace M11J1
         }
     };
 
-    static int[] startState = new int[] {54, 0};
+    static int[] startState = new int[] {66, 0};
 
 #region CompressedCharacterMap
     //
-    // There are 33 equivalence classes
+    // There are 41 equivalence classes
     // There are 2 character sequence regions
     // There are 1 tables, 127 entries
     // There are 1 runs, 0 singletons
     // Decision tree depth is 1
     //
     static sbyte[] mapC0 = new sbyte[127] {
-/*     '\0' */ 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 0, 32, 32, 32, 32, 32, 
-/*   '\x10' */ 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 
-/*   '\x20' */ 32, 21, 32, 32, 32, 31, 25, 32, 7, 8, 28, 27, 14, 24, 15, 29, 
-/*      '0' */ 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 17, 13, 19, 18, 20, 23, 
-/*      '@' */ 16, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 
-/*      'P' */ 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 11, 32, 12, 30, 32, 
-/*      '`' */ 32, 5, 1, 32, 32, 4, 32, 32, 32, 32, 32, 32, 3, 32, 6, 2, 
-/*      'p' */ 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 9, 26, 10, 22 };
+/*     '\0' */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 17, 14, 0, 0, 17, 0, 0, 
+/*   '\x10' */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+/*   '\x20' */ 17, 32, 0, 0, 0, 40, 36, 0, 18, 19, 16, 38, 25, 35, 26, 15, 
+/*      '0' */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 28, 24, 30, 29, 31, 34, 
+/*      '@' */ 27, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 
+/*      'P' */ 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 22, 0, 23, 39, 0, 
+/*      '`' */ 0, 5, 1, 0, 0, 4, 8, 0, 13, 7, 0, 0, 3, 0, 6, 2, 
+/*      'p' */ 0, 0, 11, 9, 10, 0, 0, 12, 0, 0, 0, 20, 37, 21, 33 };
 
     static sbyte MapC(int code)
     { // '\0' <= code <= '\U0010FFFF'
       if (code < 127) // '\0' <= code <= '~'
         return mapC0[code - 0];
       else // '\x7F' <= code <= '\U0010FFFF'
-        return (sbyte)32;
+        return (sbyte)0;
     }
 #endregion
 
-    static Table[] NxS = new Table[61] {
+    static Table[] NxS = new Table[82] {
 /* NxS[   0] */ new Table(0, 0, 0, null),
-/* NxS[   1] */ new Table(2, 1, -1, new sbyte[] {56}),
-/* NxS[   2] */ new Table(0, 0, -1, null),
-/* NxS[   3] */ new Table(0, 0, -1, null),
-/* NxS[   4] */ new Table(0, 0, -1, null),
-/* NxS[   5] */ new Table(0, 0, -1, null),
-/* NxS[   6] */ new Table(0, 0, -1, null),
+/* NxS[   1] */ new Table(0, 0, -1, null),
+/* NxS[   2] */ new Table(2, 1, -1, new sbyte[] {77}),
+/* NxS[   3] */ new Table(3, 1, -1, new sbyte[] {75}),
+/* NxS[   4] */ new Table(6, 3, -1, new sbyte[] {74, -1, 62}),
+/* NxS[   5] */ new Table(2, 1, -1, new sbyte[] {73}),
+/* NxS[   6] */ new Table(13, 1, -1, new sbyte[] {70}),
 /* NxS[   7] */ new Table(0, 0, -1, null),
-/* NxS[   8] */ new Table(0, 0, -1, null),
-/* NxS[   9] */ new Table(0, 0, -1, null),
+/* NxS[   8] */ new Table(15, 15, -1, new sbyte[] {57, 68, -1, -1, -1, -1, 
+          -1, -1, -1, -1, -1, -1, -1, -1, 58}),
+/* NxS[   9] */ new Table(29, 1, -1, new sbyte[] {56}),
 /* NxS[  10] */ new Table(0, 0, -1, null),
-/* NxS[  11] */ new Table(15, 1, -1, new sbyte[] {55}),
+/* NxS[  11] */ new Table(0, 0, -1, null),
 /* NxS[  12] */ new Table(0, 0, -1, null),
-/* NxS[  13] */ new Table(17, 1, -1, new sbyte[] {51}),
-/* NxS[  14] */ new Table(18, 1, -1, new sbyte[] {50}),
-/* NxS[  15] */ new Table(18, 2, -1, new sbyte[] {47, 48}),
-/* NxS[  16] */ new Table(18, 3, -1, new sbyte[] {42, -1, 43}),
-/* NxS[  17] */ new Table(18, 1, -1, new sbyte[] {41}),
-/* NxS[  18] */ new Table(0, 0, -1, null),
+/* NxS[  13] */ new Table(0, 0, -1, null),
+/* NxS[  14] */ new Table(0, 0, -1, null),
+/* NxS[  15] */ new Table(0, 0, -1, null),
+/* NxS[  16] */ new Table(0, 0, -1, null),
+/* NxS[  17] */ new Table(0, 0, -1, null),
+/* NxS[  18] */ new Table(26, 1, -1, new sbyte[] {67}),
 /* NxS[  19] */ new Table(0, 0, -1, null),
-/* NxS[  20] */ new Table(18, 7, -1, new sbyte[] {38, -1, 39, -1, -1, -1, 
-          40}),
-/* NxS[  21] */ new Table(18, 8, -1, new sbyte[] {36, -1, -1, -1, -1, -1, 
-          -1, 37}),
-/* NxS[  22] */ new Table(18, 9, -1, new sbyte[] {34, -1, -1, -1, -1, -1, 
-          -1, -1, 35}),
-/* NxS[  23] */ new Table(18, 10, -1, new sbyte[] {32, -1, -1, -1, -1, -1, 
-          -1, -1, -1, 33}),
-/* NxS[  24] */ new Table(18, 1, -1, new sbyte[] {31}),
-/* NxS[  25] */ new Table(18, 1, -1, new sbyte[] {30}),
-/* NxS[  26] */ new Table(18, 1, -1, new sbyte[] {29}),
-/* NxS[  27] */ new Table(18, 1, -1, new sbyte[] {28}),
-/* NxS[  28] */ new Table(0, 0, -1, null),
-/* NxS[  29] */ new Table(0, 0, -1, null),
-/* NxS[  30] */ new Table(0, 0, -1, null),
-/* NxS[  31] */ new Table(0, 0, -1, null),
-/* NxS[  32] */ new Table(0, 0, -1, null),
+/* NxS[  20] */ new Table(28, 1, -1, new sbyte[] {54}),
+/* NxS[  21] */ new Table(29, 1, -1, new sbyte[] {53}),
+/* NxS[  22] */ new Table(29, 2, -1, new sbyte[] {50, 51}),
+/* NxS[  23] */ new Table(29, 3, -1, new sbyte[] {45, -1, 46}),
+/* NxS[  24] */ new Table(29, 1, -1, new sbyte[] {44}),
+/* NxS[  25] */ new Table(0, 0, -1, null),
+/* NxS[  26] */ new Table(0, 0, -1, null),
+/* NxS[  27] */ new Table(29, 7, -1, new sbyte[] {41, -1, 42, -1, -1, -1, 
+          43}),
+/* NxS[  28] */ new Table(29, 8, -1, new sbyte[] {39, -1, -1, -1, -1, -1, 
+          -1, 40}),
+/* NxS[  29] */ new Table(29, 9, -1, new sbyte[] {37, -1, -1, -1, -1, -1, 
+          -1, -1, 38}),
+/* NxS[  30] */ new Table(29, 10, -1, new sbyte[] {35, -1, -1, -1, -1, -1, 
+          -1, -1, -1, 36}),
+/* NxS[  31] */ new Table(29, 1, -1, new sbyte[] {34}),
+/* NxS[  32] */ new Table(29, 1, -1, new sbyte[] {33}),
 /* NxS[  33] */ new Table(0, 0, -1, null),
 /* NxS[  34] */ new Table(0, 0, -1, null),
 /* NxS[  35] */ new Table(0, 0, -1, null),
@@ -239,26 +240,47 @@ namespace M11J1
 /* NxS[  40] */ new Table(0, 0, -1, null),
 /* NxS[  41] */ new Table(0, 0, -1, null),
 /* NxS[  42] */ new Table(0, 0, -1, null),
-/* NxS[  43] */ new Table(18, 3, -1, new sbyte[] {44, -1, 45}),
+/* NxS[  43] */ new Table(0, 0, -1, null),
 /* NxS[  44] */ new Table(0, 0, -1, null),
-/* NxS[  45] */ new Table(18, 1, -1, new sbyte[] {46}),
-/* NxS[  46] */ new Table(0, 0, -1, null),
+/* NxS[  45] */ new Table(0, 0, -1, null),
+/* NxS[  46] */ new Table(29, 3, -1, new sbyte[] {47, -1, 48}),
 /* NxS[  47] */ new Table(0, 0, -1, null),
-/* NxS[  48] */ new Table(18, 1, -1, new sbyte[] {49}),
+/* NxS[  48] */ new Table(29, 1, -1, new sbyte[] {49}),
 /* NxS[  49] */ new Table(0, 0, -1, null),
 /* NxS[  50] */ new Table(0, 0, -1, null),
-/* NxS[  51] */ new Table(0, 0, -1, null),
+/* NxS[  51] */ new Table(29, 1, -1, new sbyte[] {52}),
 /* NxS[  52] */ new Table(0, 0, -1, null),
 /* NxS[  53] */ new Table(0, 0, -1, null),
-/* NxS[  54] */ new Table(7, 28, 2, new sbyte[] {3, 4, 5, 6, 7, 8, 
-          9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 
-          25, 26, 27, 2, -1, 1}),
-/* NxS[  55] */ new Table(15, 1, -1, new sbyte[] {52}),
-/* NxS[  56] */ new Table(2, 1, -1, new sbyte[] {57}),
-/* NxS[  57] */ new Table(3, 1, -1, new sbyte[] {58}),
-/* NxS[  58] */ new Table(4, 1, -1, new sbyte[] {59}),
-/* NxS[  59] */ new Table(5, 1, -1, new sbyte[] {60}),
-/* NxS[  60] */ new Table(6, 1, -1, new sbyte[] {53}),
+/* NxS[  54] */ new Table(0, 0, -1, null),
+/* NxS[  55] */ new Table(0, 0, -1, null),
+/* NxS[  56] */ new Table(0, 0, -1, null),
+/* NxS[  57] */ new Table(14, 1, 57, new sbyte[] {-1}),
+/* NxS[  58] */ new Table(0, 0, -1, null),
+/* NxS[  59] */ new Table(16, 1, 68, new sbyte[] {69}),
+/* NxS[  60] */ new Table(0, 0, -1, null),
+/* NxS[  61] */ new Table(0, 0, -1, null),
+/* NxS[  62] */ new Table(0, 0, -1, null),
+/* NxS[  63] */ new Table(0, 0, -1, null),
+/* NxS[  64] */ new Table(0, 0, -1, null),
+/* NxS[  65] */ new Table(0, 0, -1, null),
+/* NxS[  66] */ new Table(12, 38, 1, new sbyte[] {6, 1, 7, 8, 9, 7, 
+          10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 
+          26, 27, 28, 29, 30, 31, 32, 1, 2, 1, 1, 3, 1, 1, 4, 5}),
+/* NxS[  67] */ new Table(26, 1, -1, new sbyte[] {55}),
+/* NxS[  68] */ new Table(16, 1, 68, new sbyte[] {69}),
+/* NxS[  69] */ new Table(15, 2, 68, new sbyte[] {59, 69}),
+/* NxS[  70] */ new Table(7, 1, -1, new sbyte[] {71}),
+/* NxS[  71] */ new Table(3, 1, -1, new sbyte[] {72}),
+/* NxS[  72] */ new Table(4, 1, -1, new sbyte[] {60}),
+/* NxS[  73] */ new Table(11, 1, -1, new sbyte[] {61}),
+/* NxS[  74] */ new Table(10, 1, -1, new sbyte[] {63}),
+/* NxS[  75] */ new Table(9, 1, -1, new sbyte[] {76}),
+/* NxS[  76] */ new Table(4, 1, -1, new sbyte[] {64}),
+/* NxS[  77] */ new Table(2, 1, -1, new sbyte[] {78}),
+/* NxS[  78] */ new Table(3, 1, -1, new sbyte[] {79}),
+/* NxS[  79] */ new Table(4, 1, -1, new sbyte[] {80}),
+/* NxS[  80] */ new Table(5, 1, -1, new sbyte[] {81}),
+/* NxS[  81] */ new Table(6, 1, -1, new sbyte[] {65}),
     };
 
 int NextState() {
@@ -268,7 +290,7 @@ int NextState() {
         unchecked {
             int rslt;
             int idx = MapC(code) - NxS[state].min;
-            if (idx < 0) idx += 33;
+            if (idx < 0) idx += 41;
             if ((uint)idx >= (uint)NxS[state].rng) rslt = NxS[state].dflt;
             else rslt = NxS[state].nxt[idx];
             return rslt;
@@ -693,159 +715,192 @@ int NextState() {
             break;
         case 1:
         case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
 throw new Exception(String.Format("unexpected character '{0}'", yytext));
             break;
-        case 3:
-return '(';
-            break;
-        case 4:
-return ')';
-            break;
-        case 5:
-return '{';
-            break;
-        case 6:
-return '}';
-            break;
         case 7:
-return '[';
+/* skip whitespace */
             break;
         case 8:
-return ']';
-            break;
-        case 9:
-return ';';
-            break;
-        case 10:
-return ',';
-            break;
-        case 11:
-return '.';
-            break;
-        case 12:
-return '@';
-            break;
-        case 13:
-return ':';
-            break;
-        case 14:
-return '=';
-            break;
-        case 15:
-return '<';
-            break;
-        case 16:
-return '>';
-            break;
-        case 17:
-return '!';
-            break;
-        case 18:
-return '~';
-            break;
-        case 19:
-return '?';
-            break;
-        case 20:
-return '-';
-            break;
-        case 21:
-return '&';
-            break;
-        case 22:
-return '|';
-            break;
-        case 23:
-return '+';
-            break;
-        case 24:
-return '*';
-            break;
-        case 25:
 return '/';
             break;
+        case 9:
+return '*';
+            break;
+        case 10:
+return '(';
+            break;
+        case 11:
+return ')';
+            break;
+        case 12:
+return '{';
+            break;
+        case 13:
+return '}';
+            break;
+        case 14:
+return '[';
+            break;
+        case 15:
+return ']';
+            break;
+        case 16:
+return ';';
+            break;
+        case 17:
+return ',';
+            break;
+        case 18:
+return '.';
+            break;
+        case 19:
+return '@';
+            break;
+        case 20:
+return ':';
+            break;
+        case 21:
+return '=';
+            break;
+        case 22:
+return '<';
+            break;
+        case 23:
+return '>';
+            break;
+        case 24:
+return '!';
+            break;
+        case 25:
+return '~';
+            break;
         case 26:
-return '^';
+return '?';
             break;
         case 27:
-return '%';
+return '-';
             break;
         case 28:
-return (int)Tokens.MODULUS_AND;
+return '&';
             break;
         case 29:
-return (int)Tokens.BITWISE_EXCLUSIVE_OR;
+return '|';
             break;
         case 30:
-return (int)Tokens.DIVIDE_AND;
+return '+';
             break;
         case 31:
-return (int)Tokens.MULTIPLY_AND;
+return '^';
             break;
         case 32:
-return (int)Tokens.ADD_AND;
+return '%';
             break;
         case 33:
-return (int)Tokens.INCREMENT;
+return (int)Tokens.ModulusAnd;
             break;
         case 34:
-return (int)Tokens.BITWISE_INCLUSIVE_OR;
+return (int)Tokens.BitwiseExclusiveOr;
             break;
         case 35:
-return (int)Tokens.CONDITION_OR;
+return (int)Tokens.ADD_AND;
             break;
         case 36:
-return (int)Tokens.BITWISE_AND;
+return (int)Tokens.INCREMENT;
             break;
         case 37:
-return (int)Tokens.CONDITION_AND;
+return (int)Tokens.BitwiseInclusiveOr;
             break;
         case 38:
-return (int)Tokens.SUBTRACT_AND;
+return (int)Tokens.CONDITION_OR;
             break;
         case 39:
-return (int)Tokens.SELECTION;
+return (int)Tokens.BITWISE_AND;
             break;
         case 40:
-return (int)Tokens.DECREMENT;
+return (int)Tokens.CONDITION_AND;
             break;
         case 41:
-return (int)Tokens.NOT_EQUAL_TO;
+return (int)Tokens.SUBTRACT_AND;
             break;
         case 42:
-return (int)Tokens.GREATER_THAN_OR_EQUAL_TO;
+return (int)Tokens.SELECTION;
             break;
         case 43:
-return (int)Tokens.SINGED_RIGHT_SHIFT;
+return (int)Tokens.DECREMENT;
             break;
         case 44:
-return (int)Tokens.RIGHT_SHIFT_AND;
+return (int)Tokens.NOT_EQUAL_TO;
             break;
         case 45:
-return (int)Tokens.UNSIGNED_RIGHT_SHFIT;
+return (int)Tokens.GREATER_THAN_OR_EQUAL_TO;
             break;
         case 46:
-return (int)Tokens.SHIFT_RIGHT_ZERO_FILL;
+return (int)Tokens.SINGED_RIGHT_SHIFT;
             break;
         case 47:
-return (int)Tokens.LESS_THAN_OR_EUAL_TO;
+return (int)Tokens.RightShiftAnd;
             break;
         case 48:
-return (int)Tokens.SINGED_LEFT_SHIFT;
+return (int)Tokens.UNSIGNED_RIGHT_SHFIT;
             break;
         case 49:
-return (int)Tokens.LEFT_SHIFT_AND;
+return (int)Tokens.ShiftRightZeroFill;
             break;
         case 50:
-return (int)Tokens.EUQL_TO;
+return (int)Tokens.LESS_THAN_OR_EUAL_TO;
             break;
         case 51:
-return (int)Tokens.DOUBLE_COLON;
+return (int)Tokens.SINGED_LEFT_SHIFT;
             break;
         case 52:
-return (int)Tokens.VARIABLE_ARGUMENTS;
+return (int)Tokens.LeftShiftAnd;
             break;
         case 53:
+return (int)Tokens.EUQL_TO;
+            break;
+        case 54:
+return (int)Tokens.DoubleColon;
+            break;
+        case 55:
+return (int)Tokens.VariableArguments;
+            break;
+        case 56:
+return (int)Tokens.MULTIPLY_AND;
+            break;
+        case 57:
+/* eliminates single line comments*/
+
+
+
+/*BAEK, Hee Sook(Donna)(1/2) D Group * /
+/*Separator  (   )   {   }   [   ]   ;   ,   .   ...   @   ::*/
+            break;
+        case 58:
+return (int)Tokens.DIVIDE_AND;
+            break;
+        case 59:
+/* eliminates multi line comments*/
+            break;
+        case 60:
+yylval.keyword = yytext; return (int)Tokens.KEYWORDS;
+            break;
+        case 61:
+yylval.keyword = yytext; return (int)Tokens.KEYWORDS;
+            break;
+        case 62:
+yylval.keyword = yytext; return (int)Tokens.KEYWORDS;
+            break;
+        case 63:
+yylval.keyword = yytext; return (int)Tokens.KEYWORDS;
+            break;
+        case 64:
+yylval.keyword = yytext; return (int)Tokens.KEYWORDS;
+            break;
+        case 65:
 return (int)Tokens.BOOLEAN;
             break;
         default:

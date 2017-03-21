@@ -15,8 +15,8 @@ namespace M11J1
         BOOLEAN = 265,
 	KEYWORDS = 263,
 
-        VARIABLE_ARGUMENTS = 300, // variable arguments : ...
-        DOUBLE_COLON = 301, //double colon ::	
+        VariableArguments = 300, // variable arguments : ...
+        DoubleColon = 301, //double colon ::	
         SELECTION,         //->
         EUQL_TO,                //==
         GREATER_THAN_OR_EQUAL_TO,       //>=
@@ -35,12 +35,12 @@ namespace M11J1
         MULTIPLY_AND,            //*=
         DIVIDE_AND,                  // /=
         BITWISE_AND,            // &=
-        BITWISE_INCLUSIVE_OR,            // |= 
-        BITWISE_EXCLUSIVE_OR,            // ^=
-        MODULUS_AND,                  // %=
-        LEFT_SHIFT_AND,                // <<=
-        RIGHT_SHIFT_AND,     // >>=
-        SHIFT_RIGHT_ZERO_FILL,        // >>>=
+        BitwiseInclusiveOr,            // |= 
+        BitwiseExclusiveOr,            // ^=
+        ModulusAnd,                  // %=
+        LeftShiftAnd,                // <<=
+        RightShiftAnd,     // >>=
+        ShiftRightZeroFill,        // >>>=
 
 
     };
@@ -78,10 +78,10 @@ namespace M11J1
                             case Tokens.EOF:
                                 Console.WriteLine("EOF");
                                 break;
-                            case Tokens.VARIABLE_ARGUMENTS:
+                            case Tokens.VariableArguments:
                                 Console.WriteLine("...");
                                 break;
-                            case Tokens.DOUBLE_COLON:
+                            case Tokens.DoubleColon:
                                 Console.WriteLine("::");
                                 break;
 
@@ -141,25 +141,26 @@ namespace M11J1
                             case Tokens.BITWISE_AND:
                                 Console.WriteLine("&/");
                                 break;
-                            case Tokens.BITWISE_INCLUSIVE_OR:
+                            case Tokens.BitwiseInclusiveOr:
                                 Console.WriteLine("|=");
                                 break;
-                            case Tokens.BITWISE_EXCLUSIVE_OR:
+                            case Tokens.BitwiseExclusiveOr:
                                 Console.WriteLine("^=");
                                 break;
-                            case Tokens.MODULUS_AND:
+                            case Tokens.ModulusAnd:
                                 Console.WriteLine("%=");
                                 break;
-                            case Tokens.LEFT_SHIFT_AND:
+                            case Tokens.LeftShiftAnd:
                                 Console.WriteLine("<<=");
                                 break;
 
-                            case Tokens.RIGHT_SHIFT_AND:
+                            case Tokens.RightShiftAnd:
                                 Console.WriteLine(">>=");
                                 break;
-                            case Tokens.SHIFT_RIGHT_ZERO_FILL:
+                            case Tokens.ShiftRightZeroFill:
                                 Console.WriteLine(">>>=");
                                 break;
+
                             default:
                                 Console.WriteLine("'{0}'", (char)token);
                                 break;

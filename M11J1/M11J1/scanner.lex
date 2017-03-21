@@ -35,9 +35,9 @@ while               {yylval.keyword = yytext; return (int)Tokens.KEYWORDS;}
 ";" 		{return ';';}
 "," 		{return ',';}
 "." 		{return '.';}
-"..." 		{return (int)Tokens.VARIABLE_ARGUMENTS;}
+"..." 		{return (int)Tokens.VariableArguments;}
 "@" 		{return '@';}
-"::" 		{return (int)Tokens.DOUBLE_COLON;}
+"::" 		{return (int)Tokens.DoubleColon;}
 
 /* Mohammad Yousuf D Group*/
 /*Operator (1/3)   =   >   <   !   ~   ?   :   -> ==  >=  <=  !=  &&  ||  ++  -- +  */
@@ -87,13 +87,12 @@ while               {yylval.keyword = yytext; return (int)Tokens.KEYWORDS;}
 /*BAEK, Hee Sook(Donna)(2/2) D Group * /
 /*operator (3/3)*/
 /* ^=  %=  <<=  >>=  >>>= */
-"|=" 		{return (int)Tokens.BITWISE_INCLUSIVE_OR;}
-"^=" 		{return (int)Tokens.BITWISE_EXCLUSIVE_OR;}
-"%="		{return (int)Tokens.MODULUS_AND;}
-"<<="		{return (int)Tokens.LEFT_SHIFT_AND;}
-">>="		{return (int)Tokens.RIGHT_SHIFT_AND;}
-">>>="		{return (int)Tokens.SHIFT_RIGHT_ZERO_FILL;}
-
+"|=" 		{return (int)Tokens.BitwiseInclusiveOr;}
+"^=" 		{return (int)Tokens.BitwiseExclusiveOr;}
+"%="		{return (int)Tokens.ModulusAnd;}
+"<<="		{return (int)Tokens.LeftShiftAnd;}
+">>="		{return (int)Tokens.RightShiftAnd;}
+">>>="		{return (int)Tokens.ShiftRightZeroFill;}
 .			{
 								throw new Exception(String.Format("unexpected character '{0}'", yytext));
 			}
