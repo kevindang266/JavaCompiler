@@ -6,9 +6,9 @@
 //
 //  GPLEX Version:  1.2.2
 //  Machine:  VDI-VL17-055
-//  DateTime: 22/03/2017 1:18:44 PM
+//  DateTime: 22/03/2017 1:35:22 PM
 //  UserName: n9581120
-//  GPLEX input file <scanner.lex - 22/03/2017 1:18:43 PM>
+//  GPLEX input file <scanner.lex - 22/03/2017 1:32:02 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -1090,37 +1090,37 @@ yylval.name = yytext; return (int)Tokens.CharacterLiteral;
 yylval.num = int.Parse(yytext); return (int)Tokens.IntergerLiteral;
             break;
         case 60:
-yylval.keyword = yytext; return (int)Tokens.Void;
+return (int)Tokens.Void;
             break;
         case 64:
-yylval.keyword = yytext; return (int)Tokens.Class;
+return (int)Tokens.Class;
             break;
         case 69:
-yylval.keyword = yytext; return (int)Tokens.Public;
+return (int)Tokens.Public;
             break;
         case 75:
-yylval.keyword = yytext; return (int)Tokens.Boolean;
+return (int)Tokens.Boolean;
             break;
         case 80:
-yylval.keyword = yytext; return (int)Tokens.Static;
+return (int)Tokens.Static;
             break;
         case 87:
-yylval.keyword = yytext; return (int)Tokens.Extends;
+return (int)Tokens.Extends;
             break;
         case 89:
-yylval.keyword = yytext; return (int)Tokens.Else;
+return (int)Tokens.Else;
             break;
         case 93:
-yylval.keyword = yytext; return (int)Tokens.Final;
+return (int)Tokens.Final;
             break;
         case 94:
-yylval.keyword = yytext; return (int)Tokens.Keywords;
+return (int)Tokens.If;
             break;
         case 104:
-yylval.keyword = yytext; return (int)Tokens.Implements;
+return (int)Tokens.Implements;
             break;
         case 105:
-yylval.keyword = yytext; return (int)Tokens.Int;
+return (int)Tokens.Int;
             break;
         default:
             break;
