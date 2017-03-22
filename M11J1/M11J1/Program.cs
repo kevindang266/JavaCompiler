@@ -6,6 +6,7 @@ namespace M11J1
     {
         public int num;
         public string name;
+        public string keyword;
     };
 
     public enum Tokens
@@ -39,6 +40,8 @@ namespace M11J1
         RightShiftAnd,     // >>=
         ShiftRightZeroFill,        // >>>=
         Int,
+        Keywords,
+        IntergerLiteral,
         Implements,
         If,
         Final,
@@ -81,6 +84,12 @@ namespace M11J1
 			                case Tokens.CharacterLiteral:
                         	    Console.WriteLine("Char ({0})", scanner.yylval.name);
                         	    break;
+                            case Tokens.Keywords:
+                                Console.WriteLine("KEYWORDS", scanner.yylval.keyword);
+                                break;
+                            case Tokens.IntergerLiteral:
+                                Console.WriteLine("Interger", scanner.yylval.num);
+                                break;
                             case Tokens.Boolean:
                                 Console.WriteLine("Boolean");
                                 break;

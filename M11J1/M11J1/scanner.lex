@@ -4,6 +4,7 @@ Ident				[a-zA-Z_][a-zA-Z0-9_]*
 Number				[0-9]+
 OctalDigit			[0-7]
 HexDigit			[0-9a-fA-F]
+NonZeroDigit		[1-9]+
 
 DotChar				[^\r\n]
 EscapeSequence		\\[btnfr\"\'\\]
@@ -12,24 +13,29 @@ OctalEscape			\\([1-3]{OctalDigit}{2}|{OctalDigit}{1,2})
 
 CharacterLiteral    \'({EscapeSequence}|{OctalEscape}|{UnicodeEscape}|{DotChar})\'
 
+IntergerLiteral		\'({NonZeroDigit}|{Number})\'
+
 %{
 int lines = 0;
 %}
 
 %%
 
-/* 3.5 Token -> Keywords */
-if								{ return (int)Tokens.If; }
-else							{ return (int)Tokens.Else; }
-int								{ return (int)Tokens.Int; }
-boolean                         { return (int)Tokens.Boolean; } 
-public							{ return (int)Tokens.Public; }
-class							{ return (int)Tokens.Class; }
-static							{ return (int)Tokens.Static; }
-void							{ return (int)Tokens.Void; }
-extends							{ return (int)Tokens.Extends; }
-implements						{ return (int)Tokens.Implements; }
-final							{ return (int)Tokens.Final; }
+/* 3.9 Token -> Keywords */
+if								{ yylval.keyword = yytext; return (int)Tokens.Keywords; }
+else							{ yylval.keyword = yytext; return (int)Tokens.Else; }
+int								{ yylval.keyword = yytext; return (int)Tokens.Int; }
+boolean                         { yylval.keyword = yytext; return (int)Tokens.Boolean; } 
+public							{ yylval.keyword = yytext; return (int)Tokens.Public; }
+class							{ yylval.keyword = yytext; return (int)Tokens.Class; }
+static							{ yylval.keyword = yytext; return (int)Tokens.Static; }
+void							{ yylval.keyword = yytext; return (int)Tokens.Void; }
+extends							{ yylval.keyword = yytext; return (int)Tokens.Extends; }
+implements						{ yylval.keyword = yytext; return (int)Tokens.Implements; }
+final							{ yylval.keyword = yytext; return (int)Tokens.Final; }
+
+/* 3.10 Token -> IntegerLiteral */
+{IntergerLiteral}				{ yylval.num = int.Parse(yytext); return (int)Tokens.IntergerLiteral; }
 
 /* 3.5 Token -> Character Literals */
 {CharacterLiteral}				{ yylval.name = yytext; return (int)Tokens.CharacterLiteral; }

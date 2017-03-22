@@ -50,6 +50,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="scanner.lex" />
+    <None Include="Tests\keyword.j" />
     <None Include="Tests\m11j1.java.expected" />
   </ItemGroup>
   <ItemGroup>
