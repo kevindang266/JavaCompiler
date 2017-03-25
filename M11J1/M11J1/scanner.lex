@@ -88,6 +88,9 @@ final							{ return (int)Tokens.Final; }
 \/\*(.|\n)*\*\/					/* eliminates multi line comments*/
 \/\/.*							/* eliminates single line comments*/
 
+/*3.10.2. Floating-Point Literals*/
+
+([-+]|(0[xX]))?[0-9a-fA-F]*\.?[0-9a-fA-F]+([eEpP]|[-+]?[0-9a-fA-F]+)?.              { yylval.name = yytext; return (int)Tokens.FloatingPointLiterals; }    
 
 
 /* 3.11 Separators */

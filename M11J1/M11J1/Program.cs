@@ -52,7 +52,8 @@ namespace M11J1
         Class,
         Void,
         CharacterLiteral,
-        Identifier
+        Identifier,
+        FloatingPointLiterals
     };
 
     public abstract class ScanBase
@@ -84,6 +85,9 @@ namespace M11J1
                                 break;
                             case Tokens.IntergerLiteral:
                                 Console.WriteLine("Interger ({0})", scanner.yylval.name);
+                                break;
+                            case Tokens.FloatingPointLiterals:
+                                Console.WriteLine("FloatingPointLiterals ({0})", scanner.yylval.name);
                                 break;
                             case Tokens.Boolean:
                                 Console.WriteLine("Boolean");
