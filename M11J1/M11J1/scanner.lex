@@ -55,17 +55,58 @@ int lines = 0;
 %%
 
 /* 3.9 Token -> Keywords */
-if								{ return (int)Tokens.If; }
-else							{ return (int)Tokens.Else; }
-int								{ return (int)Tokens.Int; }
-boolean                         { return (int)Tokens.Boolean; } 
-public							{ return (int)Tokens.Public; }
-class							{ return (int)Tokens.Class; }
-static							{ return (int)Tokens.Static; }
-void							{ return (int)Tokens.Void; }
-extends							{ return (int)Tokens.Extends; }
-implements						{ return (int)Tokens.Implements; }
-final							{ return (int)Tokens.Final; }
+/*  Tarandeep keywords */
+
+abstract            { return (int)Tokens.Abstract; }
+assert              { return (int)Tokens.Assert; }
+boolean             { return (int)Tokens.Boolean; }
+break              { return (int)Tokens.Break; }
+byte               { return (int)Tokens.Byte; }
+case               { return (int)Tokens.Case; }
+catch              { return (int)Tokens.Catch; }
+char               { return (int)Tokens.Char; }
+class              { return (int)Tokens.Class; }
+const              { return (int)Tokens.Const; }
+continue           { return (int)Tokens.Continue; }
+default            { return (int)Tokens.Default; }
+do                 { return (int)Tokens.Do; }
+double             { return (int)Tokens.Double; }
+else               { return (int)Tokens.Else; }
+enum               { return (int)Tokens.Enum; }
+extends            { return (int)Tokens.Extends; }
+final              { return (int)Tokens.Final; }
+finally            { return (int)Tokens.Finally; }
+float              { return (int)Tokens.Float; }
+for                { return (int)Tokens.For; }
+goto               { return (int)Tokens.Goto; }
+if                 { return (int)Tokens.If; }
+implements         { return (int)Tokens.Implements; }
+import             { return (int)Tokens.Import; }
+instanceof         { return (int)Tokens.Instanceof; }
+int                { return (int)Tokens.Int; }
+interface          { return (int)Tokens.Interface; }
+long               { return (int)Tokens.Long; }
+native             { return (int)Tokens.Native; }
+new                { return (int)Tokens.New; }
+package            { return (int)Tokens.Package; }
+private            { return (int)Tokens.Private; }
+protected          { return (int)Tokens.Protected; }
+public             { return (int)Tokens.Public; }
+return             { return (int)Tokens.Return; }
+short              { return (int)Tokens.Short; }
+static             { return (int)Tokens.Static; }
+strictfp           { return (int)Tokens.Strictfp; }
+super              { return (int)Tokens.Super; }
+switch             { return (int)Tokens.Switch; }
+synchronized       { return (int)Tokens.Synchronized; }
+this               { return (int)Tokens.This; }
+throw              { return (int)Tokens.Throw; }
+throws             { return (int)Tokens.Throws; }
+transient          { return (int)Tokens.Transient; }
+try                { return (int)Tokens.Try; }
+void               { return (int)Tokens.Void; }
+volatile           { return (int)Tokens.Volatile; }
+while              { return (int)Tokens.While; }      
 
 /* 3.10 Token -> IntegerLiteral */
 //{IntergerLiteral}				{ yylval.num = int.Parse(yytext); return (int)Tokens.IntergerLiteral; } BAD CODE

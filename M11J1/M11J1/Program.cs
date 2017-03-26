@@ -6,7 +6,7 @@ namespace M11J1
     {
         public int num;
         public string name;
-        public string keyword;
+       
     };
 
     public enum Tokens
@@ -39,21 +39,62 @@ namespace M11J1
         LeftShiftAnd,                // <<=
         RightShiftAnd,     // >>=
         ShiftRightZeroFill,        // >>>=
-        Int,
         IntergerLiteral,
-        Implements,
-        If,
-        Final,
-        Else,
-        Extends,
-        Static,
-        Boolean,
-        Public,
-        Class,
-        Void,
         CharacterLiteral,
         Identifier,
-        FloatingPointLiterals
+        FloatingPointLiterals,
+
+             /* Tarandeep Keywords*/
+        Abstract,
+        Assert,
+        Boolean,
+        Break,
+        Byte,
+        Case,
+        Catch,
+        Char,
+        Class,
+        Const,
+        Continue,
+        Default,
+        Do,
+        Double,
+        Else,
+        Enum,
+        Extends,
+        Final,
+        Finally,
+        Float,
+        For,
+        Goto,
+        If,
+        Implements,
+        Import,
+        Instanceof,
+        Int,
+        Interface,
+        Long,
+        Native,
+        New,
+        Package,
+        Private,
+        Protected,
+        Public,
+        Return,
+        Short,
+        Static,
+        Strictfp,
+        Super,
+        Switch,
+        Synchronized,
+        This,
+        Throw,
+        Throws,
+        Transient,
+        Try,
+        Void,
+        Volatile,
+        While,
     };
 
     public abstract class ScanBase
@@ -88,9 +129,6 @@ namespace M11J1
                                 break;
                             case Tokens.FloatingPointLiterals:
                                 Console.WriteLine("FloatingPointLiterals ({0})", scanner.yylval.name);
-                                break;
-                            case Tokens.Boolean:
-                                Console.WriteLine("Boolean");
                                 break;
                             case Tokens.EOF:
                                 Console.WriteLine("EOF");
@@ -176,6 +214,156 @@ namespace M11J1
                                 break;
                             case Tokens.ShiftRightZeroFill:
                                 Console.WriteLine(">>>=");
+                                break;
+                            case Tokens.Abstract:
+                                Console.WriteLine("Abstract");
+                                break;
+                            case Tokens.Assert:
+                                Console.WriteLine("Assert");
+                                break;
+                            case Tokens.Boolean:
+                                Console.WriteLine("Boolean");
+                                break;
+                            case Tokens.Break:
+                                Console.WriteLine("Break");
+                                break;
+                            case Tokens.Byte:
+                                Console.WriteLine("Byte");
+                                break;
+                            case Tokens.Case:
+                                Console.WriteLine("Case");
+                                break;
+                            case Tokens.Catch:
+                                Console.WriteLine("Catch");
+                                break;
+                            case Tokens.Char:
+                                Console.WriteLine("Char");
+                                break;
+                            case Tokens.Class:
+                                Console.WriteLine("Class");
+                                break;
+                            case Tokens.Const:
+                                Console.WriteLine("Const");
+                                break;
+                            case Tokens.Continue:
+                                Console.WriteLine("Continue");
+                                break;
+                            case Tokens.Default:
+                                Console.WriteLine("Default");
+                                break;
+                            case Tokens.Do:
+                                Console.WriteLine("Do");
+                                break;
+                            case Tokens.Double:
+                                Console.WriteLine("Double");
+                                break;
+                            case Tokens.Else:
+                                Console.WriteLine("Else");
+                                break;
+                            case Tokens.Enum:
+                                Console.WriteLine("Enum");
+                                break;
+                            case Tokens.Extends:
+                                Console.WriteLine("Extends");
+                                break;
+                            case Tokens.Final:
+                                Console.WriteLine("Final");
+                                break;
+                            case Tokens.Finally:
+                                Console.WriteLine("Finally");
+                                break;
+                            case Tokens.Float:
+                                Console.WriteLine("Float");
+                                break;
+                            case Tokens.For:
+                                Console.WriteLine("For");
+                                break;
+                            case Tokens.Goto:
+                                Console.WriteLine("Goto");
+                                break;
+                            case Tokens.If:
+                                Console.WriteLine("If");
+                                break;
+                            case Tokens.Implements:
+                                Console.WriteLine("Implements");
+                                break;
+                            case Tokens.Import:
+                                Console.WriteLine("Import");
+                                break;
+                            case Tokens.Instanceof:
+                                Console.WriteLine("Instanceof");
+                                break;
+                            case Tokens.Int:
+                                Console.WriteLine("Int");
+                                break;
+                            case Tokens.Interface:
+                                Console.WriteLine("Interface");
+                                break;
+                            case Tokens.Long:
+                                Console.WriteLine("Long");
+                                break;
+                            case Tokens.Native:
+                                Console.WriteLine("Native");
+                                break;
+                            case Tokens.New:
+                                Console.WriteLine("New");
+                                break;
+                            case Tokens.Package:
+                                Console.WriteLine("Package");
+                                break;
+                            case Tokens.Private:
+                                Console.WriteLine("Private");
+                                break;
+                            case Tokens.Protected:
+                                Console.WriteLine("Protected");
+                                break;
+                            case Tokens.Public:
+                                Console.WriteLine("Public");
+                                break;
+                            case Tokens.Return:
+                                Console.WriteLine("Return");
+                                break;
+                            case Tokens.Short:
+                                Console.WriteLine("Short");
+                                break;
+                            case Tokens.Static:
+                                Console.WriteLine("Static");
+                                break;
+                            case Tokens.Strictfp:
+                                Console.WriteLine("Strictfp");
+                                break;
+                            case Tokens.Super:
+                                Console.WriteLine("Super");
+                                break;
+                            case Tokens.Switch:
+                                Console.WriteLine("Switch");
+                                break;
+                            case Tokens.Synchronized:
+                                Console.WriteLine("Synchronized");
+                                break;
+                            case Tokens.This:
+                                Console.WriteLine("This");
+                                break;
+                            case Tokens.Throw:
+                                Console.WriteLine("Throw");
+                                break;
+                            case Tokens.Throws:
+                                Console.WriteLine("Throws");
+                                break;
+                            case Tokens.Transient:
+                                Console.WriteLine("Transient");
+                                break;
+                            case Tokens.Try:
+                                Console.WriteLine("Try");
+                                break;
+                            case Tokens.Void:
+                                Console.WriteLine("Void");
+                                break;
+                            case Tokens.Volatile:
+                                Console.WriteLine("Volatile");
+                                break;
+                            case Tokens.While:
+                                Console.WriteLine("While");
                                 break;
 
                             default:

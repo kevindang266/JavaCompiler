@@ -1,2 +1,3 @@
-﻿if x = 42
-x = 42;
+﻿if else char int implements void while
+for do while continue goto break
+case abstract assert boolean
