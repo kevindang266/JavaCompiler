@@ -42,9 +42,10 @@ namespace M11J1
         IntergerLiteral,
         CharacterLiteral,
         Identifier,
+        DecimalFloatingPointLiteral,
+        HexadecimalFloatingPointLiteral,
         FloatingPointLiterals,
-
-             /* Tarandeep Keywords*/
+        /* Tarandeep Keywords*/
         Abstract,
         Assert,
         Boolean,
@@ -128,7 +129,13 @@ namespace M11J1
                                 Console.WriteLine("Interger ({0})", scanner.yylval.name);
                                 break;
                             case Tokens.FloatingPointLiterals:
-                                Console.WriteLine("FloatingPointLiterals ({0})", scanner.yylval.name);
+                                    Console.WriteLine("FloatingPointLiterals ({0})", scanner.yylval.name);
+                                      break;
+                            case Tokens.DecimalFloatingPointLiteral:
+                                Console.WriteLine("DecimalFloatingPointLiteral ({0})", scanner.yylval.name);
+                                break;
+                            case Tokens.HexadecimalFloatingPointLiteral:
+                                Console.WriteLine("HexadecimalFloatingPointLiteral ({0})", scanner.yylval.name);
                                 break;
                             case Tokens.Identifier:
                                 Console.WriteLine("Identifier ({0})", scanner.yylval.name);

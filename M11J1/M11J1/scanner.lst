@@ -3,9 +3,9 @@
 //  GPLEX error listing for lex source file <scanner.lex>
 // ==========================================================================
 //  Version:  1.2.2
-//  Machine:  LAPTOP-D82G4GJQ
-//  DateTime: 26/03/2017 10:46:21 PM
-//  UserName: Tarandeep
+//  Machine:  JWHSJIA-PC
+//  DateTime: 2017-03-26 오후 11:24:59
+//  UserName: JWHSJIA
 // ==========================================================================
 
 
@@ -19,6 +19,25 @@ BinaryDigit						0|1
 IntegerTypeSuffix				1|L
 NonZeroDigit					[1-9]
 Underscores						\_+
+
+/*3.10.2. Floating-Point Literals*/
+
+
+FloatTypeSuffix					[fFdD]
+ExponentIndicator				[eE]
+ZeroDigit						[0-9]
+SingedIntegers					[\-\+]?{ZeroDigit}*
+SingedInteger					[\-\+]?{ZeroDigit}+
+ExponentPart					(ExponentIndicator)(SingedInteger)
+BinaryExponentIndicator			[pP]
+SingedIntegerWithHexDigit		[\-\+]?{HexDigit}+
+BinaryExponent					(BinaryExponentIndicator)(SingedIntegerWithHexDigit)
+HexSignificand					(0[xX])?({HexDigit}*\.)?({HexDigit}+)
+
+/*3.10.2. Floating-Point Literals*/
+DecimalFloatingPointLiteral					([\-\+]?[0-9]*\.?[0-9]+([eE][\-\+]?[0-9]+)?.)	
+HexadecimalFloatingPointLiteral				(0[xX])?[0-9a-fA-F]*\.?[0-9a-fA-F]+([pP][\-\+]?[0-9a-fA-F]+)?.
+
 
 /* 3.10.1 DecimalIntegerLiteral */
 Digit							0|{NonZeroDigit}
@@ -58,6 +77,10 @@ CharacterLiteral				\'({EscapeSequence}|{OctalEscape}|{UnicodeEscape}|{DotChar})
 
 // IntergerLiteral				\'({NonZeroDigit}|{Number})\' BAD CODE
 IntergerLiteral					{DecimalIntegerLiteral}|{HexIntegerLiteral}|{OctalIntegerLiteral}|{BinaryIntegerLiteral}
+
+/* 3.8 Identifier */
+/* hiral*/
+Identifier               [_/$a-zA-Zα-ωΑ-Ω][_/$a-zA-Zα-ωΑ-Ω0-9]*   
 
 %{
 int lines = 0;
@@ -126,19 +149,22 @@ while              { return (int)Tokens.While; }
 /* 3.5 Token -> Character Literals */
 {CharacterLiteral}				{ yylval.name = yytext; return (int)Tokens.CharacterLiteral; }
 
-/* 3.5 Token -> Identifier  */
-{Ident}							{ yylval.name = yytext; return (int)Tokens.Identifier; }
+/* 3.8 Token -> Identifier  */
+  {Identifier}                  { yylval.name = yytext; return (int)Tokens.Identifier; }
+//^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+// Warning: Code between rules, ignored
+// ------------------------------------
 
 //{Number}						{ yylval.num = int.Parse(yytext); return (int)Tokens.Number; }
 
 
-/* 3.5 InputElement -> Whitespace */
+/* 3.6 InputElement -> Whitespace */
 [\n]							{ lines++;    }
 [ \t\r]							/* ignore other whitespace */
 
-/* 3.5 InputElement -> Comments */
-\/\*(.|\n)*\*\/					/* eliminates multi line comments*/
-\/\/.*							/* eliminates single line comments*/
+/* 3.7 InputElement -> Comments */
+"//".*										/* skip single line comment */
+[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/].		/* skip multiline comment */
 
 /*3.10.2. Floating-Point Literals*/
 
