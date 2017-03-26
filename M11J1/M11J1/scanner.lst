@@ -4,7 +4,7 @@
 // ==========================================================================
 //  Version:  1.2.2
 //  Machine:  JWHSJIA-PC
-//  DateTime: 2017-03-26 오후 11:24:59
+//  DateTime: 2017-03-26 오후 11:43:41
 //  UserName: JWHSJIA
 // ==========================================================================
 
@@ -168,11 +168,9 @@ while              { return (int)Tokens.While; }
 
 /*3.10.2. Floating-Point Literals*/
 
-([-+]|(0[xX]))?[0-9a-fA-F]*\.?[0-9a-fA-F]+([eEpP]|[-+]?[0-9a-fA-F]+)?.              { yylval.name = yytext; return (int)Tokens.FloatingPointLiterals; }    
-//-------------------------------------------------^
-// Warning: Special case: "-" included as set class member
-// Warning: Special case: "-" included as set class member
-// -------------------------------------------------------
+{DecimalFloatingPointLiteral}				{ yylval.name = yytext; return (int)Tokens.DecimalFloatingPointLiteral; }  
+           
+{HexadecimalFloatingPointLiteral}				 { yylval.name = yytext; return (int)Tokens.HexadecimalFloatingPointLiteral; }    
 
 
 /* 3.11 Separators */
