@@ -130,6 +130,9 @@ namespace M11J1
                             case Tokens.FloatingPointLiterals:
                                 Console.WriteLine("FloatingPointLiterals ({0})", scanner.yylval.name);
                                 break;
+                            case Tokens.Identifier:
+                                Console.WriteLine("Identifier ({0})", scanner.yylval.name);
+                                break;
                             case Tokens.EOF:
                                 Console.WriteLine("EOF");
                                 break;
