@@ -5,10 +5,10 @@
 //  See accompanying file GPLEXcopyright.rtf.
 //
 //  GPLEX Version:  1.2.2
-//  Machine:  JWHSJIA-PC
-//  DateTime: 2017-03-26 오후 11:43:41
-//  UserName: JWHSJIA
-//  GPLEX input file <scanner.lex - 2017-03-26 오후 11:43:35>
+//  Machine:  VDI-VL17-199
+//  DateTime: 27/03/2017 4:00:37 PM
+//  UserName: n9631861
+//  GPLEX input file <scanner.lex - 27/03/2017 4:00:35 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -1356,13 +1356,13 @@ return (int)Tokens.BitwiseInclusiveOr;
 return (int)Tokens.CONDITION_OR;
             break;
         case 53:
-return (int)Tokens.BITWISE_AND;
+return (int)Tokens.BitwiseAnd;
             break;
         case 54:
 return (int)Tokens.CONDITION_AND;
             break;
         case 55:
-return (int)Tokens.SUBTRACT_AND;
+return (int)Tokens.SubtractAnd;
             break;
         case 56:
 return (int)Tokens.SELECTION;
@@ -1402,13 +1402,13 @@ return (int)Tokens.NOT_EQUAL_TO;
 return (int)Tokens.GREATER_THAN_OR_EQUAL_TO;
             break;
         case 66:
-return (int)Tokens.SINGED_RIGHT_SHIFT;
+return (int)Tokens.SignedRightShift;
             break;
         case 67:
 return (int)Tokens.RightShiftAnd;
             break;
         case 68:
-return (int)Tokens.UNSIGNED_RIGHT_SHFIT;
+return (int)Tokens.UnsignedRightShift;
             break;
         case 69:
 return (int)Tokens.ShiftRightZeroFill;
@@ -1417,7 +1417,7 @@ return (int)Tokens.ShiftRightZeroFill;
 return (int)Tokens.LESS_THAN_OR_EUAL_TO;
             break;
         case 71:
-return (int)Tokens.SINGED_LEFT_SHIFT;
+return (int)Tokens.SignedLeftShift;
             break;
         case 72:
 return (int)Tokens.LeftShiftAnd;
@@ -1470,16 +1470,16 @@ yylval.name = yytext; return (int)Tokens.HexadecimalFloatingPointLiteral;
 return (int)Tokens.INCREMENT;
             break;
         case 88:
-return (int)Tokens.ADD_AND;
+return (int)Tokens.AddAnd;
             break;
         case 89:
-return (int)Tokens.MULTIPLY_AND;
+return (int)Tokens.MultiplyAnd;
             break;
         case 90:
 /* skip single line comment */
             break;
         case 91:
-return (int)Tokens.DIVIDE_AND;
+return (int)Tokens.DivideAnd;
             break;
         case 92:
 /* skip multiline comment */

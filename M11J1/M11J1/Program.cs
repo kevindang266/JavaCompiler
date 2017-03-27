@@ -25,14 +25,14 @@ namespace M11J1
         INCREMENT,                  //++
         DECREMENT,                  //--
 
-        SINGED_LEFT_SHIFT,         //<<
-        SINGED_RIGHT_SHIFT,          //>>
-        UNSIGNED_RIGHT_SHFIT,          // >>>
-        ADD_AND,                 //+=
-        SUBTRACT_AND,             //-=
-        MULTIPLY_AND,            //*=
-        DIVIDE_AND,                  // /=
-        BITWISE_AND,            // &=
+        SignedLeftShift,         //<<
+        SignedRightShift,          //>>
+        UnsignedRightShift,          // >>>
+        AddAnd,                 //+=
+        SubtractAnd,             //-=
+        MultiplyAnd,            //*=
+        DivideAnd,                  // /=
+        BitwiseAnd,            // &=
         BitwiseInclusiveOr,            // |= 
         BitwiseExclusiveOr,            // ^=
         ModulusAnd,                  // %=
@@ -180,30 +180,30 @@ namespace M11J1
                                 Console.WriteLine("--");
                                 break;
 
-                            case Tokens.SINGED_LEFT_SHIFT:
+                            case Tokens.SignedLeftShift:
                                 Console.WriteLine("<<");
                                 break;
-                            case Tokens.SINGED_RIGHT_SHIFT:
+                            case Tokens.SignedRightShift:
                                 Console.WriteLine(">>");
                                 break;
-                            case Tokens.UNSIGNED_RIGHT_SHFIT:
+                            case Tokens.UnsignedRightShift:
                                 Console.WriteLine(">>>");
                                 break;
 
-                            case Tokens.ADD_AND:
+                            case Tokens.AddAnd:
                                 Console.WriteLine("+=");
                                 break;
-                            case Tokens.SUBTRACT_AND:
+                            case Tokens.SubtractAnd:
                                 Console.WriteLine("-=");
                                 break;
-                            case Tokens.MULTIPLY_AND:
+                            case Tokens.MultiplyAnd:
                                 Console.WriteLine("*=");
                                 break;
 
-                            case Tokens.DIVIDE_AND:
+                            case Tokens.DivideAnd:
                                 Console.WriteLine("/=");
                                 break;
-                            case Tokens.BITWISE_AND:
+                            case Tokens.BitwiseAnd:
                                 Console.WriteLine("&/");
                                 break;
                             case Tokens.BitwiseInclusiveOr:

@@ -3,9 +3,9 @@
 //  GPLEX error listing for lex source file <scanner.lex>
 // ==========================================================================
 //  Version:  1.2.2
-//  Machine:  JWHSJIA-PC
-//  DateTime: 2017-03-26 오후 11:43:41
-//  UserName: JWHSJIA
+//  Machine:  VDI-VL17-199
+//  DateTime: 27/03/2017 4:00:37 PM
+//  UserName: n9631861
 // ==========================================================================
 
 
@@ -222,15 +222,15 @@ while              { return (int)Tokens.While; }
 "|" 							{return '|';}    //BITWISE_OR
 "^" 							{return '^';}    //BITWISE_XOR
 "%" 							{return '%';}    //MODULUS
-"<<" 							{return (int)Tokens.SINGED_LEFT_SHIFT;}
-">>" 							{return (int)Tokens.SINGED_RIGHT_SHIFT;}
-">>>" 							{return (int)Tokens.UNSIGNED_RIGHT_SHFIT;}
+"<<" 							{return (int)Tokens.SignedLeftShift;}
+">>" 							{return (int)Tokens.SignedRightShift;}
+">>>" 							{return (int)Tokens.UnsignedRightShift;}
 
-"+=" 							{return (int)Tokens.ADD_AND;}
-"-=" 							{return (int)Tokens.SUBTRACT_AND;}
-"*=" 							{return (int)Tokens.MULTIPLY_AND;}
-"/=" 							{return (int)Tokens.DIVIDE_AND;}
-"&=" 							{return (int)Tokens.BITWISE_AND;}
+"+=" 							{return (int)Tokens.AddAnd;}
+"-=" 							{return (int)Tokens.SubtractAnd;}
+"*=" 							{return (int)Tokens.MultiplyAnd;}
+"/=" 							{return (int)Tokens.DivideAnd;}
+"&=" 							{return (int)Tokens.BitwiseAnd;}
 
 
 /*BAEK, Hee Sook(Donna)(2/2) D Group * /
