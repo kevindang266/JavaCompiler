@@ -15,15 +15,15 @@ namespace M11J1
 
         VariableArguments = 300, // variable arguments : ...
         DoubleColon = 301, //double colon ::	
-        SELECTION,         //->
-        EUQL_TO,                //==
-        GREATER_THAN_OR_EQUAL_TO,       //>=
-        LESS_THAN_OR_EUAL_TO,        //<=
-        NOT_EQUAL_TO,       //!=
-        CONDITION_AND,         //&&
-        CONDITION_OR,             //||
-        INCREMENT,                  //++
-        DECREMENT,                  //--
+        Selection,         //->
+        Equal,                //==
+        GreaterOrEqual,       //>=
+        LessOrEqual,        //<=
+        NotEqual,       //!=
+        AndCondition,         //&&
+        OrCondition,             //||
+        Increment,                  //++
+        Decrement,                  //--
 
         SignedLeftShift,         //<<
         SignedRightShift,          //>>
@@ -96,7 +96,9 @@ namespace M11J1
         Void,
         Volatile,
         While,
-        StringLiteral
+        StringLiteral,
+        BooleanLiteral,
+        NullLiteral
     };
 
     public abstract class ScanBase
@@ -154,33 +156,33 @@ namespace M11J1
                                 Console.WriteLine("::");
                                 break;
 
-                            case Tokens.SELECTION:
+                            case Tokens.Selection:
                                 Console.WriteLine("->");
                                 break;
-                            case Tokens.EUQL_TO:
+                            case Tokens.Equal:
                                 Console.WriteLine("==");
                                 break;
-                            case Tokens.GREATER_THAN_OR_EQUAL_TO:
+                            case Tokens.GreaterOrEqual:
                                 Console.WriteLine(">=");
                                 break;
 
-                            case Tokens.LESS_THAN_OR_EUAL_TO:
+                            case Tokens.LessOrEqual:
                                 Console.WriteLine("<=");
                                 break;
-                            case Tokens.NOT_EQUAL_TO:
+                            case Tokens.NotEqual:
                                 Console.WriteLine("!=");
                                 break;
-                            case Tokens.CONDITION_AND:
+                            case Tokens.AndCondition:
                                 Console.WriteLine("&&");
                                 break;
 
-                            case Tokens.CONDITION_OR:
+                            case Tokens.OrCondition:
                                 Console.WriteLine("||");
                                 break;
-                            case Tokens.INCREMENT:
+                            case Tokens.Increment:
                                 Console.WriteLine("++");
                                 break;
-                            case Tokens.DECREMENT:
+                            case Tokens.Decrement:
                                 Console.WriteLine("--");
                                 break;
 
@@ -379,9 +381,15 @@ namespace M11J1
                             case Tokens.While:
                                 Console.WriteLine("While");
                                 break;
+                            case Tokens.BooleanLiteral:
+                                Console.WriteLine("Boolean");
+                                break;
+                            case Tokens.NullLiteral:
+                                Console.WriteLine("Null");
+                                break;
 
                             default:
-                                Console.WriteLine("'{0}'", (char)token);
+                                Console.WriteLine("unexpected character");
                                 break;
                         }
                     }

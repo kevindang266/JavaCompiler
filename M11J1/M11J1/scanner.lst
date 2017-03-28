@@ -4,7 +4,7 @@
 // ==========================================================================
 //  Version:  1.2.2
 //  Machine:  KIENDANG-PC
-//  DateTime: 3/28/2017 3:13:49 PM
+//  DateTime: 3/28/2017 3:56:46 PM
 //  UserName: KienDang
 // ==========================================================================
 
@@ -19,6 +19,7 @@ IntegerTypeSuffix						1|L
 NonZeroDigit							[1-9]
 Underscores								\_+
 
+
 /* 3.3. Unicode Escapes */
 UnicodeEscape							\\u{HexDigit}{4}
 InputCharacter							[^\r\n]
@@ -26,10 +27,8 @@ InputCharacter							[^\r\n]
 /* 3.7. Comments */
 CommentStart							(\/\*)
 CommentEnd								(\*\/)
-TraditionalComment						{CommentStart}.* *{CommentEnd}
-//---------------------------------------^^^^^^^^^^^^^
-// Error: Expected end-of-line here
-// --------------------------------
+NotStarNotSlash							[^\*\/]
+TraditionalComment						{CommentStart}{NotStarNotSlash}*{CommentEnd}
 EndOfLineComment						\/\/{InputCharacter}*
 Comment									{TraditionalComment}|{EndOfLineComment}
 
@@ -92,8 +91,9 @@ IntergerLiteral							{DecimalIntegerLiteral}|{HexIntegerLiteral}|{OctalIntegerL
 FloatingPointLiteral					{DecimalFloatingPointLiteral}|{HexadecimalFloatingPointLiteral}
 
 /* 3.8 Identifier */
-/* hiral*/
-Identifier								[_/$a-zA-Zα-ωΑ-Ω][_/$a-zA-Zα-ωΑ-Ω0-9]*   
+SpecialChars							[^\!\"\#\$\%\&\'\(\)\*\+\,\-\.\/\:\;\<\=\>\?\@\[\\\]\^\`\{\|\}\~0-9]
+IdentifierChars							{SpecialChars}
+Identifier								{IdentifierChars}{Digit}*.*   
 
 %{
 int lines = 0;
@@ -102,8 +102,6 @@ int lines = 0;
 %%
 
 /* 3.9 Token -> Keywords */
-/*  Tarandeep keywords */
-
 abstract								{ return (int)Tokens.Abstract; }
 assert									{ return (int)Tokens.Assert; }
 boolean									{ return (int)Tokens.Boolean; }
@@ -153,26 +151,36 @@ transient								{ return (int)Tokens.Transient; }
 try										{ return (int)Tokens.Try; }
 void									{ return (int)Tokens.Void; }
 volatile								{ return (int)Tokens.Volatile; }
-while									{ return (int)Tokens.While; }      
+while									{ return (int)Tokens.While; }     
+true|false								{ return (int)Tokens.BooleanLiteral; }     
+null									{ return (int)Tokens.NullLiteral; }
 
 /* 3.10 Token -> IntegerLiteral */
-//{IntergerLiteral}						{ yylval.num = int.Parse(yytext); return (int)Tokens.IntergerLiteral; } BAD CODE
 {IntergerLiteral}						{ yylval.name = yytext; return (int)Tokens.IntergerLiteral; }
 		
 /* 3.5 Token -> Character Literals */
 {CharacterLiteral}						{ yylval.name = yytext; return (int)Tokens.CharacterLiteral; }
 
+/* 3.6 Token -> String Literals */
 {StringLiteral}							{ yylval.name = yytext; return (int)Tokens.StringLiteral; }
 
 /* 3.8 Token -> Identifier  */
-//{Identifier}							{ yylval.name = yytext; return (int)Tokens.Identifier; }
-
-//{Number}								{ yylval.num = int.Parse(yytext); return (int)Tokens.Number; }
+{Identifier}							{ yylval.name = yytext; return (int)Tokens.Identifier; }
+//^^^^^^^^^^
+// Warning: This pattern always overrides "[ \t\r]" 
+// Warning: This pattern always overrides "[\n]" 
+// -------------------------------------------------
 
 
 /* 3.6 InputElement -> Whitespace */
 [\n]									{ lines++;    }
+//^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 [ \t\r]									/* ignore other whitespace */
+//^^^^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 
 /* 3.7 InputElement -> Comments */
 {Comment}								/* skip comments */
@@ -180,10 +188,9 @@ while									{ return (int)Tokens.While; }
 //[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/].		/* skip multiline comment */
 
 /*3.10.2. Floating-Point Literals*/
-{FloatingPointLiteral}					{ yylval.name = yytext; return (int)Tokens.FloatingPointLiterals; } // kevin   
+{FloatingPointLiteral}					{ yylval.name = yytext; return (int)Tokens.FloatingPointLiterals; }  
 
 /* 3.11 Separators */
-
 "(" 							{return '(';}
 ")" 							{return ')';}
 "{" 							{return '{';}
@@ -197,9 +204,7 @@ while									{ return (int)Tokens.While; }
 "@" 							{return '@';}
 "::" 							{return (int)Tokens.DoubleColon;}
 
-/* Mohammad Yousuf D Group*/
 /* Operator */
-
 "=" 							{return '=';}
 "<"								{return '<';}
 ">"								{return '>';}
@@ -207,16 +212,15 @@ while									{ return (int)Tokens.While; }
 "~"								{return '~';}
 ":"								{return ':';}
 "?"								{return '?';}
-"->"							{return (int)Tokens.SELECTION;}
-
-"=="							{return (int)Tokens.EUQL_TO;}
-">="							{return (int)Tokens.GREATER_THAN_OR_EQUAL_TO;}
-"<="							{return (int)Tokens.LESS_THAN_OR_EUAL_TO;}
-"!="							{return (int)Tokens.NOT_EQUAL_TO;}
-"&&"							{return (int)Tokens.CONDITION_AND;}
-"||"							{return (int)Tokens.CONDITION_OR;}
-"++"							{return (int)Tokens.INCREMENT;}
-"--" 							{return (int)Tokens.DECREMENT;}
+"->"							{return (int)Tokens.Selection;}
+"=="							{return (int)Tokens.Equal;}
+">="							{return (int)Tokens.GreaterOrEqual;}
+"<="							{return (int)Tokens.LessOrEqual;}
+"!="							{return (int)Tokens.NotEqual;}
+"&&"							{return (int)Tokens.AndCondition;}
+"||"							{return (int)Tokens.OrCondition;}
+"++"							{return (int)Tokens.Increment;}
+"--" 							{return (int)Tokens.Decrement;}
 "+" 							{return '+';}
 "-" 							{return '-';}
 "*" 							{return '*';}
