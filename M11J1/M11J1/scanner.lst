@@ -4,12 +4,15 @@
 // ==========================================================================
 //  Version:  1.2.2
 //  Machine:  KIENDANG-PC
-//  DateTime: 3/28/2017 3:56:46 PM
+//  DateTime: 3/28/2017 6:03:17 PM
 //  UserName: KienDang
 // ==========================================================================
 
 
 %namespace M11J1
+// Error: Too many errors
+// Error: Too many errors, abandoning
+// ----------------------------------
 
 Ident									[a-zA-Z_][a-zA-Z0-9_]*
 OctalDigit								[0-7]
@@ -18,7 +21,6 @@ BinaryDigit								0|1
 IntegerTypeSuffix						1|L
 NonZeroDigit							[1-9]
 Underscores								\_+
-
 
 /* 3.3. Unicode Escapes */
 UnicodeEscape							\\u{HexDigit}{4}
@@ -87,7 +89,7 @@ CharacterLiteral						\'({EscapeSequence}|{OctalEscape}|{UnicodeEscape}|{InputCh
 /* 3.10.5. String Literals */
 StringLiteral							\"({EscapeSequence}|{OctalEscape}|{UnicodeEscape}|{InputCharacter})*\"
 
-IntergerLiteral							{DecimalIntegerLiteral}|{HexIntegerLiteral}|{OctalIntegerLiteral}|{BinaryIntegerLiteral}
+IntegerLiteral							{DecimalIntegerLiteral}|{HexIntegerLiteral}|{OctalIntegerLiteral}|{BinaryIntegerLiteral}
 FloatingPointLiteral					{DecimalFloatingPointLiteral}|{HexadecimalFloatingPointLiteral}
 
 /* 3.8 Identifier */
@@ -96,37 +98,154 @@ IdentifierChars							{SpecialChars}
 Identifier								{IdentifierChars}{Digit}*.*   
 
 %{
-int lines = 0;
+int lines = 1;
 %}
 
 %%
 
+/* 3.5 Token -> Character Literals */
+{CharacterLiteral}						{ yylval.name = yytext; return (int)Tokens.CharacterLiteral; }
+
+/* 3.6 Token -> String Literals */
+{StringLiteral}							{ yylval.name = yytext; return (int)Tokens.StringLiteral; }
+
+/* 3.6 InputElement -> Whitespace */
+[\n]									{ lines++;    }
+[ \t\r]									/* ignore other whitespace */
+
+/* 3.7 InputElement -> Comments */
+{Comment}								/* skip comments */
+
+/* 3.8 Token -> Identifier  */
+{Identifier}							{ yylval.name = yytext; return (int)Tokens.Identifier; }
+//^^^^^^^^^^
+// Warning: This pattern always overrides "extends" 
+// Warning: This pattern always overrides "enum" 
+// Warning: This pattern always overrides "finally" 
+// Warning: This pattern always overrides "final" 
+// Warning: This pattern always overrides "else" 
+// Warning: This pattern always overrides "default" 
+// Warning: This pattern always overrides "continue" 
+// Warning: This pattern always overrides "double" 
+// Warning: This pattern always overrides "do" 
+// Warning: This pattern always overrides "instanceof" 
+// Warning: This pattern always overrides "import" 
+// Warning: This pattern always overrides "abstract" 
+// Error: Too many errors, abandoning
+// Warning: This pattern always overrides "implements" 
+// Warning: This pattern always overrides "for" 
+// Warning: This pattern always overrides "float" 
+// Warning: This pattern always overrides "if" 
+// Warning: This pattern always overrides "goto" 
+// Warning: This pattern always overrides "catch" 
+// Warning: This pattern always overrides "class" 
+// Warning: This pattern always overrides "byte" 
+// Warning: This pattern always overrides "case" 
+// Warning: This pattern always overrides "char" 
+// Warning: This pattern always overrides "break" 
+// Warning: This pattern always overrides "assert" 
+// Warning: This pattern always overrides "const" 
+// Warning: This pattern always overrides "boolean" 
+// ----------------------------------------------------
+
 /* 3.9 Token -> Keywords */
 abstract								{ return (int)Tokens.Abstract; }
+//^^^^^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 assert									{ return (int)Tokens.Assert; }
+//^^^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 boolean									{ return (int)Tokens.Boolean; }
+//^^^^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 break								    { return (int)Tokens.Break; }
+//^^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 byte								    { return (int)Tokens.Byte; }
+//^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 case								    { return (int)Tokens.Case; }
+//^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 catch								    { return (int)Tokens.Catch; }
+//^^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 char									{ return (int)Tokens.Char; }
+//^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 class									{ return (int)Tokens.Class; }
+//^^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 const									{ return (int)Tokens.Const; }
+//^^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 continue								{ return (int)Tokens.Continue; }
+//^^^^^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 default									{ return (int)Tokens.Default; }
+//^^^^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 do										{ return (int)Tokens.Do; }
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 double									{ return (int)Tokens.Double; }
+//^^^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 else									{ return (int)Tokens.Else; }
+//^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 enum									{ return (int)Tokens.Enum; }
+//^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 extends									{ return (int)Tokens.Extends; }
+//^^^^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 final									{ return (int)Tokens.Final; }
+//^^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 finally									{ return (int)Tokens.Finally; }
+//^^^^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 float									{ return (int)Tokens.Float; }
+//^^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 for										{ return (int)Tokens.For; }
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 goto									{ return (int)Tokens.Goto; }
+//^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 if										{ return (int)Tokens.If; }
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 implements								{ return (int)Tokens.Implements; }
+//^^^^^^^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 import									{ return (int)Tokens.Import; }
+//^^^^
+// Warning: This pattern always overridden by "{Identifier}" 
+// ----------------------------------------------------------
 instanceof								{ return (int)Tokens.Instanceof; }
 int										{ return (int)Tokens.Int; }
 interface								{ return (int)Tokens.Interface; }
@@ -156,39 +275,10 @@ true|false								{ return (int)Tokens.BooleanLiteral; }
 null									{ return (int)Tokens.NullLiteral; }
 
 /* 3.10 Token -> IntegerLiteral */
-{IntergerLiteral}						{ yylval.name = yytext; return (int)Tokens.IntergerLiteral; }
-		
-/* 3.5 Token -> Character Literals */
-{CharacterLiteral}						{ yylval.name = yytext; return (int)Tokens.CharacterLiteral; }
-
-/* 3.6 Token -> String Literals */
-{StringLiteral}							{ yylval.name = yytext; return (int)Tokens.StringLiteral; }
-
-/* 3.8 Token -> Identifier  */
-{Identifier}							{ yylval.name = yytext; return (int)Tokens.Identifier; }
-//^^^^^^^^^^
-// Warning: This pattern always overrides "[ \t\r]" 
-// Warning: This pattern always overrides "[\n]" 
-// -------------------------------------------------
-
-
-/* 3.6 InputElement -> Whitespace */
-[\n]									{ lines++;    }
-//^^
-// Warning: This pattern always overridden by "{Identifier}" 
-// ----------------------------------------------------------
-[ \t\r]									/* ignore other whitespace */
-//^^^^^
-// Warning: This pattern always overridden by "{Identifier}" 
-// ----------------------------------------------------------
-
-/* 3.7 InputElement -> Comments */
-{Comment}								/* skip comments */
-//"//".*										/* skip single line comment */
-//[/][*][^*]*[*]+([^/*][^*]*[*]+)*[/].		/* skip multiline comment */
+{IntegerLiteral}						{ yylval.name = yytext; return (int)Tokens.IntegerLiteral; }
 
 /*3.10.2. Floating-Point Literals*/
-{FloatingPointLiteral}					{ yylval.name = yytext; return (int)Tokens.FloatingPointLiterals; }  
+{FloatingPointLiteral}					{ yylval.name = yytext; return (int)Tokens.FloatingPointLiteral; } 
 
 /* 3.11 Separators */
 "(" 							{return '(';}
@@ -244,8 +334,14 @@ null									{ return (int)Tokens.NullLiteral; }
 ">>="							{return (int)Tokens.RightShiftAnd;}
 ">>>="							{return (int)Tokens.ShiftRightZeroFill;}
 
-.								{
-									throw new Exception(String.Format("unexpected character '{0}'", yytext));
+.	                            { 
+									 throw new Exception(String.Format("unexpected character '{0}'", yytext)); 
 								}
-%%// ==========================================================================
+%%
+
+public override void yyerror( string format, params object[] args )
+{
+    System.Console.Error.WriteLine("Error: line " + lines + ", " + format);
+}
+// ==========================================================================
 

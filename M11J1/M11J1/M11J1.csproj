@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="QUT.ShiftReduceParser">
+      <HintPath>..\..\Practical\gppg-distro-1_5_2\binaries\QUT.ShiftReduceParser.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -43,12 +46,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AST\Assignment.cs" />
+    <Compile Include="AST\ClassDeclaration.cs" />
+    <Compile Include="AST\ClassModifier.cs" />
+    <Compile Include="AST\CompilationUnit.cs" />
+    <Compile Include="AST\Expression.cs" />
+    <Compile Include="AST\Identifier.cs" />
+    <Compile Include="AST\LocalVariableDeclaration.cs" />
+    <Compile Include="AST\MethodDeclaration.cs" />
+    <Compile Include="AST\Node.cs" />
+    <Compile Include="parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="scanner.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="parser.y" />
     <None Include="scanner.lex" />
     <None Include="Tests\keyword.j" />
     <None Include="Tests\m11j1.java.expected" />
@@ -56,10 +70,12 @@
   <ItemGroup>
     <Content Include="Tests\m11j1.java" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="BeforeBuild">
     <Message Text="Generating Scanner" />
     <Exec Command="gplex.exe /unicode scanner.lex" />
+    <Exec Command="gppg.exe /gplex parser.y &gt; parser.cs" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

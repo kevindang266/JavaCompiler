@@ -1,6 +1,0 @@
-﻿BOOLEAN
-IDENTIFIER (isValid)
-'='
-BOOLEAN VALUE (true)
-';'
-EOF
