@@ -96,6 +96,7 @@ namespace M11J1
         Void,
         Volatile,
         While,
+        StringLiteral
     };
 
     public abstract class ScanBase
@@ -124,6 +125,9 @@ namespace M11J1
                         {
 			                case Tokens.CharacterLiteral:
                         	    Console.WriteLine("Char ({0})", scanner.yylval.name);
+                                break;
+                            case Tokens.StringLiteral:
+                                Console.WriteLine("String ({0})", scanner.yylval.name);
                                 break;
                             case Tokens.IntergerLiteral:
                                 Console.WriteLine("Interger ({0})", scanner.yylval.name);
