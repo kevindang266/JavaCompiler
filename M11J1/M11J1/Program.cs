@@ -17,8 +17,10 @@ namespace M11J1
             //Console.WriteLine("finished.");
             //Console.ReadLine();
 
-            var pro = new CompilationUnit("test", new ClassDeclaration());
+             var pro = new CompilationUnit("test", new ClassDeclaration());
+            var mod = new ClassModifier("public");
             pro.DumpValue(0);
+            mod.DumpValue(0);
         }
     }
 }
