@@ -21,8 +21,12 @@ namespace M11J1
 
             /* Tarandeep Class Modifier*/
             var mod = new ClassModifier("public");   // testing class modifiers
+
+            var method = new MethodDeclaration("public", new MethodHeader(), new MethodBody());
+
             pro.DumpValue(0);
             mod.DumpValue(0);
+            method.DumpValue(0);
         }
     }
 }

@@ -47,14 +47,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AST\Assignment.cs" />
+    <Compile Include="AST\Block.cs" />
     <Compile Include="AST\ClassDeclaration.cs" />
     <Compile Include="AST\ClassModifier.cs" />
     <Compile Include="AST\CompilationUnit.cs" />
+    <Compile Include="AST\Dims.cs" />
+    <Compile Include="AST\DimsOpt.cs" />
     <Compile Include="AST\Expression.cs" />
+    <Compile Include="AST\FormalParameterList.cs" />
     <Compile Include="AST\Identifier.cs" />
     <Compile Include="AST\LocalVariableDeclaration.cs" />
+    <Compile Include="AST\MethodBody.cs" />
     <Compile Include="AST\MethodDeclaration.cs" />
+    <Compile Include="AST\MethodDeclarator.cs" />
+    <Compile Include="AST\MethodHeader.cs" />
+    <Compile Include="AST\MethodModifier.cs" />
     <Compile Include="AST\Node.cs" />
+    <Compile Include="AST\ReceiverParameter.cs" />
+    <Compile Include="AST\Result.cs" />
+    <Compile Include="AST\UnannArrayType.cs" />
+    <Compile Include="AST\UnannReferenceType.cs" />
+    <Compile Include="AST\UnannType.cs" />
+    <Compile Include="AST\UnannTypeVariable.cs" />
     <Compile Include="parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
