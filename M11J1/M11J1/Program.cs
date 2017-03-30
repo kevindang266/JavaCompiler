@@ -18,7 +18,9 @@ namespace M11J1
             //Console.ReadLine();
 
              var pro = new CompilationUnit("test", new ClassDeclaration());
-            var mod = new ClassModifier("public");
+
+            /* Tarandeep Class Modifier*/
+            var mod = new ClassModifier("public");   // testing class modifiers
             pro.DumpValue(0);
             mod.DumpValue(0);
         }

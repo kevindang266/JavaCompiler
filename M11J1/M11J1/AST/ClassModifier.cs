@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace M11J1.AST
 {
-    class ClassModifier : Node
+    public class ClassModifier : Node
     {
-        private string Class_ModifierName;
-        public ClassModifier(string ClassModifierName)
+        private string _classModifierName;
+        public ClassModifier(string classModifierName)
         {
-            switch (ClassModifierName)
+            switch (classModifierName)
             {
                 case "public":
-                    this.Class_ModifierName = ClassModifierName;
+                    this._classModifierName = classModifierName;
                     break;
                 case "protected":
-                    this.Class_ModifierName = ClassModifierName;
+                    this._classModifierName = classModifierName;
                     break;
                 case "private":
-                    this.Class_ModifierName = ClassModifierName;
+                    this._classModifierName = classModifierName;
                     break;
             }
         }
