@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace M11J1.AST
 {
-    public class Expression : Node
+    public abstract class Expression : Node
     {
     }
 
