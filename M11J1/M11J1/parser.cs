@@ -3,10 +3,10 @@
 // (see accompanying GPPGcopyright.rtf)
 
 // GPPG version 1.5.2
-// Machine:  JWHSJIA-PC
-// DateTime: 2017-03-30 ?? 10:49:09
-// UserName: JWHSJIA
-// Input file <parser.y - 2017-03-30 ?? 10:44:13>
+// Machine:  PC-PC
+// DateTime: 4/3/2017 5:51:44 PM
+// UserName: pc
+// Input file <parser.y - 4/2/2017 9:53:34 AM>
 
 // options: lines gplex
 
