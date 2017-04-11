@@ -104,8 +104,7 @@ UnannClassOrInterfaceType
     | UnannInterfaceType 
 	;
 UnannClassType
-    : empty
-    //| Identifier [TypeArguments] 
+    :// Identifier [TypeArguments] 
   // | UnannClassOrInterfaceType . {Annotation} Identifier [TypeArguments] 
    ;
 
@@ -118,8 +117,7 @@ UnannTypeVariable
    ;
   
 UnannArrayType
-    : empty
-    // |UnannPrimitiveType Dims 
+    : //UnannPrimitiveType Dims 
    //| UnannClassOrInterfaceType Dims 
    //| UnannTypeVariable Dims  
    ;
