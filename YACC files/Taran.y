@@ -22,42 +22,10 @@
 %left '+'
 %left '('
 %right ')'
-
+%nonassoc ':'
 
 %%
-// Names (Tarandeep Kaur)
-
-TypeName 
-         : Identifier 
-         | PackageOrTypeName '.' Identifier
-         ;
-
-PackageOrTypeName 
-         : Identifier 
-         |PackageOrTypeName '.' Identifier 
-         ;
-
-ExpressionName 
-         : Identifier 
-         |AmbiguousName '.' Identifier 
-         ;
-
-MethodName 
-         : Identifier 
-         ;
-
-PackageName 
-         : Identifier 
-         |PackageName '.' Identifier
-	 ;
-
-AmbiguousName 
-         : Identifier 
-         |AmbiguousName '.' Identifier
-         ; 
-
-
-// Blocks and statement (Taran)
+/* Tarandeep Blocks and Statements and Names */
 Block
 	: '{' BlockStatements_opt '}'
 	;
@@ -74,7 +42,7 @@ BlockStatements
 
 BlockStatement
 	: LocalVariableDeclarationStatement
-	| ClassDeclaration 
+	//| ClassDeclaration 
 	| Statement
 	;
 
@@ -93,8 +61,8 @@ VariableModifiers
 	;
 
 VariableModifier
-	//| Anotation
-	: Final
+	: //Final
+	//| Annotation
 	;
 
 UnannType
@@ -121,32 +89,37 @@ IntegralType
 	;
 
 FloatingPointType
-        : Float
+    : Float
 	| Double
+	;
 
 UnannReferenceType
        : UnannClassOrInterfaceType 
        | UnannTypeVariable 
        | UnannArrayType 
        ;
+
 UnannClassOrInterfaceType
     : UnannClassType 
     | UnannInterfaceType 
 	;
 UnannClassType
-   : //Identifier [TypeArguments] 
+    : empty
+    //| Identifier [TypeArguments] 
   // | UnannClassOrInterfaceType . {Annotation} Identifier [TypeArguments] 
-  /* to be done */
-  ;
+   ;
+
 UnannInterfaceType
    : UnannClassType 
    ;
+
 UnannTypeVariable
    : Identifier
    ;
   
 UnannArrayType
-   //: UnannPrimitiveType Dims 
+    : empty
+    // |UnannPrimitiveType Dims 
    //| UnannClassOrInterfaceType Dims 
    //| UnannTypeVariable Dims  
    ;
@@ -165,12 +138,18 @@ VariableDeclarator
 	: VariableDeclaratorId
 	| VariableDeclaratorId '=' VariableInitializer
 	;
+
 VariableDeclaratorId
     : Identifier Dims_opt 
     | VariableInitializer
 	;
+
+Dims_opt
+ :
+ ;
+
 VariableInitializer
-    // : Expression 
+     : Expression 
     // |ArrayInitializer 
        ;
 
@@ -191,8 +170,8 @@ StatementNoShortIf
      | ForStatementNoShortIf
      ;
 
-StatementWithoutTrailingSubstatement:
-     : Block 
+StatementWithoutTrailingSubstatement
+    : Block 
     | EmptyStatement 
     | ExpressionStatement 
     | AssertStatement 
@@ -233,20 +212,116 @@ StatementExpression
     ;
 
 IfThenStatement
-     : if '(' Expression ')' Statement 
+     : If '(' Expression ')' Statement 
 	 ;
 
-IfThenElseStatement:
-     : if '(' Expression ')' StatementNoShortIf else Statement 
+IfThenElseStatement
+     : If '(' Expression ')' StatementNoShortIf Else Statement 
 	 ;
 
-IfThenElseStatementNoShortIf:
-     : if '(' Expression ')' StatementNoShortIf else StatementNoShortIf 
+IfThenElseStatementNoShortIf
+     : If '(' Expression ')' StatementNoShortIf Else StatementNoShortIf 
 	 ;
 
+AssertStatement  // To be implemented
+     :
+	 ;
+SwitchStatement
+      :
+	  ; 
+DoStatement 
+      :
+	   ;
+BreakStatement
+      :
+	  ; 
+ContinueStatement
+     : 
+	 ; 
+ReturnStatement
+     :
+	  ; 
+SynchronizedStatement 
+     : 
+	 ;
+ThrowStatement
+     : 
+	 ; 
+TryStatement
+     :
+	  ; 
+WhileStatementNoShortIf 
+      : 
+	  ;
+ForStatementNoShortIf 
+     : 
+	  ;
+WhileStatement
+     : 
+	  ; 
+ForStatement 
+      : 
+	  ;
+Assignment
+     : 
+	  ;
+PreIncrementExpression 
+    : 
+	 ;
+PreDecrementExpression
+     : 
+	 ;
+PostIncrementExpression
+    : 
+	 ;
+PostDecrementExpression 
+     :
+	  ;
+MethodInvocation 
+    : 
+	 ;
+ClassInstanceCreationExpression
+     :
+	  ;
+Expression      // To be implemented
+    :
+    ;
+	/* Names */
+TypeName 
+         : Identifier 
+         | PackageOrTypeName '.' Identifier
+         ;
+
+PackageOrTypeName 
+         : Identifier 
+         | PackageOrTypeName '.' Identifier 
+         ;
+
+ExpressionName 
+         : Identifier 
+         | AmbiguousName '.' Identifier 
+         ;
+
+MethodName 
+         : Identifier 
+         ;
+
+PackageName 
+         : Identifier 
+         | PackageName '.' Identifier
+	     ;
+
+AmbiguousName 
+         : Identifier 
+         | AmbiguousName '.' Identifier
+         ; 
+empty
+    : 
+	 ;	
 
 %%
 
 public Parser(Scanner scanner) : base(scanner)
 {
 }
+
