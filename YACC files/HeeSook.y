@@ -68,6 +68,8 @@ MethodBody
 	| ';'
 	;
 
+
+
 Block
 	: '{' BlockStatements_opt '}'
 	;
@@ -146,8 +148,7 @@ VariableInitializer
 	: /* more */
 	;
 
-// Start HS
-/**/
+/* Added HS [ */
 
 /*15 Expression*/
 ExpressionStatement : 
@@ -179,7 +180,7 @@ VariableModifier:  //To Be Implemented
 
 /*§8 (Classes) */	
 UnannType:   //To Be Implemented
-	; 
+	;
 
 UnannClassType:  //To Be Implemented
 	;
@@ -188,11 +189,10 @@ ClassType: //To Be Implemented
 	;
 
 VariableDeclaratorId :  //To Be Implemented
-	; 
+	;
 
 /*§14 (Blocks and Statements) */
-IdentifierState :  // // To Be Implemented  Identifier -> IdentifierState
-	;
+
 
 Statement
 	: StatementWithoutTrailingSubstatement 
@@ -231,11 +231,11 @@ EmptyStatement
 	;
 
 LabeledStatement
-	: IdentifierState ':' Statement
+	: Identifier ':' Statement
 	;
 
 LabeledStatementNoShortIf 
-	: IdentifierState ':' StatementNoShortIf   	
+	: Identifier ':' StatementNoShortIf   	
 	;  
 
 ExpressionStatement
@@ -282,16 +282,23 @@ SwitchStatement
 	;
 
 SwitchBlock
-	: '{' SwitchBlockStatementGroup '}'
-	| SwitchLabel
+	: '{' SwitchBlockStatementGroups  SwitchLabels '}'
+	;
+
+SwitchBlockStatementGroups
+	: empty
+	| SwitchBlockStatementGroup
+	| SwitchBlockStatementGroups SwitchBlockStatementGroup
 	;
 
 SwitchBlockStatementGroup
 	: SwitchLabels BlockStatements
 	;
 
-SwitchLabels
-	: SwitchLabel '{' SwitchLabel '}'
+SwitchLabels	
+	: empty
+	| SwitchLabel
+	| SwitchLabels SwitchLabel
 	;
 
 SwitchLabel
@@ -301,7 +308,7 @@ SwitchLabel
 	;
 
 EnumConstantName 
-	: IdentifierState  
+	: Identifier  
 	;
 
 WhileStatement
@@ -327,11 +334,31 @@ ForStatementNoShortIf
 	;
 
 BasicForStatement
-	: For '(' ForInit ';' Expression ';' ForUpdate ')' Statement
+	: For '(' ForInit_opt ';' Expression_opt ';' ForUpdate_opt ')' Statement
+	;
+
+ForInit_opt
+	: empty
+	| ForInit
+	;
+
+Expression_opt
+	: empty
+	| Expression
+	;
+
+ForUpdate_opt
+	: empty
+	| ForUpdate
 	;
 
 BasicForStatementNoShortIf
-	: For '(' ForInit ';' Expression ';' ForUpdate ')' StatementNoShortIf
+	: For '(' ForInit_opt ';' Expression_opt ';' ForUpdate ')' StatementNoShortIf
+	;
+
+ForInit_opt
+	: empty
+	| ForInit
 	;
 
 ForInit
@@ -339,32 +366,53 @@ ForInit
 	| LocalVariableDeclaration
 	;
 
+ForUpdate_opt
+	: empty
+	| ForUpdate
+	;
+
 ForUpdate
 	:StatementExpressionList
 	;
 
 StatementExpressionList
-	: StatementExpression '{' ',' StatementExpression '}'
+	: StatementExpression
+	| StatementExpression StatementExpressions  
 	;
 
+StatementExpressions
+	: empty
+	| ',' StatementExpression
+	| StatementExpressions ',' StatementExpression 
+	; 
+
 EnhancedForStatement
-	: For '(' VariableModifier UnannType VariableDeclaratorId ':' Expression ')' Statement 
+	: For '(' VariableModifiers UnannType VariableDeclaratorId ':' Expression ')' Statement 
 	;
 
 EnhancedForStatementNoShortIf
-	: For '(' VariableModifier UnannType VariableDeclaratorId ':' Expression ')' StatementNoShortIf
+	: For '(' VariableModifiers UnannType VariableDeclaratorId ':' Expression ')' StatementNoShortIf
 	;
+Identifier_opt
+	: empty
+	| Identifier
+    ;
 
 BreakStatement
-	: Break IdentifierState ';'
+	: Break Identifier_opt ';'
 	;
 
 ContinueStatement
-	: Continue IdentifierState ';'
+	: Continue Identifier_opt ';'
 	;
 
 ReturnStatement
-	: Return Expression ';'
+	: Return Expression_opt ';'
+	;
+
+Expression_opt
+	: empty
+	| Expression_opt
 	;
 
 ThrowStatement
@@ -377,24 +425,42 @@ SynchronizedStatement
 
 TryStatement
 	: Try Block Catches
-	| Try Block Catches Finally
+	| Try Block Catches_opt Finally
 	| TryWithResourcesStatement
 	;
 
+Catches_opt
+	: empty
+	| Catches 
+	;
+
 Catches 
-	: CatchClause CatchClause
+	: CatchClause CatchClauses
+	;
+	
+CatchClauses
+	: empty
+	| CatchClause
+	| CatchClauses CatchClause
 	;
 
 CatchClause
-	: Catch CatchFormalParameter Block
+	: Catch '(' CatchFormalParameter ')' Block
 	;
 
 CatchFormalParameter
-	: VariableModifier CatchType VariableDeclaratorId
+	: VariableModifiers CatchType VariableDeclaratorId
+	;
+	
+CatchType
+	: UnannClassType
+	| UnannClassType  ClassTypes
 	;
 
-CatchType 
-	: UnannClassType '|' ClassType
+ClassTypes  // Temporary 
+	: empty
+	| '|' ClassType
+	| ClassTypes '|' ClassType
 	;
 
 FinallyState 
@@ -402,20 +468,38 @@ FinallyState
 	;
 
 TryWithResourcesStatement
-	: Try ResourceSpecification Block Catches FinallyState
+	: Try ResourceSpecification Block Catches_opt FinallyState_opt
 	;
 
+FinallyState_opt
+	: empty
+	| FinallyState
+	; 
+
 ResourceSpecification
-	: '(' ResourceList ';' ')'
+	: '(' ResourceList Colon_opt ')'
+	;
+
+Colon_opt
+	: empty
+	| ';'
 	;
 
 ResourceList  
-	: Resource ';' Resource
+	: Resource Resources
+	;
+
+Resources
+	: empty
+	| ';' Resource
+	| Resource Resources
 	;
 
 Resource
-	: VariableModifier UnannType VariableDeclaratorId '=' Expression
+	: VariableModifiers UnannType VariableDeclaratorId '=' Expression
 	;
+	
+ /* ] HS */  
 
 Assignment
 	: LeftHandSide AssignmentOperator Expression
