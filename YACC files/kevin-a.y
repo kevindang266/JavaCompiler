@@ -1,15 +1,4 @@
-
-// ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 4/22/2017 2:27:15 PM>
-// ==========================================================================
-//  Version:  1.5.2
-//  Machine:  KIENDANG-PC
-//  DateTime: 4/22/2017 2:27:19 PM
-//  UserName: KienDang
-// ==========================================================================
-
-
-%namespace M11J1
+﻿%namespace M11J1
 
 %{
 	public static AST.ClassDeclaration Root;
@@ -46,9 +35,6 @@
 %start CompilationUnit
 
 %%
-// Warning: NonTerminal symbol "PackageName" is unreachable
-// Warning: NonTerminal symbol "Type" is unreachable
-// --------------------------------------------------------
 
 /* kevin 22 Apr §4 (Types, Values, and Variables) */
 
@@ -316,7 +302,7 @@ TypeDeclarations
 /* kevin 21 Apr §8 (Classes) */
 
 ClassDeclaration
-	: NormalClassDeclaration
+	: NormalClassDeclaration					
 	| EnumDeclaration
 	;
 
@@ -657,9 +643,9 @@ Throws_opt
 	;
 
 MethodModifiers
-	: empty
-	| MethodModifier
-	| MethodModifiers MethodModifier 
+	: MethodModifier
+	| MethodModifiers MethodModifier
+	| empty
 	;
 
 EqualVariableInitializer_opt
@@ -1621,5 +1607,4 @@ empty : ;
 
 public Parser(Scanner scanner) : base(scanner)
 {
-}// ==========================================================================
-
+}

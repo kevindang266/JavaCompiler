@@ -6,9 +6,9 @@
 //
 //  GPLEX Version:  1.2.2
 //  Machine:  KIENDANG-PC
-//  DateTime: 4/15/2017 11:46:53 PM
+//  DateTime: 4/22/2017 2:27:18 PM
 //  UserName: KienDang
-//  GPLEX input file <scanner.lex - 4/3/2017 9:28:18 AM>
+//  GPLEX input file <scanner.lex - 4/16/2017 12:11:54 AM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -2231,7 +2231,7 @@ return (int)Tokens.Int;
 return (int)Tokens.Interface;
             break;
         case 183:
-return (int)Tokens.Instanceof;
+return (int)Tokens.InstanceOf;
             break;
         case 188:
 return (int)Tokens.NullLiteral;

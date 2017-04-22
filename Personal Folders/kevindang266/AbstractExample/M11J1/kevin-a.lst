@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 4/22/2017 2:27:15 PM>
+//  GPPG error listing for yacc source file <kevin-a.y - 4/22/2017 2:01:16 PM>
 // ==========================================================================
 //  Version:  1.5.2
 //  Machine:  KIENDANG-PC
-//  DateTime: 4/22/2017 2:27:19 PM
+//  DateTime: 4/22/2017 2:41:28 PM
 //  UserName: KienDang
 // ==========================================================================
 
@@ -316,7 +316,7 @@ TypeDeclarations
 /* kevin 21 Apr §8 (Classes) */
 
 ClassDeclaration
-	: NormalClassDeclaration
+	: NormalClassDeclaration					
 	| EnumDeclaration
 	;
 
@@ -657,9 +657,9 @@ Throws_opt
 	;
 
 MethodModifiers
-	: empty
-	| MethodModifier
-	| MethodModifiers MethodModifier 
+	: MethodModifier
+	| MethodModifiers MethodModifier
+	| empty
 	;
 
 EqualVariableInitializer_opt

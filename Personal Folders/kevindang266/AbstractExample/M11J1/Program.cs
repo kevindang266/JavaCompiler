@@ -13,7 +13,7 @@ namespace M11J1
                 new FileStream(@"..\..\Tests\m11j1.java", FileMode.Open));
             Parser parser = new Parser(scanner);
             parser.Parse();
-            Parser.Root.DumpValue(0);
+            //Parser.Root.DumpValue(0);
             Console.ReadLine();
 
             //List<ClassModifier> modifiers = new List<ClassModifier>() { AST.ClassModifier.Public };
