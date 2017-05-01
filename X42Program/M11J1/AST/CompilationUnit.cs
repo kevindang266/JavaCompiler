@@ -15,9 +15,14 @@
             _classDeclaration.Dump(indent, "Class Declaration");
         }
 
-        public override bool ResolveNames(LexicalScope scope)
+        public override void ResolveNames(LexicalScope scope)
         {
-            return _classDeclaration.ResolveNames(scope);
+            _classDeclaration.ResolveNames(scope);
+        }
+
+        public override void TypeCheck()
+        {
+            _classDeclaration.TypeCheck();
         }
     }
 }

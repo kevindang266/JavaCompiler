@@ -8,3 +8,7 @@ C:\Users\kellyw\Dropbox\Clean Compiler Tutorials\GPLexTutorial\GPLexTutorial\obj
 C:\Users\kellyw\Dropbox\Clean Compiler Tutorials\GPLexTutorial\GPLexTutorial\obj\Debug\GPLexTutorial.pdb
 C:\Users\kellyw\Dropbox\Clean Compiler Tutorials\GPLexTutorial\GPLexTutorial\bin\Debug\GPLexTutorial.exe
 C:\Users\kellyw\Dropbox\Clean Compiler Tutorials\GPLexTutorial\GPLexTutorial\bin\Debug\GPLexTutorial.pdb
+C:\Github\M11J-IFN660\Practical\GPLexTutorial\GPLexTutorial\obj\Debug\GPLexTutorial.csprojResolveAssemblyReference.cache
+C:\Github\M11J-IFN660\Practical\GPLexTutorial\GPLexTutorial\obj\Debug\GPLexTutorial.exe
+C:\Github\M11J-IFN660\Practical\GPLexTutorial\GPLexTutorial\obj\Debug\GPLexTutorial.pdb
+C:\Github\M11J-IFN660\Practical\GPLexTutorial\GPLexTutorial\bin\Debug\GPLexTutorial.exe.config

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace M11J1.AST
 {
@@ -19,7 +16,7 @@ namespace M11J1.AST
 
         public void SetParentScope(LexicalScope scope)
         {
-            this._parentScope = scope;
+            _parentScope = scope;
         }
 
         public IDeclaration ResolveHere(string symbol)

@@ -6,9 +6,9 @@
 //
 //  GPLEX Version:  1.2.2
 //  Machine:  KIENDANG-PC
-//  DateTime: 4/25/2017 8:21:21 PM
+//  DateTime: 5/1/2017 1:08:41 PM
 //  UserName: KienDang
-//  GPLEX input file <scanner.lex - 4/24/2017 10:15:16 PM>
+//  GPLEX input file <scanner.lex - 4/29/2017 10:36:28 AM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -1993,7 +1993,7 @@ throw new Exception(String.Format("unexpected character '{0}'", yytext));
         case 77:
         case 79:
         case 80:
-yylval.name = yytext; return (int)Tokens.IntegerLiteral;
+yylval.num = int.Parse(yytext); return (int)Tokens.IntegerLiteral;
             break;
         case 23:
 lines++;
@@ -2143,7 +2143,7 @@ return (int)Tokens.AddAnd;
         case 74:
         case 75:
         case 78:
-yylval.name = yytext; return (int)Tokens.FloatingPointLiteral;
+yylval.fl = float.Parse(yytext); return (int)Tokens.FloatingPointLiteral;
             break;
         case 73:
 return (int)Tokens.VariableArguments;
@@ -2165,7 +2165,7 @@ yylval.name = yytext; return (int)Tokens.StringLiteral;
             break;
         case 86:
         case 87:
-yylval.name = yytext; return (int)Tokens.CharacterLiteral;
+yylval.c = char.Parse(yytext); return (int)Tokens.CharacterLiteral;
             break;
         case 91:
 return (int)Tokens.While;

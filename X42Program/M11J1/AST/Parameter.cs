@@ -4,35 +4,45 @@ namespace M11J1.AST
 {
     public abstract class Parameter : Node
     {
+        public abstract VariableDeclarationList GetVariableDeclaration();
     }
     public class FormalParameter : Parameter
     {
         private List<Modifier> _modifiers;
-        private Type _type;
-        private VariableDeclaration _variableDeclaration;
-
-        public FormalParameter(List<Modifier> modifiers, VariableDeclaration variableDeclaration)
+        private VariableDeclarationList _variableDeclaration;
+        public FormalParameter(List<Modifier> modifiers, Type type, string variableDeclaratorId)
         {
             _modifiers = modifiers;
-            _variableDeclaration = variableDeclaration;
+            _variableDeclaration = new VariableDeclarationList(new List<VariableDeclaration>
+                () {new VariableDeclaration(type, variableDeclaratorId) });
         }
 
         public override void Dump(int indent)
         {
-            if (_modifiers.Count > 0)
+            if (_modifiers != null && _modifiers.Count > 0)
             {
-                Label(indent + 1, "Modifier(s)\n");
+                Label(indent, "Modifier(s)\n");
                 foreach (var modifier in _modifiers)
                 {
-                    Label(indent + 2, $"{modifier}\n");
+                    Label(indent + 1, $"{modifier}\n");
                 }
             }
-            _variableDeclaration.Dump(indent + 1);
+            _variableDeclaration?.Dump(indent);
         }
 
-        public override bool ResolveNames(LexicalScope scope)
+        public override VariableDeclarationList GetVariableDeclaration()
         {
-            return true;
+            return _variableDeclaration;
+        }
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+            _variableDeclaration.ResolveNames(scope);
+        }
+
+        public override void TypeCheck()
+        {
+            _variableDeclaration.TypeCheck();
         }
     }
 }

@@ -8,4 +8,3 @@ C:\Github\M11J-IFN660\Practical\GPLexTutorial\RunTests\obj\Debug\RunTests.exe
 C:\Github\M11J-IFN660\Practical\GPLexTutorial\RunTests\obj\Debug\RunTests.pdb
 C:\Github\M11J-IFN660\Practical\GPLexTutorial\RunTests\bin\Debug\RunTests.exe
 C:\Github\M11J-IFN660\Practical\GPLexTutorial\RunTests\bin\Debug\RunTests.pdb
-C:\Github\M11J-IFN660\Practical\GPLexTutorial\RunTests\obj\Debug\RunTests.csprojResolveAssemblyReference.cache

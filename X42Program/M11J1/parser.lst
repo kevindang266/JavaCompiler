@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 4/25/2017 5:12:04 PM>
+//  GPPG error listing for yacc source file <parser.y - 4/30/2017 1:41:03 AM>
 // ==========================================================================
 //  Version:  1.5.2
 //  Machine:  KIENDANG-PC
-//  DateTime: 4/25/2017 5:12:08 PM
+//  DateTime: 4/30/2017 1:41:50 AM
 //  UserName: KienDang
 // ==========================================================================
 
@@ -27,19 +27,29 @@
 	public System.Collections.Generic.List<AST.Modifier> modifiers;
 	public System.Collections.Generic.List<AST.MethodDeclaration> methodDeclarations;
 	public System.Collections.Generic.List<AST.Parameter> parameters;
+	public System.Collections.Generic.List<AST.Statement> statements;
+	public System.Collections.Generic.List<string> listString;
+	public System.Collections.Generic.List<AST.VariableDeclaration> variableList;
+	public AST.VariableDeclarationList variableDeclarationList;
 	public AST.Type programType;
+	public AST.VariableDeclaration variableDeclaration;
+	public AST.Statement statement;
+	public AST.Expression expression;
 
     public int num;
     public string name;
+	public float fl;
+	public char c;
 }
 
-%token <num> Number
+%token <num> IntegerLiteral
 %token <name> Identifier
+%token <fl> FloatingPointLiteral
+%token <c> CharacterLiteral
 %token	Abstract Assert Boolean Break Byte Case Catch Char Class Const Continue Default Do Double Else
 		Enum Extends Final Finally Float For Goto If Implements Import InstanceOf Int Interface Long Native
 		New Package Private Protected Public Return Short Static Strictfp Super Switch Synchronized This
-		Throw Throws Transient Try Void Volatile While BooleanLiteral NullLiteral
-		IntegerLiteral CharacterLiteral StringLiteral FloatingPointLiteral VariableArguments
+		Throw Throws Transient Try Void Volatile While BooleanLiteral NullLiteral StringLiteral VariableArguments
 		DoubleColon Selection Equal GreaterOrEqual LessOrEqual NotEqual AndCondition OrCondition Increment Decrement
 		SignedLeftShift SignedRightShift UnsignedRightShift AddAnd SubtractAnd MultiplyAnd DivideAnd BitwiseAnd
 		BitwiseInclusiveOr BitwiseExclusiveOr ModulusAnd LeftShiftAnd RightShiftAnd ShiftRightZeroFill
@@ -55,7 +65,13 @@
 %type <methodDeclarator> MethodDeclarator
 %type <parameters> FormalParameterList
 %type <parameter> FormalParameter
-%type <name> Identifier
+%type <name> UnannTypeVariable, VariableDeclaratorId, VariableDeclarator
+%type <statements> MethodBody, Block, BlockStatements
+%type <statement> BlockStatement, Statement
+%type <listString> VariableDeclaratorList, CommaVariableDeclarator_opt
+%type <expression> Assignment, LeftHandSide, Expression, AssignmentExpression, Literal, ExpressionName
+%type <variableList> LocalVariableDeclaration
+%type <variableDeclarationList> LocalVariableDeclarationStatement
 		
 %left '='
 %nonassoc '<'
@@ -63,13 +79,12 @@
 %left '*' '/'
 
 %%
-// Warning: NonTerminal symbol "Identifier" is unreachable
-// Error: NonTerminal symbol "Identifier" has no productions
+// Error: NonTerminal symbol "ELSE" has no productions
+// Warning: Terminating ELSE fixes the following size-1 NonTerminal set
+   // {ELSE}
 // Error: There are 1 non-terminating NonTerminal Symbols
-   //  {Identifier}
-// Warning: Terminating Identifier fixes the following size-1 NonTerminal set
-   // {Identifier}
-// --------------------------------------------------------------------------
+   //  {ELSE}
+// --------------------------------------------------------------------
 
 CompilationUnit
 	: ClassDeclaration										{ Root = $1; }
@@ -102,7 +117,7 @@ ClassMemberDeclaration
 	;
 
 MethodDeclaration
-	: Modifiers MethodHeader MethodBody						{ $$ = new AST.MethodDeclaration($1, $2); }
+	: Modifiers MethodHeader MethodBody						{ $$ = new AST.MethodDeclaration($1, $2, $3); }
 	;
 
 MethodHeader
@@ -110,36 +125,38 @@ MethodHeader
 	;
 
 MethodBody
-	: Block
+	: Block													{ $$ = $1; }
 	| ';'
 	;
 
 Block
-	: '{' BlockStatements_opt '}'
-	;
-
-BlockStatements_opt
-	: /* empty */
-	| BlockStatements 
+	: '{' BlockStatements '}'								{ $$ = $2; }
 	;
 
 BlockStatements
-	: BlockStatement
-	| BlockStatements BlockStatement
+	: BlockStatements BlockStatement 						{ $$ = $1; $$.Add($2); }
+	| /* empty */											{ $$ = new System.Collections.Generic.List<AST.Statement>(); }
 	;
 
 BlockStatement
-	: LocalVariableDeclarationStatement
-	| ClassDeclaration 
-	| Statement
+	: LocalVariableDeclarationStatement						{ $$ = $1; }
+	//| ClassDeclaration 
+	| Statement												{ $$ = $1; }
 	;
 
 LocalVariableDeclarationStatement
-	: LocalVariableDeclaration ';'
+	: LocalVariableDeclaration ';'							{ $$ = new AST.VariableDeclarationList($1); }
 	;
 
 LocalVariableDeclaration
-	: UnannType VariableDeclaratorList
+	: UnannType VariableDeclaratorList						{ 
+																$$ = new System.Collections.Generic.List<AST.VariableDeclaration>();
+																foreach(var variableName in $2)
+																{
+																	$$.Add(new AST.VariableDeclaration($1, variableName));
+																}
+																//$$ = new AST.VariableDeclaration($1, $2); 
+															}
 	| VariableModifiers UnannType VariableDeclaratorList
 	;
 	
@@ -149,8 +166,8 @@ VariableModifiers
 	;
 
 Modifiers
-	: /* empty */											{ $$ = new System.Collections.Generic.List<AST.Modifier>(); }
-	| Modifier Modifiers									{ $$ = $2; $$.Add($1); }
+	: Modifiers Modifier		 							{ $$ = $1; $$.Add($2); }
+	| /* empty */											{ $$ = new System.Collections.Generic.List<AST.Modifier>(); }
 	;
 
 Modifier
@@ -171,20 +188,27 @@ UnannPrimitiveType
 	;
 
 NumericType
-	: Int													
+	: Int													{ $$ = new AST.IntType(); }
 	;
 
 VariableDeclaratorList
-	: VariableDeclarator Comma_VariableDeclarator_opt
+	: VariableDeclarator CommaVariableDeclarator_opt		{ 
+																$$ = new System.Collections.Generic.List<string>();
+																$$.Add($1);
+																foreach(var variable in $2)
+																{
+																	$$.Add(variable);
+																}
+															}
 	;
 
-Comma_VariableDeclarator_opt
-	: /* empty */
-	| ',' VariableDeclarator Comma_VariableDeclarator_opt
+CommaVariableDeclarator_opt
+	: /* empty */											{ $$ = new System.Collections.Generic.List<string>(); }
+	| CommaVariableDeclarator_opt ',' VariableDeclarator 	{ $$ = $1; $$.Add($3); }
 	;
 
 VariableDeclarator
-	: VariableDeclaratorId
+	: VariableDeclaratorId									{ $$ = $1; }
 	| VariableDeclaratorId '=' VariableInitializer
 	;
 
@@ -194,15 +218,30 @@ VariableInitializer
 	;
 
 Statement
-	: Assignment ';' 
+	: SelectionStatement //Assignment ';'										{ $$ = new AST.ExpressionStatement($1); }
+	| B
+	;
+
+SelectionStatement
+	: If '(' Expression ')' SelectionStatement Else SelectionStatement
+	| O
+	;
+
+B
+	: If '(' Expression ')' Statement
+	| If '(' Expression ')' SelectionStatement ELSE B
+	;
+
+O
+	: Block
 	;
 	
 Assignment
-	: LeftHandSide AssignmentOperator Expression
+	: LeftHandSide AssignmentOperator Expression			{ $$ = new AST.AssignmentExpression($1, $3); }
 	;
 
 LeftHandSide
-	: ExpressionName
+	: ExpressionName										{ $$ = $1; }
 	;
 
 AssignmentOperator
@@ -210,20 +249,20 @@ AssignmentOperator
 	;
 
 Expression
-	: AssignmentExpression
+	: AssignmentExpression									{ $$ = $1; }
 	;
 
 AssignmentExpression
-	: Literal 
+	: Literal												{ $$ = $1; }
 	| Assignment
 	;
 
 Literal
-	: IntegerLiteral
+	: IntegerLiteral										{ $$ = new AST.NumberExpression($1); }
 	;
 
 ExpressionName
-	: Identifier
+	: Identifier											{ $$ = new AST.IdentifierExpression($1); }
 	;
 
 Result
@@ -241,7 +280,7 @@ FormalParameterList
 	;
 
 FormalParameter
-	: Modifiers UnannType VariableDeclaratorId				{ $$ = new AST.FormalParameter($1, $2); } // working on 
+	: Modifiers UnannType VariableDeclaratorId				{ $$ = new AST.FormalParameter($1, $2, $3); }
 	;
 
 UnannReferenceType
@@ -257,7 +296,7 @@ UnannTypeVariable
 	;
 
 VariableDeclaratorId
-	: Identifier Dims_opt
+	: Identifier Dims_opt									{ $$ = $1; }
 	;
 
 Dims_opt

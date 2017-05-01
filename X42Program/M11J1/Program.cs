@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using M11J1.AST;
-using System.Collections.Generic;
 
 namespace M11J1
 {
@@ -16,30 +16,57 @@ namespace M11J1
 
             if (Parser.Root != null)
             {
-                //SemanticAnalysis(Parser.root);
+                SemanticAnalysis(Parser.Root);
                 Parser.Root.Dump(0);
             }
 
+            //ASTHardCodeTest();
+
             Console.ReadLine();
+        }
 
-            //List<ClassModifier> modifiers = new List<ClassModifier>() { AST.ClassModifier.Public };
-            //var pro = new ClassDeclaration(modifiers, "helloworld");
-            //pro.DumpValue(0);
+        public static void SemanticAnalysis(Node root)
+        {
+            root.ResolveNames(null);
+            root.TypeCheck();
+        }
 
-            //List<ClassModifier> modifiers = new List<ClassModifier>() { ClassModifier.Public };
-
-            //var pro = new CompilationUnit("test", new ClassDeclaration(modifiers, "HelloWorld",
-            //    new List<MethodDeclaration>{
-            //        new MethodDeclaration(new List<MethodModifier> {MethodModifier.Public, MethodModifier.Static }, new MethodHeader(new VoidType(),
-            //        new MethodDeclarator("main", new List<FormalParameter> {
-            //            new FormalParameter(new AST.ArrayType(new IdentifierType("String")), "args") })), new MethodBody(
-            //                    new List<Statement> { new VariableDeclaration(new AST.IdentifierType("x")),
-            //                        new ExpressionStatement( new AssignmentExpression(new ExpressionName("x"), new IntegerLiteral(42))) }
-            //                ))
-            //    }));
-            //pro.DumpValue(0);
-
-            //var ex = new ExpressionStatement(new AssignmentExpression())
+        public static void ASTHardCodeTest()
+        {
+            var pro = new CompilationUnit(
+                new ClassDeclaration(
+                    new List<Modifier> {Modifier.Public},
+                    "HelloWorld",
+                    new List<MethodDeclaration>
+                    {
+                        new MethodDeclaration(
+                            new List<Modifier> {Modifier.Public, Modifier.Static},
+                            new MethodHeader(new VoidType(),
+                                new MethodDeclarator("main",
+                                    new List<Parameter> {new FormalParameter(null, new IdentifierType(), "args")}
+                                )
+                            ),
+                            new CompoundStatement(
+                                new List<Statement>
+                                {
+                                    new VariableDeclarationList(
+                                        new List<VariableDeclaration> {new VariableDeclaration(new IntType(), "x")}
+                                    ),
+                                    new ExpressionStatement(
+                                        new AssignmentExpression(
+                                            new IdentifierExpression("x"),
+                                            new NumberExpression(42)
+                                        )
+                                    )
+                                }
+                            )
+                        )
+                    }
+                )
+            );
+            
+            SemanticAnalysis(pro);
+            pro.Dump(0);
         }
     }
 }

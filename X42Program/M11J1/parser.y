@@ -13,23 +13,33 @@
 	public AST.Modifier modifier;
 	public AST.MethodDeclaration methodDeclaration;
 	public AST.Parameter parameter;
-	public System.Collections.Generic.List<AST.Modifier> modifiers;
-	public System.Collections.Generic.List<AST.MethodDeclaration> methodDeclarations;
-	public System.Collections.Generic.List<AST.Parameter> parameters;
+	public List<AST.Modifier> modifiers;
+	public List<AST.MethodDeclaration> methodDeclarations;
+	public List<AST.Parameter> parameters;
+	public List<AST.Statement> statements;
+	public List<string> listString;
+	public List<AST.VariableDeclaration> variableList;
+	public AST.CompoundStatement compoundStatement;
+	public AST.VariableDeclarationList variableDeclarationList;
 	public AST.Type programType;
 	public AST.VariableDeclaration variableDeclaration;
+	public AST.Statement statement;
+	public AST.Expression expression;
 
     public int num;
     public string name;
+	public float fl;
+	public char c;
 }
 
-%token <num> Int
+%token <num> IntegerLiteral
 %token <name> Identifier
+%token <fl> FloatingPointLiteral
+%token <c> CharacterLiteral
 %token	Abstract Assert Boolean Break Byte Case Catch Char Class Const Continue Default Do Double Else
 		Enum Extends Final Finally Float For Goto If Implements Import InstanceOf Int Interface Long Native
 		New Package Private Protected Public Return Short Static Strictfp Super Switch Synchronized This
-		Throw Throws Transient Try Void Volatile While BooleanLiteral NullLiteral
-		IntegerLiteral CharacterLiteral StringLiteral FloatingPointLiteral VariableArguments
+		Throw Throws Transient Try Void Volatile While BooleanLiteral NullLiteral StringLiteral VariableArguments
 		DoubleColon Selection Equal GreaterOrEqual LessOrEqual NotEqual AndCondition OrCondition Increment Decrement
 		SignedLeftShift SignedRightShift UnsignedRightShift AddAnd SubtractAnd MultiplyAnd DivideAnd BitwiseAnd
 		BitwiseInclusiveOr BitwiseExclusiveOr ModulusAnd LeftShiftAnd RightShiftAnd ShiftRightZeroFill
@@ -41,15 +51,23 @@
 %type <methodDeclaration> MethodDeclaration, ClassMemberDeclaration, ClassBodyDeclaration
 %type <methodDeclarations> ClassBody, ClassBodyDeclarations
 %type <methodHeader> MethodHeader
-%type <programType> Result, UnannType, UnannPrimitiveType, UnannReferenceType, NumericType, UnannArrayType
+%type <programType> Result, UnannType, UnannPrimitiveType, UnannReferenceType, NumericType, UnannArrayType, UnannTypeVariable
 %type <methodDeclarator> MethodDeclarator
 %type <parameters> FormalParameterList
 %type <parameter> FormalParameter
-%type <name> UnannTypeVariable
-%type <variableDeclaration> VariableDeclaratorId, VariableDeclarator
+%type <name> VariableDeclaratorId, VariableDeclarator
+%type <statements> BlockStatements
+%type <compoundStatement> MethodBody, Block
+%type <statement> BlockStatement, Statement, SelectionStatement
+%type <listString> VariableDeclaratorList, CommaVariableDeclarator_opt
+%type <expression> Assignment, LeftHandSide, Expression, AssignmentExpression, Literal, ExpressionName, ConditionalExpression
+%type <variableList> LocalVariableDeclaration
+%type <variableDeclarationList> LocalVariableDeclarationStatement
 		
 %left '='
 %nonassoc '<'
+%nonassoc NoElse
+%nonassoc Else
 %left '+' '-'
 %left '*' '/'
 
@@ -72,8 +90,8 @@ ClassBody
 	;
 
 ClassBodyDeclarations	
-	: /* empty */											{ $$ = new System.Collections.Generic.List<AST.MethodDeclaration>(); }
-	| ClassBodyDeclaration ClassBodyDeclarations			{ $$ = $2; $$.Add($1); }
+	: /* empty */											{ $$ = new List<AST.MethodDeclaration>(); }
+	| ClassBodyDeclarations	ClassBodyDeclaration			{ $$ = $1; $$.Add($2); }
 	;
 
 ClassBodyDeclaration										
@@ -86,7 +104,7 @@ ClassMemberDeclaration
 	;
 
 MethodDeclaration
-	: Modifiers MethodHeader MethodBody						{ $$ = new AST.MethodDeclaration($1, $2); }
+	: Modifiers MethodHeader MethodBody						{ $$ = new AST.MethodDeclaration($1, $2, $3); }
 	;
 
 MethodHeader
@@ -94,47 +112,47 @@ MethodHeader
 	;
 
 MethodBody
-	: Block
+	: Block													{ $$ = $1; }
 	| ';'
 	;
 
 Block
-	: '{' BlockStatements_opt '}'
-	;
-
-BlockStatements_opt
-	: /* empty */
-	| BlockStatements 
+	: '{' BlockStatements '}'								{ $$ = new AST.CompoundStatement($2); }
 	;
 
 BlockStatements
-	: BlockStatement
-	| BlockStatements BlockStatement
+	: BlockStatements BlockStatement 						{ $$ = $1; $$.Add($2); }
+	| /* empty */											{ $$ = new List<AST.Statement>(); }
 	;
 
 BlockStatement
-	: LocalVariableDeclarationStatement
-	| ClassDeclaration 
-	| Statement
+	: LocalVariableDeclarationStatement						{ $$ = $1; }
+	| Statement												{ $$ = $1; }
 	;
 
 LocalVariableDeclarationStatement
-	: LocalVariableDeclaration ';'
+	: LocalVariableDeclaration ';'							{ $$ = new AST.VariableDeclarationList($1); }
 	;
 
 LocalVariableDeclaration
-	: UnannType VariableDeclaratorList
+	: UnannType VariableDeclaratorList						{ 
+																$$ = new List<AST.VariableDeclaration>();
+																foreach(var variableName in $2)
+																{
+																	$$.Add(new AST.VariableDeclaration($1, variableName));
+																}
+															}
 	| VariableModifiers UnannType VariableDeclaratorList
 	;
 	
 VariableModifiers 
 	: Modifier 
-	| Modifier VariableModifiers
+	| VariableModifiers Modifier
 	;
 
 Modifiers
-	: /* empty */											{ $$ = new System.Collections.Generic.List<AST.Modifier>(); }
-	| Modifier Modifiers									{ $$ = $2; $$.Add($1); }
+	: Modifiers Modifier		 							{ $$ = $1; $$.Add($2); }
+	| /* empty */											{ $$ = new List<AST.Modifier>(); }
 	;
 
 Modifier
@@ -155,59 +173,78 @@ UnannPrimitiveType
 	;
 
 NumericType
-	: Int													
+	: Int													{ $$ = new AST.IntType(); }
 	;
 
 VariableDeclaratorList
-	: VariableDeclarator Comma_VariableDeclarator_opt
+	: VariableDeclarator CommaVariableDeclarator_opt		{ 
+																$$ = new List<string>();
+																$$.Add($1);
+																foreach(var variable in $2)
+																{
+																	$$.Add(variable);
+																}
+															}
 	;
 
-Comma_VariableDeclarator_opt
-	: /* empty */
-	| ',' VariableDeclarator Comma_VariableDeclarator_opt
+CommaVariableDeclarator_opt
+	: /* empty */											{ $$ = new List<string>(); }
+	| CommaVariableDeclarator_opt ',' VariableDeclarator 	{ $$ = $1; $$.Add($3); }
 	;
 
 VariableDeclarator
-	: VariableDeclaratorId
+	: VariableDeclaratorId									{ $$ = $1; }
 	| VariableDeclaratorId '=' VariableInitializer
 	;
 
 VariableInitializer
 	: Expression 
-	//| ArrayInitializer
 	;
 
 Statement
-	: Assignment ';' 
+	: Assignment ';'										{ $$ = new AST.ExpressionStatement($1); }
+	| SelectionStatement									{ $$ = $1; }
+	| Block													{ $$ = $1; }
+	;
+
+SelectionStatement
+	: If '(' Expression ')' Statement %prec NoElse
+	| If '(' Expression ')' Statement Else Statement		{ $$ = new AST.IfThenElseStatement($3, $5, $7); }
 	;
 	
 Assignment
-	: LeftHandSide AssignmentOperator Expression
+	: LeftHandSide AssignmentOperator Expression			{ $$ = new AST.AssignmentExpression($1, $3); }
 	;
 
 LeftHandSide
-	: ExpressionName
+	: ExpressionName										{ $$ = $1; }
 	;
 
 AssignmentOperator
 	: '='
+	| '+'
 	;
 
 Expression
-	: AssignmentExpression
+	: AssignmentExpression									{ $$ = $1; }
+	| ConditionalExpression									{ $$ = $1; }
+	;
+
+ConditionalExpression
+	: LeftHandSide '<' Expression							{ $$ = new AST.BinaryExpression($1,'<',$3); }
 	;
 
 AssignmentExpression
-	: Literal 
+	: Literal												{ $$ = $1; }
 	| Assignment
 	;
 
 Literal
-	: IntegerLiteral
+	: IntegerLiteral										{ $$ = new AST.NumberExpression($1); }
 	;
 
 ExpressionName
-	: Identifier
+	: Identifier											{ $$ = new AST.IdentifierExpression($1); }
 	;
 
 Result
@@ -220,12 +257,12 @@ MethodDeclarator
 	;
 
 FormalParameterList
-	: /* empty */											{ $$ = new System.Collections.Generic.List<AST.Parameter>(); }
-	| FormalParameter FormalParameterList					{ $$ = $2; $$.Add($1); }
+	: /* empty */											{ $$ = new List<AST.Parameter>(); }
+	| FormalParameterList FormalParameter 					{ $$ = $1; $$.Add($2); }
 	;
 
 FormalParameter
-	: Modifiers UnannType VariableDeclaratorId				{ $$ = new AST.FormalParameter($1, $3); }
+	: Modifiers UnannType VariableDeclaratorId				{ $$ = new AST.FormalParameter($1, $2, $3); }
 	;
 
 UnannReferenceType
@@ -233,15 +270,15 @@ UnannReferenceType
 	;
 
 UnannArrayType
-	: UnannTypeVariable Dims								{ $$ = new AST.IdentifierType($1); }
+	: UnannTypeVariable Dims								{ $$ = $1; }
 	;
 
 UnannTypeVariable
-	: Identifier											{ $$ = $1; }
+	: Identifier											{ $$ = new AST.IdentifierType(); }
 	;
 
 VariableDeclaratorId
-	: Identifier Dims_opt									{ $$ = new AST.VariableDeclaration(new AST.IdentifierType($1), $1); }
+	: Identifier Dims_opt									{ $$ = $1; }
 	;
 
 Dims_opt

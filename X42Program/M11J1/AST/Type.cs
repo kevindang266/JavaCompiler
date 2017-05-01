@@ -1,58 +1,122 @@
-﻿using System;
-
-namespace M11J1.AST
+﻿namespace M11J1.AST
 {
     public abstract class Type:Node
     {
+        public bool Compatible(Type other)
+        {
+            return Equal(other);
+        }
+
+        public abstract bool Equal(Type other);
     }
-    public class VoidType : M11J1.AST.Type
+    public class VoidType : Type
     {
         public override void Dump(int indent)
         {
-            
+            Label(indent, "VoidType\n");
         }
 
-        public override bool ResolveNames(LexicalScope scope)
+        public override void ResolveNames(LexicalScope scope)
         {
-            throw new NotImplementedException();
+
+        }
+
+        public override bool Equal(Type other)
+        {
+            return (VoidType)other != null;
+        }
+
+        public override void TypeCheck()
+        {
+            
         }
     }
-    public class IdentifierType : M11J1.AST.Type
+    public class IntType : Type
     {
-        private string _identifier;
-
-        public IdentifierType(string identifier)
-        {
-            _identifier = identifier;
-        }
-
         public override void Dump(int indent)
         {
-            
+            Label(indent, "IntType\n");
         }
 
-        public override bool ResolveNames(LexicalScope scope)
+        public override void ResolveNames(LexicalScope scope)
         {
-            throw new NotImplementedException();
+
+        }
+
+        public override bool Equal(Type other)
+        {
+            return (IntType)other != null;
+        }
+
+        public override void TypeCheck()
+        {
+            
         }
     }
-    public class ArrayType : M11J1.AST.Type
+    public class IdentifierType : Type
     {
-        private Type _elementType;
-
-        public ArrayType(Type elementType)
+        public override void Dump(int indent)
         {
-           _elementType = elementType;
+            Label(indent, "IdentifierType\n");
         }
 
-        public override void Dump(int indent)
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+        }
+
+        public override bool Equal(Type other)
+        {
+            return (IdentifierType)other != null;
+        }
+
+        public override void TypeCheck()
         {
             
         }
-
-        public override bool ResolveNames(LexicalScope scope)
+    }
+    public class ArrayType : Type
+    {
+        public override void Dump(int indent)
         {
-            throw new NotImplementedException();
+            Label(indent, "ArrayType\n");
+        }
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+        }
+
+        public override bool Equal(Type other)
+        {
+            return (ArrayType)other != null;
+        }
+
+        public override void TypeCheck()
+        {
+            
+        }
+    }
+
+    public class BoolType : Type
+    {
+        public override void Dump(int indent)
+        {
+            Label(indent, "BoolType\n");
+        }
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+        }
+
+        public override void TypeCheck()
+        {
+
+        }
+
+        public override bool Equal(Type other)
+        {
+            return (BoolType)other != null;
         }
     }
 }

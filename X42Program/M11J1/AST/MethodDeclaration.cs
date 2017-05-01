@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace M11J1.AST
 {
@@ -7,38 +6,50 @@ namespace M11J1.AST
     {
         private List<Modifier> _methodModifiers;
         private MethodHeader _header;
+        private CompoundStatement _statements;
 
-        public MethodDeclaration(List<Modifier> methodModifiers, MethodHeader header)
+        public MethodDeclaration(List<Modifier> methodModifiers, MethodHeader header, CompoundStatement statements)
         {
             _methodModifiers = methodModifiers;
             _header = header;
+            _statements = statements;
         }
 
         public override void Dump(int indent)
         {
             if (_methodModifiers.Count > 0)
             {
-                Label(indent + 1, "Modifier(s)\n");
+                Label(indent, "Modifier(s)\n");
                 foreach (var methodModifier in _methodModifiers)
                 {
-                    Label(indent + 2, $"{methodModifier}\n");
+                    Label(indent + 1, $"{methodModifier}\n");
                 }
             }
-            _header.Dump(indent + 1);
+            _header.Dump(indent, "Method Header");
+            Label(indent, "MethodBody\n");
+            _statements.Dump(indent + 1);
         }
 
-        public override bool ResolveNames(LexicalScope scope)
+        public override void ResolveNames(LexicalScope scope)
         {
-            throw new NotImplementedException();
+            _header.ResolveNames(scope);
+            _statements.SetGlobalParameter(_header);
+            _statements.ResolveNames(scope);
+        }
+
+        public override void TypeCheck()
+        {
+            _header.TypeCheck();
+            _statements.TypeCheck();
         }
     }
 
     public class MethodHeader : Node
     {
-        private M11J1.AST.Type _result;
+        private Type _result;
         private MethodDeclarator _methodDeclarator;
 
-        public MethodHeader(M11J1.AST.Type result, MethodDeclarator methodDeclarator)
+        public MethodHeader(Type result, MethodDeclarator methodDeclarator)
         {
             _result = result;
             _methodDeclarator = methodDeclarator;
@@ -46,13 +57,24 @@ namespace M11J1.AST
 
         public override void Dump(int indent)
         {
-            Label(indent, $"Type: {_result}\n");
-            _methodDeclarator.Dump(indent, "Method Header");
+            _result.Dump(indent, "type");
+            _methodDeclarator.Dump(indent, "Method Declarator");
         }
 
-        public override bool ResolveNames(LexicalScope scope)
+        public MethodDeclarator GetMethodDeclarator()
         {
-            throw new NotImplementedException();
+            return _methodDeclarator;
+        }
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+            _result.ResolveNames(scope);
+            _methodDeclarator.ResolveNames(scope);
+        }
+
+        public override void TypeCheck()
+        {
+            _methodDeclarator.TypeCheck();
         }
     }
 
@@ -80,9 +102,38 @@ namespace M11J1.AST
             }
         }
 
-        public override bool ResolveNames(LexicalScope scope)
+        public List<Parameter> GetParameters()
         {
-            throw new NotImplementedException();
+            return _parameters;
+        }
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+            foreach (var parameter in _parameters)
+            {
+                parameter.ResolveNames(scope);
+            }
+            //LexicalScope.SetParentScope(scope);
+            //foreach (var parameter in _parameters)
+            //{
+            //    parameter.ResolveNames(scope);
+            //    var decl = parameter.GetVariableDeclaration() as IDeclaration;
+            //    if (decl != null)
+            //    {
+            //        foreach (var name in decl.GetList())
+            //        {
+            //            LexicalScope.SymbolTable[name.GetName()] = name;
+            //        }
+            //    }
+            //}
+        }
+
+        public override void TypeCheck()
+        {
+            foreach (var parameter in _parameters)
+            {
+                parameter.TypeCheck();
+            }
         }
     }
 }
