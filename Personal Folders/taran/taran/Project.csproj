@@ -57,6 +57,7 @@
     <Compile Include="AST\Parameter.cs" />
     <Compile Include="AST\Statement.cs" />
     <Compile Include="AST\Type.cs" />
+    <Compile Include="AST\TypeName.cs" />
     <Compile Include="parser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
