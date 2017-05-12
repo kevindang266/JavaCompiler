@@ -4,9 +4,9 @@
 
 // GPPG version 1.5.2
 // Machine:  LAPTOP-D82G4GJQ
-// DateTime: 3/05/2017 10:29:09 AM
+// DateTime: 12/05/2017 2:00:14 PM
 // UserName: Tarandeep
-// Input file <parser.y - 3/05/2017 10:22:10 AM>
+// Input file <parser.y - 3/05/2017 7:10:33 PM>
 
 // options: lines diagnose & report gplex
 
@@ -58,6 +58,7 @@ public struct ValueType
 	public AST.VariableDeclaration variableDeclaration;
 	public AST.Statement statement;
 	public AST.Expression expression;
+	public AST.TypeName typeName;
 
     public int num;
     public string name;
@@ -87,11 +88,11 @@ public class ScanObj {
 [GeneratedCodeAttribute( "Gardens Point Parser Generator", "1.5.2")]
 public class Parser: ShiftReduceParser<ValueType, LexLocation>
 {
-  // Verbatim content from parser.y - 3/05/2017 10:22:10 AM
+  // Verbatim content from parser.y - 3/05/2017 7:10:33 PM
 #line 4 "parser.y"
 	public static AST.CompilationUnit Root;
 #line default
-  // End verbatim content from parser.y - 3/05/2017 10:22:10 AM
+  // End verbatim content from parser.y - 3/05/2017 7:10:33 PM
 
 #pragma warning disable 649
   private static Dictionary<int, string> aliases;
@@ -306,92 +307,92 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
     switch (action)
     {
       case 2: // CompilationUnit -> ClassDeclaration
-#line 77 "parser.y"
+#line 78 "parser.y"
                              { Root = ValueStack[ValueStack.Depth-1].cu; }
 #line default
         break;
       case 3: // ClassDeclaration -> NormalClassDeclaration
-#line 81 "parser.y"
+#line 82 "parser.y"
                                  { CurrentSemanticValue.cu = new AST.CompilationUnit(ValueStack[ValueStack.Depth-1].cd); }
 #line default
         break;
       case 4: // NormalClassDeclaration -> Modifiers, Class, Identifier, ClassBody
-#line 85 "parser.y"
+#line 86 "parser.y"
                                             { CurrentSemanticValue.cd = new AST.ClassDeclaration(ValueStack[ValueStack.Depth-4].modifiers, ValueStack[ValueStack.Depth-2].name, ValueStack[ValueStack.Depth-1].methodDeclarations); }
 #line default
         break;
       case 5: // ClassBody -> '{', ClassBodyDeclarations, '}'
-#line 89 "parser.y"
+#line 90 "parser.y"
                                        { CurrentSemanticValue.methodDeclarations = ValueStack[ValueStack.Depth-2].methodDeclarations; }
 #line default
         break;
       case 6: // ClassBodyDeclarations -> /* empty */
-#line 93 "parser.y"
+#line 94 "parser.y"
                          { CurrentSemanticValue.methodDeclarations = new List<AST.MethodDeclaration>(); }
 #line default
         break;
       case 7: // ClassBodyDeclarations -> ClassBodyDeclarations, ClassBodyDeclaration
-#line 94 "parser.y"
+#line 95 "parser.y"
                                                 { CurrentSemanticValue.methodDeclarations = ValueStack[ValueStack.Depth-2].methodDeclarations; CurrentSemanticValue.methodDeclarations.Add(ValueStack[ValueStack.Depth-1].methodDeclaration); }
 #line default
         break;
       case 8: // ClassBodyDeclaration -> ClassMemberDeclaration
-#line 98 "parser.y"
+#line 99 "parser.y"
                                  { CurrentSemanticValue.methodDeclaration = ValueStack[ValueStack.Depth-1].methodDeclaration; }
 #line default
         break;
       case 9: // ClassMemberDeclaration -> MethodDeclaration
-#line 102 "parser.y"
+#line 103 "parser.y"
                               { CurrentSemanticValue.methodDeclaration = ValueStack[ValueStack.Depth-1].methodDeclaration; }
 #line default
         break;
       case 11: // MethodDeclaration -> Modifiers, MethodHeader, MethodBody
-#line 107 "parser.y"
+#line 108 "parser.y"
                                           { CurrentSemanticValue.methodDeclaration = new AST.MethodDeclaration(ValueStack[ValueStack.Depth-3].modifiers, ValueStack[ValueStack.Depth-2].methodHeader, ValueStack[ValueStack.Depth-1].compoundStatement); }
 #line default
         break;
       case 12: // MethodHeader -> Result, MethodDeclarator
-#line 111 "parser.y"
+#line 112 "parser.y"
                                   { CurrentSemanticValue.methodHeader = new AST.MethodHeader(ValueStack[ValueStack.Depth-2].programType, ValueStack[ValueStack.Depth-1].methodDeclarator); }
 #line default
         break;
       case 13: // MethodBody -> Block
-#line 115 "parser.y"
+#line 116 "parser.y"
                      { CurrentSemanticValue.compoundStatement = ValueStack[ValueStack.Depth-1].compoundStatement; }
 #line default
         break;
       case 15: // Block -> '{', BlockStatements, '}'
-#line 120 "parser.y"
+#line 121 "parser.y"
                                   { CurrentSemanticValue.compoundStatement = new AST.CompoundStatement(ValueStack[ValueStack.Depth-2].statements); }
 #line default
         break;
       case 16: // BlockStatements -> BlockStatements, BlockStatement
-#line 124 "parser.y"
+#line 125 "parser.y"
                                         { CurrentSemanticValue.statements = ValueStack[ValueStack.Depth-2].statements; CurrentSemanticValue.statements.Add(ValueStack[ValueStack.Depth-1].statement); }
 #line default
         break;
       case 17: // BlockStatements -> /* empty */
-#line 125 "parser.y"
+#line 126 "parser.y"
                          { CurrentSemanticValue.statements = new List<AST.Statement>(); }
 #line default
         break;
       case 18: // BlockStatement -> LocalVariableDeclarationStatement
-#line 129 "parser.y"
+#line 130 "parser.y"
                                           { CurrentSemanticValue.statement = ValueStack[ValueStack.Depth-1].variableDeclarationList; }
 #line default
         break;
       case 19: // BlockStatement -> Statement
-#line 130 "parser.y"
+#line 131 "parser.y"
                         { CurrentSemanticValue.statement = ValueStack[ValueStack.Depth-1].statement; }
 #line default
         break;
       case 20: // LocalVariableDeclarationStatement -> LocalVariableDeclaration, ';'
-#line 134 "parser.y"
+#line 135 "parser.y"
                                       { CurrentSemanticValue.variableDeclarationList = new AST.VariableDeclarationList(ValueStack[ValueStack.Depth-2].variableList); }
 #line default
         break;
       case 21: // LocalVariableDeclaration -> UnannType, VariableDeclaratorList
-#line 138 "parser.y"
+#line 139 "parser.y"
                                          { 
 																CurrentSemanticValue.variableList = new List<AST.VariableDeclaration>();
 																foreach(var variableName in ValueStack[ValueStack.Depth-1].listString)
@@ -402,57 +403,57 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
 #line default
         break;
       case 25: // Modifiers -> Modifiers, Modifier
-#line 154 "parser.y"
+#line 155 "parser.y"
                                { CurrentSemanticValue.modifiers = ValueStack[ValueStack.Depth-2].modifiers; CurrentSemanticValue.modifiers.Add(ValueStack[ValueStack.Depth-1].modifier); }
 #line default
         break;
       case 26: // Modifiers -> /* empty */
-#line 155 "parser.y"
+#line 156 "parser.y"
                          { CurrentSemanticValue.modifiers = new List<AST.Modifier>(); }
 #line default
         break;
       case 27: // Modifier -> Public
-#line 159 "parser.y"
+#line 160 "parser.y"
                      { CurrentSemanticValue.modifier = AST.Modifier.Public; }
 #line default
         break;
       case 28: // Modifier -> Protected
-#line 160 "parser.y"
+#line 161 "parser.y"
                         { CurrentSemanticValue.modifier = AST.Modifier.Protected; }
 #line default
         break;
       case 29: // Modifier -> Final
-#line 161 "parser.y"
+#line 162 "parser.y"
                      { CurrentSemanticValue.modifier = AST.Modifier.Final; }
 #line default
         break;
       case 30: // Modifier -> Static
-#line 162 "parser.y"
+#line 163 "parser.y"
                      { CurrentSemanticValue.modifier = AST.Modifier.Static; }
 #line default
         break;
       case 31: // UnannType -> UnannPrimitiveType
-#line 166 "parser.y"
-                              { CurrentSemanticValue.programType = ValueStack[ValueStack.Depth-1].programType; }
-#line default
-        break;
-      case 32: // UnannType -> UnannReferenceType
 #line 167 "parser.y"
                               { CurrentSemanticValue.programType = ValueStack[ValueStack.Depth-1].programType; }
 #line default
         break;
+      case 32: // UnannType -> UnannReferenceType
+#line 168 "parser.y"
+                              { CurrentSemanticValue.programType = ValueStack[ValueStack.Depth-1].programType; }
+#line default
+        break;
       case 33: // UnannPrimitiveType -> NumericType
-#line 171 "parser.y"
+#line 172 "parser.y"
                          { CurrentSemanticValue.programType = ValueStack[ValueStack.Depth-1].programType; }
 #line default
         break;
       case 35: // NumericType -> Int
-#line 176 "parser.y"
+#line 177 "parser.y"
                    { CurrentSemanticValue.programType = new AST.IntType(); }
 #line default
         break;
       case 36: // VariableDeclaratorList -> VariableDeclarator, CommaVariableDeclarator_opt
-#line 180 "parser.y"
+#line 181 "parser.y"
                                                    { 
 																CurrentSemanticValue.listString = new List<string>();
 																CurrentSemanticValue.listString.Add(ValueStack[ValueStack.Depth-2].name);
@@ -464,123 +465,123 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
 #line default
         break;
       case 37: // CommaVariableDeclarator_opt -> /* empty */
-#line 191 "parser.y"
+#line 192 "parser.y"
                          { CurrentSemanticValue.listString = new List<string>(); }
 #line default
         break;
       case 38: // CommaVariableDeclarator_opt -> CommaVariableDeclarator_opt, ',', 
                //                                VariableDeclarator
-#line 192 "parser.y"
+#line 193 "parser.y"
                                                        { CurrentSemanticValue.listString = ValueStack[ValueStack.Depth-3].listString; CurrentSemanticValue.listString.Add(ValueStack[ValueStack.Depth-1].name); }
 #line default
         break;
       case 39: // VariableDeclarator -> VariableDeclaratorId
-#line 196 "parser.y"
+#line 197 "parser.y"
                                 { CurrentSemanticValue.name = ValueStack[ValueStack.Depth-1].name; }
 #line default
         break;
       case 42: // Statement -> Assignment, ';'
-#line 205 "parser.y"
+#line 206 "parser.y"
                            { CurrentSemanticValue.statement = new AST.ExpressionStatement(ValueStack[ValueStack.Depth-2].expression); }
 #line default
         break;
       case 43: // Statement -> SelectionStatement
-#line 206 "parser.y"
+#line 207 "parser.y"
                               { CurrentSemanticValue.statement = ValueStack[ValueStack.Depth-1].statement; }
 #line default
         break;
       case 44: // Statement -> Block
-#line 207 "parser.y"
+#line 208 "parser.y"
                      { CurrentSemanticValue.statement = ValueStack[ValueStack.Depth-1].compoundStatement; }
 #line default
         break;
       case 46: // SelectionStatement -> If, '(', Expression, ')', Statement, Else, Statement
-#line 212 "parser.y"
+#line 213 "parser.y"
                                                    { CurrentSemanticValue.statement = new AST.IfThenElseStatement(ValueStack[ValueStack.Depth-5].expression, ValueStack[ValueStack.Depth-3].statement, ValueStack[ValueStack.Depth-1].statement); }
 #line default
         break;
       case 47: // Assignment -> LeftHandSide, AssignmentOperator, Expression
-#line 216 "parser.y"
+#line 217 "parser.y"
                                                 { CurrentSemanticValue.expression = new AST.AssignmentExpression(ValueStack[ValueStack.Depth-3].expression, ValueStack[ValueStack.Depth-1].expression); }
 #line default
         break;
       case 48: // LeftHandSide -> ExpressionName
-#line 220 "parser.y"
+#line 221 "parser.y"
                            { CurrentSemanticValue.expression = ValueStack[ValueStack.Depth-1].expression; }
 #line default
         break;
       case 51: // Expression -> AssignmentExpression
-#line 229 "parser.y"
+#line 230 "parser.y"
                                 { CurrentSemanticValue.expression = ValueStack[ValueStack.Depth-1].expression; }
 #line default
         break;
       case 52: // Expression -> ConditionalExpression
-#line 230 "parser.y"
+#line 231 "parser.y"
                                  { CurrentSemanticValue.expression = ValueStack[ValueStack.Depth-1].expression; }
 #line default
         break;
       case 53: // ConditionalExpression -> LeftHandSide, '<', Expression
-#line 234 "parser.y"
+#line 235 "parser.y"
                                      { CurrentSemanticValue.expression = new AST.BinaryExpression(ValueStack[ValueStack.Depth-3].expression,'<',ValueStack[ValueStack.Depth-1].expression); }
 #line default
         break;
       case 54: // AssignmentExpression -> Literal
-#line 238 "parser.y"
+#line 239 "parser.y"
                       { CurrentSemanticValue.expression = ValueStack[ValueStack.Depth-1].expression; }
 #line default
         break;
       case 56: // Literal -> IntegerLiteral
-#line 243 "parser.y"
+#line 244 "parser.y"
                            { CurrentSemanticValue.expression = new AST.NumberExpression(ValueStack[ValueStack.Depth-1].num); }
 #line default
         break;
       case 57: // ExpressionName -> Identifier
-#line 247 "parser.y"
+#line 248 "parser.y"
                         { CurrentSemanticValue.expression = new AST.IdentifierExpression(ValueStack[ValueStack.Depth-1].name); }
 #line default
         break;
       case 58: // Result -> Void
-#line 251 "parser.y"
+#line 252 "parser.y"
                     { CurrentSemanticValue.programType = new AST.VoidType(); }
 #line default
         break;
       case 60: // MethodDeclarator -> Identifier, '(', FormalParameterList, ')', Dims_opt
-#line 256 "parser.y"
+#line 257 "parser.y"
                                                     { CurrentSemanticValue.methodDeclarator = new AST.MethodDeclarator(ValueStack[ValueStack.Depth-5].name, ValueStack[ValueStack.Depth-3].parameters); }
 #line default
         break;
       case 61: // FormalParameterList -> /* empty */
-#line 260 "parser.y"
+#line 261 "parser.y"
                          { CurrentSemanticValue.parameters = new List<AST.Parameter>(); }
 #line default
         break;
       case 62: // FormalParameterList -> FormalParameterList, FormalParameter
-#line 261 "parser.y"
+#line 262 "parser.y"
                                             { CurrentSemanticValue.parameters = ValueStack[ValueStack.Depth-2].parameters; CurrentSemanticValue.parameters.Add(ValueStack[ValueStack.Depth-1].parameter); }
 #line default
         break;
       case 63: // FormalParameter -> Modifiers, UnannType, VariableDeclaratorId
-#line 265 "parser.y"
+#line 266 "parser.y"
                                                { CurrentSemanticValue.parameter = new AST.FormalParameter(ValueStack[ValueStack.Depth-3].modifiers, ValueStack[ValueStack.Depth-2].programType, ValueStack[ValueStack.Depth-1].name); }
 #line default
         break;
       case 64: // UnannReferenceType -> UnannArrayType
-#line 269 "parser.y"
+#line 270 "parser.y"
                            { CurrentSemanticValue.programType = ValueStack[ValueStack.Depth-1].programType; }
 #line default
         break;
       case 65: // UnannArrayType -> UnannTypeVariable, Dims
-#line 273 "parser.y"
+#line 274 "parser.y"
                                  { CurrentSemanticValue.programType = ValueStack[ValueStack.Depth-2].programType; }
 #line default
         break;
       case 66: // UnannTypeVariable -> Identifier
-#line 277 "parser.y"
+#line 278 "parser.y"
                         { CurrentSemanticValue.programType = new AST.IdentifierType(); }
 #line default
         break;
       case 67: // VariableDeclaratorId -> Identifier, Dims_opt
-#line 281 "parser.y"
+#line 282 "parser.y"
                                { CurrentSemanticValue.name = ValueStack[ValueStack.Depth-2].name; }
 #line default
         break;
@@ -598,7 +599,7 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
         return CharToString((char)terminal);
   }
 
-#line 295 "parser.y"
+#line 296 "parser.y"
 
 public Parser(Scanner scanner) : base(scanner)
 {
