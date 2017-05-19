@@ -5,6 +5,10 @@ namespace M11J1.AST
     public abstract class Expression : Node
     {
         public Type Type;
+        public virtual void GenStoreCode(string file)
+        {
+            throw new Exception("invalid assignment");
+        }
     }
     public class AssignmentExpression : Expression
     {
@@ -40,6 +44,13 @@ namespace M11J1.AST
                 throw new Exception("TypeCheck error");
             }
             Type = _rhs.Type;
+        }
+
+        public override void GenCode(string file)
+        {
+            _rhs.GenCode(file);
+            _lhs.GenStoreCode(file);
+            _rhs.GenCode(file);
         }
     }
 
@@ -78,6 +89,16 @@ namespace M11J1.AST
         {
             Type = _declaration.GetVariableType();
         }
+
+        public override void GenCode(string file)
+        {
+            Emit(file, "ldloc {0}", _declaration.GetNumber(_declaration.DeclarationIds[_name]));
+        }
+
+        public override void GenStoreCode(string file)
+        {
+            Emit(file, "stloc {0}", _declaration.GetNumber(_declaration.DeclarationIds[_name]));
+        }
     }
 
     public class NumberExpression : Expression
@@ -101,6 +122,11 @@ namespace M11J1.AST
         public override void TypeCheck()
         {
             Type = new IntType();
+        }
+
+        public override void GenCode(string file)
+        {
+            Emit(file, "ldc.i4 {0}", _value);
         }
     }
 
@@ -155,6 +181,26 @@ namespace M11J1.AST
                     {
                         Console.WriteLine($"Unexpected binary operator '{_op}'\n");
                         throw new Exception("TypeCheck error");
+                    }
+            }
+        }
+
+        public override void GenCode(string file)
+        {
+            _lhs.GenCode(file);
+            _rhs.GenCode(file);
+            switch (_op)
+            {
+                case '<':
+                    Emit(file, "clt");
+                    break;
+                case '+':
+                    Emit(file, "add");
+                    break;
+                default:
+                    {
+                        Console.WriteLine("Unexpected binary operator '{0}'\n", _op);
+                        throw new Exception("GenCode error");
                     }
             }
         }

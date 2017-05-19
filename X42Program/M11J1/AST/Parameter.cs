@@ -44,5 +44,10 @@ namespace M11J1.AST
         {
             _variableDeclaration.TypeCheck();
         }
+
+        public override void GenCode(string file)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

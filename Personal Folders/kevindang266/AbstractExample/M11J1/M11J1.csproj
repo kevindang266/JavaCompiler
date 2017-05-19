@@ -78,6 +78,7 @@
     <None Include="parser.y" />
     <None Include="parser_old.y" />
     <None Include="scanner.lex" />
+    <None Include="scanner_old.lex" />
     <None Include="Tests\keyword.j" />
     <None Include="Tests\m11j1.java.expected" />
   </ItemGroup>

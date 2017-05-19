@@ -9,20 +9,38 @@ namespace M11J1
     {
         static void Main(string[] args)
         {
+            var filename = @"..\..\Tests\m11j1.java";
             Scanner scanner = new Scanner(
-                new FileStream(@"..\..\Tests\m11j1.java", FileMode.Open));
+                new FileStream(filename, FileMode.Open));
             Parser parser = new Parser(scanner);
             parser.Parse();
 
             if (Parser.Root != null)
             {
                 SemanticAnalysis(Parser.Root);
-                Parser.Root.Dump(0);
+                //Parser.Root.Dump(0);
+                CodeGeneration(filename, Parser.Root);
             }
 
             //ASTHardCodeTest();
 
             Console.ReadLine();
+        }
+
+        public static void CodeGeneration(string inputfile, Node root)
+        {
+            string path = Directory.GetCurrentDirectory();
+            string outputFile = path + @"\test.il";
+            if (File.Exists(outputFile))
+            {
+                File.Delete(outputFile);
+            }
+
+            root.GenCode(outputFile);
+
+            root.Emit(outputFile, "ret");
+            root.Emit(outputFile, "}}");
+            root.Emit(outputFile, "}}");
         }
 
         public static void SemanticAnalysis(Node root)
@@ -68,5 +86,10 @@ namespace M11J1
             SemanticAnalysis(pro);
             pro.Dump(0);
         }
+    }
+    class Global
+    {
+        public static int LastLabel = 0;
+        public static int LastLocal = 0;
     }
 }
