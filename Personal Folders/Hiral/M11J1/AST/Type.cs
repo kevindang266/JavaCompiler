@@ -1,6 +1,6 @@
 ﻿namespace M11J1.AST
 {
-    public abstract class Type:Node
+    public abstract class Type : Node
     {
         public bool Compatible(Type other)
         {
@@ -16,13 +16,20 @@
             Label(indent, "VoidType\n");
         }
 
-       
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+        }
+
         public override bool Equal(Type other)
         {
             return (VoidType)other != null;
         }
 
-        
+        public override void TypeCheck()
+        {
+
+        }
     }
     public class IntType : Type
     {
@@ -31,14 +38,20 @@
             Label(indent, "IntType\n");
         }
 
-        
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+        }
 
         public override bool Equal(Type other)
         {
             return (IntType)other != null;
         }
 
-        
+        public override void TypeCheck()
+        {
+
+        }
     }
     public class IdentifierType : Type
     {
@@ -47,14 +60,20 @@
             Label(indent, "IdentifierType\n");
         }
 
-        
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+        }
 
         public override bool Equal(Type other)
         {
             return (IdentifierType)other != null;
         }
 
-       
+        public override void TypeCheck()
+        {
+
+        }
     }
     public class ArrayType : Type
     {
@@ -63,14 +82,20 @@
             Label(indent, "ArrayType\n");
         }
 
-       
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+        }
 
         public override bool Equal(Type other)
         {
             return (ArrayType)other != null;
         }
 
-        
+        public override void TypeCheck()
+        {
+
+        }
     }
 
     public class BoolType : Type
@@ -80,7 +105,15 @@
             Label(indent, "BoolType\n");
         }
 
-       
+        public override void ResolveNames(LexicalScope scope)
+        {
+        }
+
+        public override void TypeCheck()
+        {
+
+        }
+
         public override bool Equal(Type other)
         {
             return (BoolType)other != null;

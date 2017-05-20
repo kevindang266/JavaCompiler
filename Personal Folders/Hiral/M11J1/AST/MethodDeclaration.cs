@@ -30,7 +30,18 @@ namespace M11J1.AST
             _statements.Dump(indent + 1);
         }
 
-        
+        public override void ResolveNames(LexicalScope scope)
+        {
+            _header.ResolveNames(scope);
+            _statements.SetGlobalParameter(_header);
+            _statements.ResolveNames(scope);
+        }
+
+        public override void TypeCheck()
+        {
+            _header.TypeCheck();
+            _statements.TypeCheck();
+        }
     }
 
     public class MethodHeader : Node
@@ -55,7 +66,16 @@ namespace M11J1.AST
             return _methodDeclarator;
         }
 
-       
+        public override void ResolveNames(LexicalScope scope)
+        {
+            _result.ResolveNames(scope);
+            _methodDeclarator.ResolveNames(scope);
+        }
+
+        public override void TypeCheck()
+        {
+            _methodDeclarator.TypeCheck();
+        }
     }
 
     public class MethodDeclarator : Node
@@ -87,8 +107,21 @@ namespace M11J1.AST
             return _parameters;
         }
 
-        
+        public override void ResolveNames(LexicalScope scope)
+        {
+            foreach (var parameter in _parameters)
+            {
+                parameter.ResolveNames(scope);
+            }
+            
+        }
 
-        
+        public override void TypeCheck()
+        {
+            foreach (var parameter in _parameters)
+            {
+                parameter.TypeCheck();
+            }
+        }
     }
 }

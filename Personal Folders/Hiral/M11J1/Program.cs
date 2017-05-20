@@ -20,15 +20,15 @@ namespace M11J1
                 Parser.Root.Dump(0);
             }
 
-            ASTHardCodeTest();
+            //ASTHardCodeTest();
 
-            //Console.ReadLine();
+            Console.ReadLine();
         }
 
         public static void SemanticAnalysis(Node root)
         {
-            //root.ResolveNames(null);
-            //root.TypeCheck();
+            root.ResolveNames(null);
+            root.TypeCheck();
         }
 
         public static void ASTHardCodeTest()

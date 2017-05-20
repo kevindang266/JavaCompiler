@@ -291,7 +291,7 @@ Dims
 	| '[' ']' Dims
 	;
 
-	AssertStatement
+AssertStatement
     : Assert Expression 
     | Assert Expression ':' Expression 
 	;

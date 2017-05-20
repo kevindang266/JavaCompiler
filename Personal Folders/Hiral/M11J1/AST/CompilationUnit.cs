@@ -14,7 +14,15 @@
             Label(indent, "Compilation Unit\n");
             _classDeclaration.Dump(indent, "Class Declaration");
         }
+        public override void ResolveNames(LexicalScope scope)
+        {
+            _classDeclaration.ResolveNames(scope);
+        }
 
-       
+        public override void TypeCheck()
+        {
+            _classDeclaration.TypeCheck();
+        }
+
     }
 }

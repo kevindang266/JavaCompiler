@@ -33,7 +33,21 @@ namespace M11J1.AST
                     methodDeclaration.Dump(indent, "Method Declaration");
                 }
         }
+        public override void ResolveNames(LexicalScope scope)
+        {
+            foreach (var methodDeclaration in _methodDeclarations)
+            {
+                methodDeclaration.ResolveNames(scope);
+            }
+        }
 
-        
+        public override void TypeCheck()
+        {
+            foreach (var methodDeclaration in _methodDeclarations)
+            {
+                methodDeclaration.TypeCheck();
+            }
+        }
+
     }
 }

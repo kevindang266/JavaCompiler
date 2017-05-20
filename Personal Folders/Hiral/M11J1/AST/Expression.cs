@@ -9,7 +9,7 @@ namespace M11J1.AST
     public class AssignmentExpression : Expression
     {
         private Expression _lhs, _rhs;
-        
+
         public AssignmentExpression(Expression lhs, Expression rhs)
         {
             _lhs = lhs;
@@ -24,7 +24,23 @@ namespace M11J1.AST
             _rhs.Dump(indent + 1, "rhs");
         }
 
-       
+        public override void ResolveNames(LexicalScope scope)
+        {
+            _lhs.ResolveNames(scope);
+            _rhs.ResolveNames(scope);
+        }
+
+        public override void TypeCheck()
+        {
+            _lhs.TypeCheck();
+            _rhs.TypeCheck();
+            if (!_rhs.Type.Compatible(_lhs.Type))
+            {
+                Console.WriteLine("type error in assignment\n");
+                throw new Exception("TypeCheck error");
+            }
+            Type = _rhs.Type;
+        }
     }
 
     public class IdentifierExpression : Expression
@@ -46,7 +62,22 @@ namespace M11J1.AST
             Type.Dump(indent + 1, "type");
         }
 
-        
+        public override void ResolveNames(LexicalScope scope)
+        {
+            if (scope != null)
+                _declaration = scope.Resolve(_name);
+
+            if (_declaration == null)
+            {
+                Console.WriteLine("Error: Undeclared identifier {0}\n", _name);
+                throw new Exception("Name Resolution error");
+            }
+        }
+
+        public override void TypeCheck()
+        {
+            Type = _declaration.GetVariableType();
+        }
     }
 
     public class NumberExpression : Expression
@@ -59,11 +90,18 @@ namespace M11J1.AST
 
         public override void Dump(int indent)
         {
-            Label(indent, $"NumberExpression {_value}\n" );
+            Label(indent, $"NumberExpression {_value}\n");
             Type.Dump(indent + 1, "type");
         }
 
-       
+        public override void ResolveNames(LexicalScope scope)
+        {
+        }
+
+        public override void TypeCheck()
+        {
+            Type = new IntType();
+        }
     }
 
     public class BinaryExpression : Expression
@@ -84,6 +122,41 @@ namespace M11J1.AST
             _rhs.Dump(indent + 1, "rhs");
         }
 
-       
+        public override void ResolveNames(LexicalScope scope)
+        {
+            _lhs.ResolveNames(scope);
+            _rhs.ResolveNames(scope);
+        }
+
+        public override void TypeCheck()
+        {
+            _lhs.TypeCheck();
+            _rhs.TypeCheck();
+
+            switch (_op)
+            {
+                case '<':
+                    if (!_lhs.Type.Equal(new IntType()) || !_rhs.Type.Equal(new IntType()))
+                    {
+                        Console.WriteLine("invalid arguments for less than expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    Type = new BoolType();
+                    break;
+                case '+':
+                    if (!_lhs.Type.Equal(new IntType()) || !_rhs.Type.Equal(new IntType()))
+                    {
+                        Console.WriteLine("invalid arguments for addition expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    Type = new IntType();
+                    break;
+                default:
+                    {
+                        Console.WriteLine($"Unexpected binary operator '{_op}'\n");
+                        throw new Exception("TypeCheck error");
+                    }
+            }
+        }
     }
 }

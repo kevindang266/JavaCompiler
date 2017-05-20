@@ -5,7 +5,8 @@ namespace M11J1.AST
     public abstract class Node
     {
         public abstract void Dump(int indent);
-        
+        public abstract void ResolveNames(LexicalScope scope);
+        public abstract void TypeCheck();
         private void Indent(int n)
         {
             for (int i = 0; i < n; i++)

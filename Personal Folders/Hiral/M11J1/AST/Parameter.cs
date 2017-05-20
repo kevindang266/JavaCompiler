@@ -14,7 +14,7 @@ namespace M11J1.AST
         {
             _modifiers = modifiers;
             _variableDeclaration = new VariableDeclarationList(new List<VariableDeclaration>
-                () {new VariableDeclaration(type, variableDeclaratorId) });
+                () { new VariableDeclaration(type, variableDeclaratorId) });
         }
 
         public override void Dump(int indent)
@@ -35,6 +35,14 @@ namespace M11J1.AST
             return _variableDeclaration;
         }
 
-       
+        public override void ResolveNames(LexicalScope scope)
+        {
+            _variableDeclaration.ResolveNames(scope);
+        }
+
+        public override void TypeCheck()
+        {
+            _variableDeclaration.TypeCheck();
+        }
     }
 }
