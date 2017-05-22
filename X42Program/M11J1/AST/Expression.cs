@@ -12,11 +12,13 @@ namespace M11J1.AST
     }
     public class AssignmentExpression : Expression
     {
+        private char _op;
         private Expression _lhs, _rhs;
         
-        public AssignmentExpression(Expression lhs, Expression rhs)
+        public AssignmentExpression(Expression lhs, char op, Expression rhs)
         {
             _lhs = lhs;
+            _op = op;
             _rhs = rhs;
         }
 
@@ -49,8 +51,17 @@ namespace M11J1.AST
         public override void GenCode(string file)
         {
             _rhs.GenCode(file);
-            _lhs.GenStoreCode(file);
-            _rhs.GenCode(file);
+            switch (_op)
+            {
+                case '=':
+                    _lhs.GenStoreCode(file);
+                    break;
+                default:
+                    {
+                        Console.WriteLine("Unexpected assignment operator '{0}'\n", _op);
+                        throw new Exception("GenCode error");
+                    }
+            }
         }
     }
 

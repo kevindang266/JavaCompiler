@@ -73,6 +73,7 @@ namespace M11J1
                                     new ExpressionStatement(
                                         new AssignmentExpression(
                                             new IdentifierExpression("x"),
+                                            '=',
                                             new NumberExpression(42)
                                         )
                                     )
