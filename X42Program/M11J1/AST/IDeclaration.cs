@@ -2,6 +2,9 @@
 
 namespace M11J1.AST
 {
+    /*
+     * This interface use for variable declaration 
+     */
     public interface IDeclaration
     {
         Type GetVariableType();

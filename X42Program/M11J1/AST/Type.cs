@@ -1,5 +1,8 @@
 ﻿namespace M11J1.AST
 {
+    /* 
+     * There are many types in Java Specification
+     */
     public abstract class Type:Node
     {
         public bool Compatible(Type other)

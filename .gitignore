@@ -240,3 +240,6 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+X42Program/M11J1/parser.cs
+X42Program/M11J1/parser.cs
+*.html

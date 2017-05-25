@@ -48,6 +48,9 @@ namespace M11J1.AST
             Type = _rhs.Type;
         }
 
+        /* 
+         * Because CIL is entirely stack-based, rhs always need to generate before lhs  
+         */
         public override void GenCode(string file)
         {
             _rhs.GenCode(file);
@@ -195,7 +198,6 @@ namespace M11J1.AST
                     }
             }
         }
-
         public override void GenCode(string file)
         {
             _lhs.GenCode(file);

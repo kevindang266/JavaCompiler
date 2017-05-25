@@ -4,11 +4,11 @@
 
 // GPPG version 1.5.2
 // Machine:  KIENDANG-PC
-// DateTime: 5/22/2017 9:14:21 PM
+// DateTime: 5/22/2017 9:24:01 PM
 // UserName: KienDang
-// Input file <parser.y - 5/22/2017 9:07:18 PM>
+// Input file <parser.y - 5/22/2017 9:20:37 PM>
 
-// options: lines diagnose & report gplex
+// options: lines report gplex
 
 using System;
 using System.Collections.Generic;
@@ -87,11 +87,11 @@ public class ScanObj {
 [GeneratedCodeAttribute( "Gardens Point Parser Generator", "1.5.2")]
 public class Parser: ShiftReduceParser<ValueType, LexLocation>
 {
-  // Verbatim content from parser.y - 5/22/2017 9:07:18 PM
+  // Verbatim content from parser.y - 5/22/2017 9:20:37 PM
 #line 4 "parser.y"
 	public static AST.CompilationUnit Root;
 #line default
-  // End verbatim content from parser.y - 5/22/2017 9:07:18 PM
+  // End verbatim content from parser.y - 5/22/2017 9:20:37 PM
 
 #pragma warning disable 649
   private static Dictionary<int, string> aliases;
@@ -752,7 +752,8 @@ public class Parser: ShiftReduceParser<ValueType, LexLocation>
         return CharToString((char)terminal);
   }
 
-#line 375 "parser.y"
+#line 374 "parser.y"
+
 public Parser(Scanner scanner) : base(scanner)
 {
 }

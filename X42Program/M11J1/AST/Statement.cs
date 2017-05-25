@@ -92,6 +92,12 @@ namespace M11J1.AST
         }
     }
 
+    /*
+     * VariableDeclarationList will be used for multiple declaration.
+     * For example: int x, y, z;
+     * VariableDeclarationList extends Statement implements IDeclaration
+     * This is a statement that can be recognise by IDeclaration when adding variables to Lexical Scope
+     */
     public class VariableDeclarationList : Statement, IDeclaration
     {
         private readonly List<VariableDeclaration> _variableNames;
