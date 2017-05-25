@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace M11J1.AST
+namespace Project.AST
 {
     public abstract class Parameter : Node
     {
@@ -14,7 +14,7 @@ namespace M11J1.AST
         {
             _modifiers = modifiers;
             _variableDeclaration = new VariableDeclarationList(new List<VariableDeclaration>
-                () {new VariableDeclaration(type, variableDeclaratorId) });
+                () { new VariableDeclaration(type, variableDeclaratorId) });
         }
 
         public override void Dump(int indent)
@@ -43,6 +43,11 @@ namespace M11J1.AST
         public override void TypeCheck()
         {
             _variableDeclaration.TypeCheck();
+        }
+
+        public override void GenCode(string file)
+        {
+            throw new System.NotImplementedException();
         }
     }
 }

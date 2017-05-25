@@ -1,4 +1,4 @@
-﻿%namespace M11J1
+﻿%namespace Project
 
 %{
 	public static AST.CompilationUnit Root;
@@ -25,7 +25,6 @@
 	public AST.VariableDeclaration variableDeclaration;
 	public AST.Statement statement;
 	public AST.Expression expression;
-	public AST.TypeName typeName;
 
     public int num;
     public string name;
@@ -59,11 +58,17 @@
 %type <name> VariableDeclaratorId, VariableDeclarator
 %type <statements> BlockStatements
 %type <compoundStatement> MethodBody, Block
-%type <statement> BlockStatement, Statement, SelectionStatement
+%type <statement>	BlockStatement, Statement, SelectionStatement, StatementWithoutTrailingSubstatement,
+					ExpressionStatement, StatementExpression
 %type <listString> VariableDeclaratorList, CommaVariableDeclarator_opt
-%type <expression> Assignment, LeftHandSide, Expression, AssignmentExpression, Literal, ExpressionName, ConditionalExpression
+%type <expression>	Assignment, LeftHandSide, Expression, AssignmentExpression, Literal, ExpressionName, 
+					ConditionalExpression, ConditionalOrExpression, ConditionalAndExpression, InclusiveOrExpression,
+					ExclusiveOrExpression, AndExpression, EqualityExpression, RelationalExpression,
+					ShiftExpression, AdditiveExpression, MultiplicativeExpression, UnaryExpression,
+					UnaryExpressionNotPlusMinus, PostfixExpression, Primary, PrimaryNoNewArray
 %type <variableList> LocalVariableDeclaration
 %type <variableDeclarationList> LocalVariableDeclarationStatement
+%type <c> AssignmentOperator
 		
 %left '='
 %nonassoc '<'
@@ -203,9 +208,21 @@ VariableInitializer
 	;
 
 Statement
-	: Assignment ';'										{ $$ = new AST.ExpressionStatement($1); }
+	: StatementWithoutTrailingSubstatement					{ $$ = $1; }
 	| SelectionStatement									{ $$ = $1; }
-	| Block													{ $$ = $1; }
+	;
+
+StatementWithoutTrailingSubstatement
+	: Block													{ $$ = $1; }
+	| ExpressionStatement									{ $$ = $1; }						
+	;
+
+ExpressionStatement
+	: StatementExpression ';'								{ $$ = $1; }
+	;
+
+StatementExpression
+	: Assignment											{ $$ = new AST.ExpressionStatement($1); }
 	;
 
 SelectionStatement
@@ -214,7 +231,7 @@ SelectionStatement
 	;
 	
 Assignment
-	: LeftHandSide AssignmentOperator Expression			{ $$ = new AST.AssignmentExpression($1, $3); }
+	: LeftHandSide AssignmentOperator Expression			{ $$ = new AST.AssignmentExpression($1, $2, $3); }
 	;
 
 LeftHandSide
@@ -222,22 +239,83 @@ LeftHandSide
 	;
 
 AssignmentOperator
-	: '='
-	| '+'
+	: '='													{ $$ = '='; }
 	;
 
 Expression
 	: AssignmentExpression									{ $$ = $1; }
-	| ConditionalExpression									{ $$ = $1; }
 	;
 
 ConditionalExpression
-	: LeftHandSide '<' Expression							{ $$ = new AST.BinaryExpression($1,'<',$3); }
+	: ConditionalOrExpression								{ $$ = $1; }
+	;
+
+ConditionalOrExpression
+	: ConditionalAndExpression								{ $$ = $1; }
+	;
+
+ConditionalAndExpression
+	: InclusiveOrExpression									{ $$ = $1; }
+	;
+
+InclusiveOrExpression
+	: ExclusiveOrExpression									{ $$ = $1; }
+	;
+
+ExclusiveOrExpression
+	: AndExpression											{ $$ = $1; }
+	;
+
+AndExpression
+	: EqualityExpression									{ $$ = $1; }
+	;
+
+EqualityExpression
+	: RelationalExpression									{ $$ = $1; }
+	;
+
+RelationalExpression
+	: ShiftExpression										{ $$ = $1; }
+	| RelationalExpression '<' ShiftExpression				{ $$ = new AST.BinaryExpression($1,'<',$3); }
+	;
+
+ShiftExpression
+	: AdditiveExpression									{ $$ = $1; }
+	;
+
+AdditiveExpression
+	: MultiplicativeExpression								{ $$ = $1; }
+	| AdditiveExpression '+' MultiplicativeExpression		{ $$ = new AST.BinaryExpression($1,'+',$3); }
+	;
+
+MultiplicativeExpression
+	: UnaryExpression										{ $$ = $1; }
+	;
+
+UnaryExpression
+	: UnaryExpressionNotPlusMinus							{ $$ = $1; }
+	;
+
+UnaryExpressionNotPlusMinus
+	: PostfixExpression										{ $$ = $1; }
+	;
+
+PostfixExpression
+	: Primary												{ $$ = $1; }
+	| ExpressionName										{ $$ = $1; }
+	;
+
+Primary
+	: PrimaryNoNewArray										{ $$ = $1; }
+	;
+
+PrimaryNoNewArray
+	: Literal												{ $$ = $1; }
 	;
 
 AssignmentExpression
-	: Literal												{ $$ = $1; }
-	| Assignment
+	: ConditionalExpression									{ $$ = $1; }
+	| Assignment											{ $$ = $1; }
 	;
 
 Literal

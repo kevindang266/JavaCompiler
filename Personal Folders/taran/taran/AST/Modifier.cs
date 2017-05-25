@@ -1,4 +1,4 @@
-﻿namespace M11J1.AST
+﻿namespace Project.AST
 {
     public enum Modifier
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace M11J1.AST
+namespace Project.AST
 {
     public class LexicalScope
     {

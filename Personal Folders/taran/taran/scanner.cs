@@ -6,9 +6,9 @@
 //
 //  GPLEX Version:  1.2.2
 //  Machine:  LAPTOP-D82G4GJQ
-//  DateTime: 12/05/2017 2:00:12 PM
+//  DateTime: 25/05/2017 4:44:02 PM
 //  UserName: Tarandeep
-//  GPLEX input file <scanner.lex - 3/05/2017 10:22:10 AM>
+//  GPLEX input file <scanner.lex - 25/05/2017 4:29:37 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -33,7 +33,7 @@ using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
 
-namespace M11J1
+namespace Project
 {   
     /// <summary>
     /// Summary Canonical example of GPLEX automaton

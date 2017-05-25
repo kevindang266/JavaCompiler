@@ -1,18 +1,24 @@
 ﻿using System;
 
-namespace M11J1.AST
+namespace Project.AST
 {
     public abstract class Expression : Node
     {
         public Type Type;
+        public virtual void GenStoreCode(string file)
+        {
+            throw new Exception("invalid assignment");
+        }
     }
     public class AssignmentExpression : Expression
     {
+        private char _op;
         private Expression _lhs, _rhs;
-        
-        public AssignmentExpression(Expression lhs, Expression rhs)
+
+        public AssignmentExpression(Expression lhs, char op, Expression rhs)
         {
             _lhs = lhs;
+            _op = op;
             _rhs = rhs;
         }
 
@@ -40,6 +46,22 @@ namespace M11J1.AST
                 throw new Exception("TypeCheck error");
             }
             Type = _rhs.Type;
+        }
+
+        public override void GenCode(string file)
+        {
+            _rhs.GenCode(file);
+            switch (_op)
+            {
+                case '=':
+                    _lhs.GenStoreCode(file);
+                    break;
+                default:
+                    {
+                        Console.WriteLine("Unexpected assignment operator '{0}'\n", _op);
+                        throw new Exception("GenCode error");
+                    }
+            }
         }
     }
 
@@ -78,6 +100,16 @@ namespace M11J1.AST
         {
             Type = _declaration.GetVariableType();
         }
+
+        public override void GenCode(string file)
+        {
+            Emit(file, "ldloc {0}", _declaration.GetNumber(_declaration.DeclarationIds[_name]));
+        }
+
+        public override void GenStoreCode(string file)
+        {
+            Emit(file, "stloc {0}", _declaration.GetNumber(_declaration.DeclarationIds[_name]));
+        }
     }
 
     public class NumberExpression : Expression
@@ -90,7 +122,7 @@ namespace M11J1.AST
 
         public override void Dump(int indent)
         {
-            Label(indent, $"NumberExpression {_value}\n" );
+            Label(indent, $"NumberExpression {_value}\n");
             Type.Dump(indent + 1, "type");
         }
 
@@ -101,6 +133,11 @@ namespace M11J1.AST
         public override void TypeCheck()
         {
             Type = new IntType();
+        }
+
+        public override void GenCode(string file)
+        {
+            Emit(file, "ldc.i4 {0}", _value);
         }
     }
 
@@ -155,6 +192,26 @@ namespace M11J1.AST
                     {
                         Console.WriteLine($"Unexpected binary operator '{_op}'\n");
                         throw new Exception("TypeCheck error");
+                    }
+            }
+        }
+
+        public override void GenCode(string file)
+        {
+            _lhs.GenCode(file);
+            _rhs.GenCode(file);
+            switch (_op)
+            {
+                case '<':
+                    Emit(file, "clt");
+                    break;
+                case '+':
+                    Emit(file, "add");
+                    break;
+                default:
+                    {
+                        Console.WriteLine("Unexpected binary operator '{0}'\n", _op);
+                        throw new Exception("GenCode error");
                     }
             }
         }
