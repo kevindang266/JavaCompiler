@@ -252,7 +252,7 @@ namespace M11J1.AST
                         Console.WriteLine("invalid arguments for unary expression\n");
                         throw new Exception("TypeCheck error");
                     }
-                    Type = new IntType();
+                    Type = new UnaryType();
                     break;
                 case "OpDec":
                     if (!_lhs.Type.Equal(new IntType()))
@@ -260,7 +260,7 @@ namespace M11J1.AST
                         Console.WriteLine("invalid arguments unary expression\n");
                         throw new Exception("TypeCheck error");
                     }
-                    Type = new IntType();
+                    Type = new UnaryType();
                     break;
                 default:
                     {

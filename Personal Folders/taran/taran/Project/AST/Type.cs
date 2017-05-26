@@ -173,4 +173,37 @@
             throw new System.NotImplementedException();
         }
     }
+
+    public class UnaryType : Type
+    {
+        public override void Dump(int indent)
+        {
+            Label(indent, "UnaryType\n");
+        }
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+        }
+
+        public override bool Equal(Type other)
+        {
+            return (UnaryType)other != null;
+        }
+
+        public override void TypeCheck()
+        {
+        }
+
+        public override string CLRName()
+        {
+            return "Unary";
+        }
+
+        public override void GenCode(string file)
+        {
+            throw new System.NotImplementedException();
+        }
+    }
+
 }
