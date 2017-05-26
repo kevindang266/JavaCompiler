@@ -6,9 +6,9 @@
 //
 //  GPLEX Version:  1.2.2
 //  Machine:  LAPTOP-D82G4GJQ
-//  DateTime: 12/05/2017 2:00:12 PM
+//  DateTime: 26/05/2017 9:11:24 PM
 //  UserName: Tarandeep
-//  GPLEX input file <scanner.lex - 3/05/2017 10:22:10 AM>
+//  GPLEX input file <scanner.lex - 26/05/2017 9:07:26 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
@@ -2125,7 +2125,7 @@ return (int)Tokens.Equal;
 return (int)Tokens.DoubleColon;
             break;
         case 67:
-return (int)Tokens.Decrement;
+return (int) Tokens.OpDec;
             break;
         case 68:
 return (int)Tokens.SubtractAnd;
@@ -2134,7 +2134,7 @@ return (int)Tokens.SubtractAnd;
 return (int)Tokens.Selection;
             break;
         case 70:
-return (int)Tokens.Increment;
+return (int) Tokens.OpInc;
             break;
         case 71:
 return (int)Tokens.AddAnd;
