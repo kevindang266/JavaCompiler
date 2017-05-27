@@ -12,9 +12,19 @@ namespace M11J1
 
         static void Main(string[] args)
         {
-            var filename = @"..\..\Tests\m11j1.java";
+         //   var filename = @"..\..\Tests\m11j1.java";
+            // Scanner scanner = new Scanner(
+            //     new FileStream(filename, FileMode.Open));
+            // Parser parser = new Parser(scanner);
+            if (args[0]==null)
+            {
+                Console.WriteLine(" EXE file1(Source) File2(ILCode)...");
+                return;
+            }
             Scanner scanner = new Scanner(
-                new FileStream(filename, FileMode.Open));
+                new FileStream(args[0], FileMode.Open));
+
+
             Parser parser = new Parser(scanner);
 
             parser.Parse();
@@ -23,18 +33,31 @@ namespace M11J1
             {
                 SemanticAnalysis(Parser.Root);
                 //Parser.Root.Dump(0);
-                CodeGeneration(Parser.Root);
+                if (args[1] == null)
+                {
+                    Console.WriteLine(" EXE file1(Source) File2(ILCode)...");
+                    return;
+                }
+                CodeGeneration(args[1], Parser.Root);
+                Console.WriteLine("Created "+ args[1]);
+            }
+            else
+            {
+
+                Console.WriteLine(".....");
             }
 
            // ASTHardCodeTest();
             
-            Console.ReadLine();
+           // Console.ReadLine();
         }
 
-        public static void CodeGeneration(Node root)
+
+        public static void CodeGeneration(string outputFile, Node root)
         {
-            string path = Directory.GetCurrentDirectory();
-            string outputFile = path + @"\test.il";
+           // Console.WriteLine(outputFile);
+            //string path = Directory.GetCurrentDirectory();
+            //string outputFile = path + @"\test.il";
             if (File.Exists(outputFile))
             {
                 File.Delete(outputFile);
