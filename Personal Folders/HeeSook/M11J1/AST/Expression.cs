@@ -183,6 +183,14 @@ namespace M11J1.AST
                     }
                     Type = new BoolType();
                     break;
+                case '>':
+                    if (!_lhs.Type.Equal(new IntType()) || !_rhs.Type.Equal(new IntType()))
+                    {
+                        Console.WriteLine("invalid arguments for greater than expression\n");
+                        throw new Exception("TypeCheck error");
+                    }
+                    Type = new BoolType();
+                    break;
                 case '+':
                     if (!_lhs.Type.Equal(new IntType()) || !_rhs.Type.Equal(new IntType()))
                     {
@@ -207,7 +215,9 @@ namespace M11J1.AST
                 case '<':
                     Emit(file, "clt");
                     break;
-
+                case '>':
+                    Emit(file, "glt");
+                    break;
                 case '+':
                     Emit(file, "add");
                     break;

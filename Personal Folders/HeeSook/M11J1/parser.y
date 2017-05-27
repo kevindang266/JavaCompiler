@@ -72,6 +72,7 @@
 		
 %left '='
 %nonassoc '<'
+%nonassoc '>'
 %nonassoc NoElse
 %nonassoc Else
 %left '+' '-'
@@ -282,6 +283,7 @@ EqualityExpression
 RelationalExpression
 	: ShiftExpression										{ $$ = $1; }
 	| RelationalExpression '<' ShiftExpression				{ $$ = new AST.BinaryExpression($1,'<',$3); }
+	| RelationalExpression '>' ShiftExpression				{ $$ = new AST.BinaryExpression($1,'>',$3); }
 	;
 
 ShiftExpression

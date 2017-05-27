@@ -8,6 +8,11 @@
 		y = 53;
 		if (x < 3)
 			y = x + 42;
+		else if(x >3)
+		{
+			int x;
+			x = 3;
+		}
 		else
 		{
 			int x;
