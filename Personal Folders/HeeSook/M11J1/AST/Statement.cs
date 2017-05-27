@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace M11J1.AST
 {
@@ -10,7 +11,7 @@ namespace M11J1.AST
 
     //BasicForStatement
     //	: For '(' Assignment ';' Expression ';' ForUpdate ')' Statement 
-
+    /*
     public class BasicForStatement : Statement
     {
         private readonly Statement _variableDeclaration;
@@ -18,7 +19,7 @@ namespace M11J1.AST
         //private readonly Expression _forupdate;
         private readonly Statement _forstmt;
 
-        public BasicForStatement(Statement variableDeclaration, Expression forcond, /* Expression forupdat, */ Statement forstmt)
+        public BasicForStatement(Statement variableDeclaration, Expression forcond,  Expression forupdat,  Statement forstmt)
         {
             _variableDeclaration = variableDeclaration;
             _forcond = forcond;
@@ -56,7 +57,7 @@ namespace M11J1.AST
             _forstmt.TypeCheck();
         }
     }
-
+*/
     public class IfThenElseStatement : Statement
     {
         private readonly Expression _cond;
@@ -96,6 +97,16 @@ namespace M11J1.AST
             _thenStmt.TypeCheck();
             _elseStmt.TypeCheck();
         }
+
+        public override void GenCode(string file)
+        {
+            _cond.GenCode(file);
+            int elseLabel = Global.LastLabel++;
+            Emit(file, "brfalse L{0}", elseLabel);
+            _thenStmt.GenCode(file);
+            Emit(file, "L{0}:", elseLabel);
+            _elseStmt.GenCode(file);
+        }
     }
 
     public class ExpressionStatement : Statement
@@ -122,8 +133,20 @@ namespace M11J1.AST
         {
             _expression.TypeCheck();
         }
+
+        public override void GenCode(string file)
+        {
+            _expression.GenCode(file);
+            Emit(file, "pop");
+        }
     }
 
+    /*
+     * VariableDeclarationList will be used for multiple declaration.
+     * For example: int x, y, z;
+     * VariableDeclarationList extends Statement implements IDeclaration
+     * This is a statement that can be recognise by IDeclaration when adding variables to Lexical Scope
+     */
     public class VariableDeclarationList : Statement, IDeclaration
     {
         private readonly List<VariableDeclaration> _variableNames;
@@ -131,6 +154,7 @@ namespace M11J1.AST
         public VariableDeclarationList(List<VariableDeclaration> variableNames)
         {
             DeclarationIds = new Dictionary<string, string>();
+            VariableValues = new Dictionary<string, string>();
             _variableNames = variableNames;
         }
         public Dictionary<string, string> DeclarationIds { get; set; }
@@ -149,12 +173,7 @@ namespace M11J1.AST
         {
             foreach (var variable in _variableNames)
             {
-                var ranId = Guid.NewGuid().ToString().Substring(0, 8); //GenerateId();
-                DeclarationIds[variable.GetName()] = ranId;
-                variable.DeclarationIds[variable.GetName()] = ranId;
-
-                Label(indent, $"{ranId}: VariableDeclaration: {variable.GetName()}\n");
-                variable.GetVariableType().Dump(indent + 1);
+                variable.Dump(indent);
             }
         }
 
@@ -168,6 +187,25 @@ namespace M11J1.AST
         {
             foreach (var variableDeclaration in _variableNames)
                 variableDeclaration.TypeCheck();
+        }
+        public Dictionary<string, string> VariableValues { get; set; }
+
+        public override void GenCode(string file)
+        {
+            foreach (var variableDeclaration in _variableNames)
+            {
+                variableDeclaration.GenCode(file);
+            }
+        }
+
+        public int GetNumber(string variableId)
+        {
+            return int.Parse(VariableValues[variableId]);
+        }
+
+        public int GetNumber()
+        {
+            return 0;
         }
     }
 
@@ -231,23 +269,33 @@ namespace M11J1.AST
                 statement?.TypeCheck();
             }
         }
+
+        public override void GenCode(string file)
+        {
+            foreach (var statement in _statements)
+            {
+                statement.GenCode(file);
+            }
+        }
     }
 
     public class VariableDeclaration : Statement, IDeclaration
     {
         private readonly string _name;
         private readonly Type _type;
+        private int _num;
 
         public VariableDeclaration(Type type, string name)
         {
             _type = type;
             _name = name;
             DeclarationIds = new Dictionary<string, string>();
+            VariableValues = new Dictionary<string, string>();
         }
 
         public string DeclarationId { get; set; }
-        //private List<string> _variableNames;
         public Dictionary<string, string> DeclarationIds { get; set; }
+        public Dictionary<string, string> VariableValues { get; set; }
 
         public Type GetVariableType()
         {
@@ -261,24 +309,13 @@ namespace M11J1.AST
 
         public override void Dump(int indent)
         {
-            //if (_variableNames != null && _variableNames.Count > 0)
-            //{
-            //    foreach (var variableName in _variableNames)
-            //    {
-            //        var ranId = Guid.NewGuid().ToString().Substring(0, 8);
-            //        DeclarationIds[variableName] = ranId;
-            //        Label(indent, $"{ ranId}: VariableDeclaration: {variableName}\n");
-            //        _type.Dump(indent, "type");
-            //    }
-            //}
-            //else
-            //{
+
             var ranId = Guid.NewGuid().ToString().Substring(0, 8);
             DeclarationIds[_name] = ranId;
             DeclarationId = ranId;
             Label(indent, $"{ranId}: VariableDeclaration: {_name}\n");
             _type.Dump(indent + 1, "type");
-            //}
+
         }
 
         public string GetName()
@@ -286,14 +323,35 @@ namespace M11J1.AST
             return _name;
         }
 
+        public int GetNumber()
+        {
+            return _num;
+        }
+
         public override void ResolveNames(LexicalScope scope)
         {
+            var ranId = Guid.NewGuid().ToString().Substring(0, 8);
+            DeclarationIds[_name] = ranId;
+            DeclarationId = ranId;
             _type.ResolveNames(scope);
         }
 
         public override void TypeCheck()
         {
             _type.TypeCheck();
+        }
+
+        public override void GenCode(string file)
+        {
+            _num = Global.LastLocal++;
+            Emit(file, ".locals init ([{0}] {1} {2})", _num, _type.CLRName(), _name);
+            VariableValues[DeclarationIds[_name]] = _num.ToString();
+        }
+
+        public int GetNumber(string variableId)
+        {
+            //return _num;
+            return int.Parse(VariableValues[variableId]);
         }
     }
 }

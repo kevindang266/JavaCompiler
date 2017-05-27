@@ -26,13 +26,16 @@ namespace M11J1.AST
 
         public IDeclaration Resolve(string symbol)
         {
+            // local can refer to methods that are declared in the Interface
             IDeclaration local = ResolveHere(symbol);
             if (local != null)
-                return local;
-            else if (_parentScope != null)
-                return _parentScope.Resolve(symbol);
-            else
-                return null;
+                return local;   // return VariableDeclaration object if it can be found in current scope
+            /*
+             * If VariableDeclaration object cannot be found in current scope
+             * then try to look for variable object in parent scope
+             * Return null if the variable object cannot be found
+             */ 
+            return _parentScope?.Resolve(symbol);
         }
     }
 }
