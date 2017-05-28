@@ -2,22 +2,21 @@
 {
     public static void main(String[] args)
 	{
-		int x, y; 
-		int k = 4;
+		int x, y;
 		x = 42;
-		y = 53;
+		y=3;
 		if (x < 3)
 			y = x + 42;
-		else if(x >3)
-		{
-			int x;
-			x = 3;
-		}
 		else
 		{
-			int x;
-			x = 4;
+			int z;
+			x = 100;
+			z = 4;
 		}
-
+		while ( y < 7)
+		{
+			
+			y= y+1;
+		}
     }
 }

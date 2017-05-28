@@ -59,7 +59,7 @@
 %type <statements> BlockStatements
 %type <compoundStatement> MethodBody, Block
 %type <statement>	BlockStatement, Statement, SelectionStatement, StatementWithoutTrailingSubstatement,
-					ExpressionStatement, StatementExpression
+					ExpressionStatement, StatementExpression, WhileLoopStatement
 %type <listString> VariableDeclaratorList, CommaVariableDeclarator_opt
 %type <expression>	Assignment, LeftHandSide, Expression, AssignmentExpression, Literal, ExpressionName, 
 					ConditionalExpression, ConditionalOrExpression, ConditionalAndExpression, InclusiveOrExpression,
@@ -211,6 +211,7 @@ VariableInitializer
 Statement
 	: StatementWithoutTrailingSubstatement					{ $$ = $1; }
 	| SelectionStatement									{ $$ = $1; }
+	| WhileLoopStatement										{ $$ = $1 ; }	
 	;
 
 StatementWithoutTrailingSubstatement
@@ -229,6 +230,10 @@ StatementExpression
 SelectionStatement
 	: If '(' Expression ')' Statement %prec NoElse
 	| If '(' Expression ')' Statement Else Statement		{ $$ = new AST.IfThenElseStatement($3, $5, $7); }
+	;
+
+WhileLoopStatement
+	: While '(' Expression ')' Statement						{ $$ = new AST.WhileStatement($3, $5); }
 	;
 
 //BasicLoopStatement

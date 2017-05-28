@@ -58,6 +58,58 @@ namespace M11J1.AST
         }
     }
 */
+
+    /*WhileStatement
+    WhileStatement:
+while ( Expression ) Statement  
+         
+         */
+
+    public class WhileStatement : Statement
+    {
+        private readonly Expression _cond;
+        private readonly Statement _whilestmt;
+
+        public WhileStatement(Expression cond, Statement whilestmt)
+        {
+            _cond = cond;
+            _whilestmt = whilestmt;
+        }
+
+        public override void Dump(int indent)
+        {
+            Label(indent, "WhileStatement\n");
+            _cond.Dump(indent + 1, "cond");
+            _whilestmt.Dump(indent + 1, "whilestmt");
+        }
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+            _cond.ResolveNames(scope);
+            _whilestmt.ResolveNames(scope);
+        }
+
+        public override void TypeCheck()
+        {
+            _cond.TypeCheck();
+            if (!_cond.Type.Equal(new BoolType()))
+            {
+                Console.WriteLine("Invalid type for while statement condition\n");
+                throw new Exception("TypeCheck error");
+            }
+            _whilestmt.TypeCheck();
+        }
+
+        public override void GenCode(string file)
+        {
+            _cond.GenCode(file);
+            int label = Global.LastLabel++;
+            Emit(file, "Br.s while statement", label);
+            _whilestmt.GenCode(file);
+            Emit(file, "while statement:", label);
+        }
+    }
+
     public class IfThenElseStatement : Statement
     {
         private readonly Expression _cond;
