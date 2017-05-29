@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Windows;
 
 namespace M11J1.AST
 {
@@ -102,11 +103,10 @@ while ( Expression ) Statement
 
         public override void GenCode(string file)
         {
+            Emit(file, Global.GetLabel() + "    " + "br.s  WhileStatement  " + Global.GetLabel());
             _cond.GenCode(file);
-            int label = Global.LastLabel++;
-            Emit(file, "Br.s while statement", label);
             _whilestmt.GenCode(file);
-            Emit(file, "while statement:", label);
+            Emit(file, Global.GetLabel() + "    " + "End  WhileStatement  " + Global.GetLabel());
         }
     }
 
@@ -152,12 +152,12 @@ while ( Expression ) Statement
 
         public override void GenCode(string file)
         {
-            _cond.GenCode(file);
-            int elseLabel = Global.LastLabel++;
-            Emit(file, "brfalse L{0}", elseLabel);
+            Emit(file, Global.GetLabel() + "    " + "brfalse       IfThenElseStatement", Global.GetLabel());
+            _cond.GenCode(file);            
             _thenStmt.GenCode(file);
-            Emit(file, "L{0}:", elseLabel);
-            _elseStmt.GenCode(file);
+           _elseStmt.GenCode(file);
+
+            Emit(file, Global.GetLabel() + "    " + "End       IfThenElseStatement", Global.GetLabel());
         }
     }
 
@@ -189,7 +189,7 @@ while ( Expression ) Statement
         public override void GenCode(string file)
         {
             _expression.GenCode(file);
-            Emit(file, "pop");
+            Emit(file, Global.GetLabel() + "    " + "pop");
         }
     }
 

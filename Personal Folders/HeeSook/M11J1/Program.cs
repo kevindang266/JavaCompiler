@@ -111,25 +111,6 @@ namespace M11J1
                                             new NumberExpression(42)
                                         )
                                     ),
-                                    /* new BasicForStatement(
-                                        new VariableDeclarationList(
-                                        new List<VariableDeclaration> {new VariableDeclaration(new IntType(), "i")}
-                                    ),
-                                        new BinaryExpression(
-                                            new IdentifierExpression("i"), '<', new NumberExpression(5)
-                                            ),
-                                        new CompoundStatement(
-
-                                            new List<Statement> {
-                                                new ExpressionStatement(
-                                                                new AssignmentExpression(
-                                                                    new IdentifierExpression("y"),
-                                                                    new NumberExpression(42)
-                                                                )
-                                                            )
-                                            }
-                                            )
-                                            )*/
                                 }
                             )
                         )
@@ -143,7 +124,12 @@ namespace M11J1
     }
     class Global
     {
-        public static int LastLabel = 0;
+        public static long LastLabel = 0;
         public static int LastLocal = 0;
+
+        public static string GetLabel()
+        {
+            return string.Format("{0}{1:x4}{2}", "IL_", LastLabel++, ":");
+        }
     }
 }

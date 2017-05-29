@@ -105,13 +105,13 @@ namespace M11J1.AST
         }
 
         public override void GenCode(string file)
-        {
-            Emit(file, "ldloc {0}", _declaration.GetNumber(_declaration.DeclarationIds[_name]));
+        {         
+            Emit(file, Global.GetLabel() + "    " + "ldloc {0}", _declaration.GetNumber(_declaration.DeclarationIds[_name]) );
         }
 
         public override void GenStoreCode(string file)
         {
-            Emit(file, "stloc {0}", _declaration.GetNumber(_declaration.DeclarationIds[_name]));
+            Emit(file, Global.GetLabel() + "    " + "stloc {0}", _declaration.GetNumber(_declaration.DeclarationIds[_name]));
         }
     }
 
@@ -140,7 +140,7 @@ namespace M11J1.AST
 
         public override void GenCode(string file)
         {
-            Emit(file, "ldc.i4 {0}", _value);
+            Emit(file, Global.GetLabel() + "    " + "ldc.i4 {0}", _value);
         }
     }
 
@@ -213,13 +213,13 @@ namespace M11J1.AST
             switch (_op)
             {
                 case '<':
-                    Emit(file, "clt");
+                    Emit(file, Global.GetLabel() + "    " + "clt");
                     break;
                 case '>':
-                    Emit(file, "glt");
+                    Emit(file, Global.GetLabel() + "    " + "glt");
                     break;
                 case '+':
-                    Emit(file, "add");
+                    Emit(file, Global.GetLabel() + "    " + "add");
                     break;
                 default:
                     {
