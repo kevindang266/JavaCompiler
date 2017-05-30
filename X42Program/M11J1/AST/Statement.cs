@@ -58,6 +58,55 @@ namespace M11J1.AST
     }
 }
 
+public class BlockStatement : Statement
+{
+    private Statement varStatement;
+    private Expression expStatement;
+    public BlockStatement(Statement varStatement, Expression expStatement)
+    {
+        this.varStatement = varStatement;
+        this.expStatement = expStatement;
+    }
+
+    public override void Dump(int indent)
+    {
+        Label(indent, "BLockStatement\n");
+        _cond.Dump(indent + 1, "cond");
+        varStatement.Dump(indent + 1, "");
+        expStatement.Dump(indent + 1, "");
+    }
+
+    public override void ResolveNames(LexicalScope scope)
+    {
+        _cond.ResolveNames(scope);
+        varStatement.ResolveNames(scope);
+        expStatement.ResolveNames(scope);
+    }
+
+    public override void TypeCheck()
+    {
+        _cond.TypeCheck();
+        if (!_cond.Type.Equal(new BoolType()))
+        {
+            Console.WriteLine("Invalid type for block statement condition\n");
+            throw new Exception("TypeCheck error");
+        }
+        expStatement.TypeCheck();
+        varStatement.TypeCheck();
+    }
+
+    public override void GenCode(string file)
+    {
+        _cond.GenCode(file);
+        int Label = Global.LastLabel++;
+        Emit(file, "brfalse L{0}", Label);
+        expStatement.GenCode(file);
+        Emit(file, "L{0}:", Label);
+        varStatement.GenCode(file);
+    }
+}
+
+
 
 
 public class IfThenElseStatement : Statement
