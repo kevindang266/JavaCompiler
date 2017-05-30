@@ -4,12 +4,12 @@
 	{
 		int x, y;
 		x = 42;
-		y = 53;
 		if (x < 3)
 			y = x + 42;
 		else
 		{
 			int z;
+			x = 100;
 			z = 4;
 		}
     }

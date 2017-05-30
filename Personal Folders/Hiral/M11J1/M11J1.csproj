@@ -47,11 +47,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AST\ClassDeclaration.cs" />
-    <Compile Include="AST\LexicalScope.cs" />
     <Compile Include="AST\Modifier.cs" />
     <Compile Include="AST\CompilationUnit.cs" />
     <Compile Include="AST\IDeclaration.cs" />
     <Compile Include="AST\Expression.cs" />
+    <Compile Include="AST\LexicalScope.cs" />
     <Compile Include="AST\MethodDeclaration.cs" />
     <Compile Include="AST\Node.cs" />
     <Compile Include="AST\Parameter.cs" />
@@ -65,6 +65,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="parser.y" />
+    <None Include="parser_err.y" />
     <None Include="scanner.lex" />
     <None Include="Tests\keyword.j" />
     <None Include="Tests\m11j1.java.expected" />
@@ -77,7 +78,7 @@
   <Target Name="BeforeBuild">
     <Message Text="Generating Scanner" />
     <Exec Command="gplex.exe /unicode scanner.lex" />
-    <Exec Command="gppg.exe /gplex /report /verbose parser.y &gt; parser.cs" />
+    <Exec Command="gppg.exe /gplex /report parser.y &gt; parser.cs" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
