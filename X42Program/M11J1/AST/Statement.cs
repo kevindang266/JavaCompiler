@@ -8,8 +8,59 @@ namespace M11J1.AST
     {
         public LexicalScope LexicalScope { get; set; }
     }
+    public Class IfThenStatement(Expression cond, Statement thenStmt)
+    {
+        _cond = cond;
+        _thenStmt = thenStmt;
+    }
 
-    public class IfThenElseStatement : Statement
+
+    public override void Dump(int indent)
+    {
+
+        Label(indent, "IfThenStatement\n");
+        _cond.Dump(indent + 1, "cond");
+        _thenStmt.Dump(indent + 1, "then");
+
+    }
+
+    public override void ResolveNames(LexicalScope scope)
+    {
+
+
+        if (_thenStmt == null)
+        {
+            _cond.ResolveNames(scope);
+            _thenStmt.ResolveNames(scope);
+        }
+
+    }
+
+    public override void TypeCheck()
+    {
+        _cond.TypeCheck();
+        if (!_cond.Type.Equal(new BoolType()))
+        {
+            Console.WriteLine("Invalid type for if statement condition\n");
+            throw new Exception("TypeCheck error");
+        }
+        _thenStmt.TypeCheck();
+
+    }
+    public override void GenCode(string file)
+    {
+        _cond.GenCode(file);
+        int elseLabel = Global.LastLabel++;
+        Emit(file, "brfalse L{0}", elseLabel);
+        _thenStmt.GenCode(file);
+        Emit(file, "L{0}:", elseLabel);
+        _elseStmt.GenCode(file);
+    }
+}
+
+
+
+public class IfThenElseStatement : Statement
     {
         private readonly Expression _cond;
         private readonly Statement _thenStmt;
