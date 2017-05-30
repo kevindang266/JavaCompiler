@@ -106,6 +106,56 @@ public class BlockStatement : Statement
     }
 }
 
+public class WhileStatement : Statement
+{
+    
+    private Expression _cond;
+    private Statement _state;
+
+    public WhileStatement(Expression _cond, Statement _state)
+    {
+        this.Cond = _cond;
+        this.Statements = _state;
+    }
+
+    public override bool ResolveNames(LexicalScope scope)
+    {
+        
+        var newScope = getNewScope(scope, null);
+
+        return _cond.ResolveNames(newScope) & _state.ResolveNames(newScope);
+    }
+    public override void TypeCheck()
+    {
+        this.Cond.TypeCheck();
+
+        if (!Cond.type.isTheSameAs(new NamedType("BOOLEAN")))
+        {
+            System.Console.WriteLine("Type error in WhileStatement\n");
+            throw new Exception("TypeCheck error");
+        }
+
+        Statements.TypeCheck();
+    }
+    public override void GenCode(StringBuilder xy)
+    {
+        int CodeLabel, TestLabel, FinalLabel;
+
+        CodeLabel = LastLabel++;
+        TestLabel = LastLabel++;
+        FinalLabel = LastLabel++;
+
+        cg.emit(xy, "\tbr.s\tL{0}\n", TestLabel);
+        cg.emit(xy, "L{0}:\n", CodeLabel);
+        Statements.GenCode(sb);
+        cg.emit(xy, "L{0}:\n", TestLabel);
+        Cond.GenCode(sb);
+        cg.emit(xy, "L{0}:", FinalLabel);
+        cg.emit(xy, "\tbrtrue.s\tL{0}\n", CodeLabel);
+    }
+
+}
+
 
 
 
