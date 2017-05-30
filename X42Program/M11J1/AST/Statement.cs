@@ -454,4 +454,75 @@ public class IfThenElseStatement : Statement
             return int.Parse(VariableValues[variableId]);
         }
     }
+
+public class SwitchStatement : Statement
+{
+    
+    private Expression expression;
+    private List<Statement> block;
+
+    public SwitchStatement(Expression exp, List<Statement> block)
+    {
+        this.expression = exp;
+        this.block = block;
+    }
+
+    public override void Dump(int indent)
+    {
+        Label(indent, "Switch Statement\n");
+        exp.Dump(indent + 1, "Expression");
+        block.Dump(indent + 1, "Block");
+
+    }
+
+    public override bool ResolveNames(LexicalScope scope)
+    {
+       
+        var newScope = getNewScope(scope, null);
+
+        bool loopResolve = true;
+
+        if (block != null)
+        {
+            foreach (Statement each in block)
+            {
+                Declaration decl = each as Declaration;
+                if (decl != null)
+                {
+                    decl.AddItemsToSymbolTable(scope);
+                }
+                loopResolve = loopResolve & each.ResolveNames(scope);
+            }
+        }
+
+        return loopResolve && expression.ResolveNames(scope);
+    }
+
+   
+    public override void TypeCheck()
+    {
+        this.expression.TypeCheck();
+
+        if (!expression.type.isTheSameAs(new NamedType("INT")))
+        {
+            System.Console.WriteLine("Type error in SwitchStatement\n");
+            throw new Exception("TypeCheck error");
+        }
+
+        foreach (SwitchBlockGroup Blk in block)
+        {
+            Blk.setswichExprType(expression.type);
+            Blk.TypeCheck();
+        }
+
+    }
+
+   
+    public override void GenCode(StringBuilder sb)
+    {
+       }
+}
+
+
+
 }
