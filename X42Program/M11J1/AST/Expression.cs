@@ -68,6 +68,34 @@ namespace M11J1.AST
         }
     }
 
+    public class BooleanLiteralExpression : Expression
+    {
+        private bool value;
+
+        public BooleanLiteralExpression(bool val)
+        {
+            value = val;
+        }
+
+        public override void Dump(int indent)
+        {
+            Label(indent, "BooleanLiteralExpression\n");
+            Type.Dump(indent + 1, "Value");
+
+        }
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+
+        }
+
+        public override void TypeCheck()
+        {
+            Type = new BoolType();
+
+        }
+    }
     public class IdentifierExpression : Expression
     {
         private string _name;
