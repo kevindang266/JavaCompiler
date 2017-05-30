@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.IO;
 namespace group2JavaCompiler.AST
 
-# Class method declaration
+# Class method declaration Method.cs final
 
 {
     public class Method : Node
