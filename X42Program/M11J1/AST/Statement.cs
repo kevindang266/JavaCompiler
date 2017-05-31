@@ -162,12 +162,20 @@ namespace M11J1.AST
 }
     public class IfStatement : Statement
     {
-        private Expression Expr;
+        private Expression exp;
         private Statement ThenStmts, ElseStmts;
         public IfStatement(Expression Expr, Statement ThenStmts, Statement ElseStmts)
         {
-            this.Expr = Expr; this.ThenStmts = ThenStmts; this.ElseStmts = ElseStmts;
+            this.exp = exp; this.ThenStmts = ThenStmts; this.ElseStmts = ElseStmts;
         }
+
+        public override void Dump(int indent)
+        {
+            Label(indent, "IfStatement\n");
+            exp.Dump(indent + 1);
+            ThenStmts.Dump(indent + 1);
+            ElseStmts.Dump(indent + 1);
+         }
 
         public override bool ResolveNames(LexicalScope scope)
         {
@@ -573,6 +581,64 @@ namespace M11J1.AST
     {
        }
 }
+    public class AssertStatement : Statement
+    {
+       
+        private Expression exp1;
+        private Expression exp2;
+
+        public AssertStatement(Expression exp1)
+        {
+            this.exp1 = exp1;
+        }
+
+
+        public AssertStatement(Expression exp1, Expression exp2)
+        {
+            this.exp1 = exp1;
+            this.exp2 = exp2;
+        }
+
+        public override void Dump(int indent)
+        {
+            Label(indent, "AssertStatement\n");
+            exp1.Dump(indent + 1);
+            exp2.Dump(indent + 1);
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            var Scope = getNewScope(scope, null);
+            bool value = expression1.ResolveNames(Scope);
+            if (expression2 != null)
+            {
+                return value & exp2.ResolveNames(Scope);
+            }
+            return value;
+        }
+
+        public override void TypeCheck()
+        {
+            this.exp1.TypeCheck();
+
+            if (!expression1.type.isTheSameAs(new NamedType("BOOLEAN")))
+            {
+                System.Console.WriteLine("Type error in AssertStatement\n");
+                throw new Exception("TypeCheck error");
+            }
+
+            if (expression2 != null)
+            {
+                this.expression2.TypeCheck();
+                if (expression2.type.isTheSameAs(new NamedType("VOID")))
+                {
+                    System.Console.WriteLine("Type error in AssertStatement\n");
+                    throw new Exception("TypeCheck error");
+                }
+            }
+        }
+       
+    }
 
 
 
