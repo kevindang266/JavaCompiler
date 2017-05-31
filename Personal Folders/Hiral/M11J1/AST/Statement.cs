@@ -8,6 +8,221 @@ namespace M11J1.AST
     {
         public LexicalScope LexicalScope { get; set; }
     }
+    public class IfThenStatement : Statement
+    {
+        private Expression cond;
+        private Statement thenStmt;
+
+        public IfThenStatement(Expression cond, Statement thenStmt)
+        {
+            _cond = cond;
+            _thenStmt = thenStmt;
+
+
+
+    public override void Dump(int indent)
+        {
+
+            Label(indent, "IfThenStatement\n");
+            _cond.Dump(indent + 1, "cond");
+            _thenStmt.Dump(indent + 1, "then");
+
+        }
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+
+
+            if (_thenStmt == null)
+            {
+                _cond.ResolveNames(scope);
+                _thenStmt.ResolveNames(scope);
+            }
+
+        }
+
+        public override void TypeCheck()
+        {
+            _cond.TypeCheck();
+            if (!_cond.Type.Equal(new BoolType()))
+            {
+                Console.WriteLine("Invalid type for if statement condition\n");
+                throw new Exception("TypeCheck error");
+            }
+            _thenStmt.TypeCheck();
+
+        }
+        public override void GenCode(string file)
+        {
+            _cond.GenCode(file);
+            int elseLabel = Global.LastLabel++;
+            Emit(file, "brfalse L{0}", elseLabel);
+            _thenStmt.GenCode(file);
+            Emit(file, "L{0}:", elseLabel);
+            _elseStmt.GenCode(file);
+        }
+    }
+
+    public class BlockStatement : Statement
+    {
+        private Statement varStatement;
+        private Expression expStatement;
+        public BlockStatement(Statement varStatement, Expression expStatement)
+        {
+            this.varStatement = varStatement;
+            this.expStatement = expStatement;
+        }
+
+        public override void Dump(int indent)
+        {
+            Label(indent, "BLockStatement\n");
+            _cond.Dump(indent + 1, "cond");
+            varStatement.Dump(indent + 1, "");
+            expStatement.Dump(indent + 1, "");
+        }
+
+        public override void ResolveNames(LexicalScope scope)
+        {
+            _cond.ResolveNames(scope);
+            varStatement.ResolveNames(scope);
+            expStatement.ResolveNames(scope);
+        }
+
+        public override void TypeCheck()
+        {
+            _cond.TypeCheck();
+            if (!_cond.Type.Equal(new BoolType()))
+            {
+                Console.WriteLine("Invalid type for block statement condition\n");
+                throw new Exception("TypeCheck error");
+            }
+            expStatement.TypeCheck();
+            varStatement.TypeCheck();
+        }
+
+        public override void GenCode(string file)
+        {
+            _cond.GenCode(file);
+            int Label = Global.LastLabel++;
+            Emit(file, "brfalse L{0}", Label);
+            expStatement.GenCode(file);
+            Emit(file, "L{0}:", Label);
+            varStatement.GenCode(file);
+        }
+    }
+
+    public class WhileStatement : Statement
+    {
+
+        private Expression _cond;
+        private Statement _state;
+
+        public WhileStatement(Expression _cond, Statement _state)
+        {
+            this.Cond = _cond;
+            this.Statements = _state;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+
+            var newScope = getNewScope(scope, null);
+
+            return _cond.ResolveNames(newScope) & _state.ResolveNames(newScope);
+        }
+        public override void TypeCheck()
+        {
+            this.Cond.TypeCheck();
+
+            if (!Cond.type.isTheSameAs(new NamedType("BOOLEAN")))
+            {
+                System.Console.WriteLine("Type error in WhileStatement\n");
+                throw new Exception("TypeCheck error");
+            }
+
+            Statements.TypeCheck();
+        }
+        public override void GenCode(StringBuilder xy)
+        {
+            int CodeLabel, TestLabel, FinalLabel;
+
+            CodeLabel = LastLabel++;
+            TestLabel = LastLabel++;
+            FinalLabel = LastLabel++;
+
+            cg.emit(xy, "\tbr.s\tL{0}\n", TestLabel);
+            cg.emit(xy, "L{0}:\n", CodeLabel);
+            Statements.GenCode(sb);
+            cg.emit(xy, "L{0}:\n", TestLabel);
+            Cond.GenCode(sb);
+            cg.emit(xy, "L{0}:", FinalLabel);
+            cg.emit(xy, "\tbrtrue.s\tL{0}\n", CodeLabel);
+        }
+
+    }
+    public class IfStatement : Statement
+    {
+        private Expression exp;
+        private Statement ThenStmts, ElseStmts;
+        public IfStatement(Expression Expr, Statement ThenStmts, Statement ElseStmts)
+        {
+            this.exp = exp; this.ThenStmts = ThenStmts; this.ElseStmts = ElseStmts;
+        }
+
+        public override void Dump(int indent)
+        {
+            Label(indent, "IfStatement\n");
+            exp.Dump(indent + 1);
+            ThenStmts.Dump(indent + 1);
+            ElseStmts.Dump(indent + 1);
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            var newScope = getNewScope(scope, null);
+
+            if (ElseStmts == null)
+                return CondExpr.ResolveNames(newScope) & ThenStmts.ResolveNames(newScope);
+            else
+                return CondExpr.ResolveNames(newScope) & ThenStmts.ResolveNames(newScope) & ElseStmts.ResolveNames(newScope);
+        }
+
+        public override void TypeCheck()
+        {
+            Expr.TypeCheck();
+
+            if (!CondExpr.type.isTheSameAs(new NamedType("BOOLEAN")))
+            {
+                Console.WriteLine("Invalid type for if statement condition\n");
+                throw new Exception("TypeCheck error");
+            }
+            ThenStmts.TypeCheck();
+            if (ElseStmts != null)
+                ElseStmts.TypeCheck();
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+            CondExpr.GenCode(sb);
+
+            int elseLabel = LastLabel++;
+            int endLabel = 0;
+            cg.emit(sb, "\tbrfalse L{0}\n", elseLabel);
+            ThenStmts.GenCode(sb);
+            if (ElseStmts != null)
+            {
+                endLabel = LastLabel++;
+                cg.emit(sb, "\tbr L{0}\n", endLabel);
+            }
+            cg.emit(sb, "L{0}:\n", elseLabel);
+            if (ElseStmts != null)
+            {
+                ElseStmts.GenCode(sb);
+                cg.emit(sb, "L{0}:\n", endLabel);
+            }
+        }
+    }
+
 
     public class IfThenElseStatement : Statement
     {
@@ -92,12 +307,6 @@ namespace M11J1.AST
         }
     }
 
-    /*
-     * VariableDeclarationList will be used for multiple declaration.
-     * For example: int x, y, z;
-     * VariableDeclarationList extends Statement implements IDeclaration
-     * This is a statement that can be recognise by IDeclaration when adding variables to Lexical Scope
-     */
     public class VariableDeclarationList : Statement, IDeclaration
     {
         private readonly List<VariableDeclaration> _variableNames;
@@ -256,7 +465,7 @@ namespace M11J1.AST
 
         public List<VariableDeclaration> GetList()
         {
-            return new List<VariableDeclaration> {new VariableDeclaration(_type, _name)};
+            return new List<VariableDeclaration> { new VariableDeclaration(_type, _name) };
         }
 
         public override void Dump(int indent)
@@ -304,4 +513,133 @@ namespace M11J1.AST
             return int.Parse(VariableValues[variableId]);
         }
     }
+
+    public class SwitchStatement : Statement
+    {
+
+        private Expression expression;
+        private List<Statement> block;
+
+        public SwitchStatement(Expression exp, List<Statement> block)
+        {
+            this.expression = exp;
+            this.block = block;
+        }
+
+        public override void Dump(int indent)
+        {
+            Label(indent, "Switch Statement\n");
+            exp.Dump(indent + 1, "Expression");
+            block.Dump(indent + 1, "Block");
+
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+
+            var newScope = getNewScope(scope, null);
+
+            bool loopResolve = true;
+
+            if (block != null)
+            {
+                foreach (Statement each in block)
+                {
+                    Declaration decl = each as Declaration;
+                    if (decl != null)
+                    {
+                        decl.AddItemsToSymbolTable(scope);
+                    }
+                    loopResolve = loopResolve & each.ResolveNames(scope);
+                }
+            }
+
+            return loopResolve && expression.ResolveNames(scope);
+        }
+
+
+        public override void TypeCheck()
+        {
+            this.expression.TypeCheck();
+
+            if (!expression.type.isTheSameAs(new NamedType("INT")))
+            {
+                System.Console.WriteLine("Type error in SwitchStatement\n");
+                throw new Exception("TypeCheck error");
+            }
+
+            foreach (SwitchBlockGroup Blk in block)
+            {
+                Blk.setswichExprType(expression.type);
+                Blk.TypeCheck();
+            }
+
+        }
+
+
+        public override void GenCode(StringBuilder sb)
+        {
+        }
+    }
+    public class AssertStatement : Statement
+    {
+
+        private Expression exp1;
+        private Expression exp2;
+
+        public AssertStatement(Expression exp1)
+        {
+            this.exp1 = exp1;
+        }
+
+
+        public AssertStatement(Expression exp1, Expression exp2)
+        {
+            this.exp1 = exp1;
+            this.exp2 = exp2;
+        }
+
+        public override void Dump(int indent)
+        {
+            Label(indent, "AssertStatement\n");
+            exp1.Dump(indent + 1);
+            exp2.Dump(indent + 1);
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            var Scope = getNewScope(scope, null);
+            bool value = expression1.ResolveNames(Scope);
+            if (expression2 != null)
+            {
+                return value & exp2.ResolveNames(Scope);
+            }
+            return value;
+        }
+
+        public override void TypeCheck()
+        {
+            this.exp1.TypeCheck();
+
+            if (!expression1.type.isTheSameAs(new NamedType("BOOLEAN")))
+            {
+                System.Console.WriteLine("Type error in AssertStatement\n");
+                throw new Exception("TypeCheck error");
+            }
+
+            if (expression2 != null)
+            {
+                this.expression2.TypeCheck();
+                if (expression2.type.isTheSameAs(new NamedType("VOID")))
+                {
+                    System.Console.WriteLine("Type error in AssertStatement\n");
+                    throw new Exception("TypeCheck error");
+                }
+            }
+        }
+
+    }
+
+
+
 }
