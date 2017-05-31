@@ -160,6 +160,61 @@ namespace M11J1.AST
     }
 
 }
+    public class IfStatement : Statement
+    {
+        private Expression Expr;
+        private Statement ThenStmts, ElseStmts;
+        public IfStatement(Expression Expr, Statement ThenStmts, Statement ElseStmts)
+        {
+            this.Expr = Expr; this.ThenStmts = ThenStmts; this.ElseStmts = ElseStmts;
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            var newScope = getNewScope(scope, null);
+
+            if (ElseStmts == null)
+                return CondExpr.ResolveNames(newScope) & ThenStmts.ResolveNames(newScope);
+            else
+                return CondExpr.ResolveNames(newScope) & ThenStmts.ResolveNames(newScope) & ElseStmts.ResolveNames(newScope);
+        }
+
+        public override void TypeCheck()
+        {
+            Expr.TypeCheck();
+
+            if (!CondExpr.type.isTheSameAs(new NamedType("BOOLEAN")))
+            {
+                Console.WriteLine("Invalid type for if statement condition\n");
+                throw new Exception("TypeCheck error");
+            }
+            ThenStmts.TypeCheck();
+            if (ElseStmts != null)
+                ElseStmts.TypeCheck();
+        }
+
+        public override void GenCode(StringBuilder sb)
+        {
+            CondExpr.GenCode(sb);
+
+            int elseLabel = LastLabel++;
+            int endLabel = 0;
+            cg.emit(sb, "\tbrfalse L{0}\n", elseLabel);
+            ThenStmts.GenCode(sb);
+            if (ElseStmts != null)
+            {
+                endLabel = LastLabel++;
+                cg.emit(sb, "\tbr L{0}\n", endLabel);
+            }
+            cg.emit(sb, "L{0}:\n", elseLabel);
+            if (ElseStmts != null)
+            {
+                ElseStmts.GenCode(sb);
+                cg.emit(sb, "L{0}:\n", endLabel);
+            }
+        }
+    }
+
 
     public class IfThenElseStatement : Statement
     {
