@@ -8,11 +8,16 @@ namespace M11J1.AST
     {
         public LexicalScope LexicalScope { get; set; }
     }
-    public Class IfThenStatement(Expression cond, Statement thenStmt)
+    public class IfThenStatement : Statement
+    {
+        private Expression cond;
+        private Statement thenStmt;
+
+        public IfThenStatement(Expression cond, Statement thenStmt)
     {
         _cond = cond;
         _thenStmt = thenStmt;
-    }
+
 
 
     public override void Dump(int indent)
@@ -58,7 +63,7 @@ namespace M11J1.AST
     }
 }
 
-public class BlockStatement : Statement
+    public class BlockStatement : Statement
 {
     private Statement varStatement;
     private Expression expStatement;
@@ -106,7 +111,7 @@ public class BlockStatement : Statement
     }
 }
 
-public class WhileStatement : Statement
+    public class WhileStatement : Statement
 {
     
     private Expression _cond;
@@ -156,10 +161,7 @@ public class WhileStatement : Statement
 
 }
 
-
-
-
-public class IfThenElseStatement : Statement
+    public class IfThenElseStatement : Statement
     {
         private readonly Expression _cond;
         private readonly Statement _thenStmt;
@@ -242,12 +244,6 @@ public class IfThenElseStatement : Statement
         }
     }
 
-    /*
-     * VariableDeclarationList will be used for multiple declaration.
-     * For example: int x, y, z;
-     * VariableDeclarationList extends Statement implements IDeclaration
-     * This is a statement that can be recognise by IDeclaration when adding variables to Lexical Scope
-     */
     public class VariableDeclarationList : Statement, IDeclaration
     {
         private readonly List<VariableDeclaration> _variableNames;
@@ -455,7 +451,7 @@ public class IfThenElseStatement : Statement
         }
     }
 
-public class SwitchStatement : Statement
+    public class SwitchStatement : Statement
 {
     
     private Expression expression;
