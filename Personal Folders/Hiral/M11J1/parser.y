@@ -58,17 +58,11 @@
 %type <name> VariableDeclaratorId, VariableDeclarator
 %type <statements> BlockStatements
 %type <compoundStatement> MethodBody, Block
-%type <statement>	BlockStatement, Statement, SelectionStatement, StatementWithoutTrailingSubstatement,
-					ExpressionStatement, StatementExpression
+%type <statement> BlockStatement, Statement, SelectionStatement
 %type <listString> VariableDeclaratorList, CommaVariableDeclarator_opt
-%type <expression>	Assignment, LeftHandSide, Expression, AssignmentExpression, Literal, ExpressionName, 
-					ConditionalExpression, ConditionalOrExpression, ConditionalAndExpression, InclusiveOrExpression,
-					ExclusiveOrExpression, AndExpression, EqualityExpression, RelationalExpression,
-					ShiftExpression, AdditiveExpression, MultiplicativeExpression, UnaryExpression,
-					UnaryExpressionNotPlusMinus, PostfixExpression, Primary, PrimaryNoNewArray
+%type <expression> Assignment, LeftHandSide, Expression, AssignmentExpression, Literal, ExpressionName, ConditionalExpression
 %type <variableList> LocalVariableDeclaration
 %type <variableDeclarationList> LocalVariableDeclarationStatement
-%type <c> AssignmentOperator
 		
 %left '='
 %nonassoc '<'
@@ -208,21 +202,9 @@ VariableInitializer
 	;
 
 Statement
-	: StatementWithoutTrailingSubstatement					{ $$ = $1; }
+	: Assignment ';'										{ $$ = new AST.ExpressionStatement($1); }
 	| SelectionStatement									{ $$ = $1; }
-	;
-
-StatementWithoutTrailingSubstatement
-	: Block													{ $$ = $1; }
-	| ExpressionStatement									{ $$ = $1; }						
-	;
-
-ExpressionStatement
-	: StatementExpression ';'								{ $$ = $1; }
-	;
-
-StatementExpression
-	: Assignment											{ $$ = new AST.ExpressionStatement($1); }
+	| Block													{ $$ = $1; }
 	;
 
 SelectionStatement
@@ -231,7 +213,7 @@ SelectionStatement
 	;
 	
 Assignment
-	: LeftHandSide AssignmentOperator Expression			{ $$ = new AST.AssignmentExpression($1, $2, $3); }
+	: LeftHandSide AssignmentOperator Expression			{ $$ = new AST.AssignmentExpression($1, $3); }
 	;
 
 LeftHandSide
@@ -239,83 +221,22 @@ LeftHandSide
 	;
 
 AssignmentOperator
-	: '='													{ $$ = '='; }
+	: '='
+	| '+'
 	;
 
 Expression
 	: AssignmentExpression									{ $$ = $1; }
+	| ConditionalExpression									{ $$ = $1; }
 	;
 
 ConditionalExpression
-	: ConditionalOrExpression								{ $$ = $1; }
-	;
-
-ConditionalOrExpression
-	: ConditionalAndExpression								{ $$ = $1; }
-	;
-
-ConditionalAndExpression
-	: InclusiveOrExpression									{ $$ = $1; }
-	;
-
-InclusiveOrExpression
-	: ExclusiveOrExpression									{ $$ = $1; }
-	;
-
-ExclusiveOrExpression
-	: AndExpression											{ $$ = $1; }
-	;
-
-AndExpression
-	: EqualityExpression									{ $$ = $1; }
-	;
-
-EqualityExpression
-	: RelationalExpression									{ $$ = $1; }
-	;
-
-RelationalExpression
-	: ShiftExpression										{ $$ = $1; }
-	| RelationalExpression '<' ShiftExpression				{ $$ = new AST.BinaryExpression($1,'<',$3); }
-	;
-
-ShiftExpression
-	: AdditiveExpression									{ $$ = $1; }
-	;
-
-AdditiveExpression
-	: MultiplicativeExpression								{ $$ = $1; }
-	| AdditiveExpression '+' MultiplicativeExpression		{ $$ = new AST.BinaryExpression($1,'+',$3); }
-	;
-
-MultiplicativeExpression
-	: UnaryExpression										{ $$ = $1; }
-	;
-
-UnaryExpression
-	: UnaryExpressionNotPlusMinus							{ $$ = $1; }
-	;
-
-UnaryExpressionNotPlusMinus
-	: PostfixExpression										{ $$ = $1; }
-	;
-
-PostfixExpression
-	: Primary												{ $$ = $1; }
-	| ExpressionName										{ $$ = $1; }
-	;
-
-Primary
-	: PrimaryNoNewArray										{ $$ = $1; }
-	;
-
-PrimaryNoNewArray
-	: Literal												{ $$ = $1; }
+	: LeftHandSide '<' Expression							{ $$ = new AST.BinaryExpression($1,'<',$3); }
 	;
 
 AssignmentExpression
-	: ConditionalExpression									{ $$ = $1; }
-	| Assignment											{ $$ = $1; }
+	: Literal												{ $$ = $1; }
+	| Assignment
 	;
 
 Literal
@@ -370,6 +291,426 @@ Dims
 	| '[' ']' Dims
 	;
 
+Statement
+		: StatementWithoutTrailingSubstatement					{ $$ = $1; } 
+		| IfThenStatement										{$$ = $1; } 
+		| IfThenElseStatement									{$$ = $1; } 
+		| WhileStatement										{ $$ = $1; } 
+		| LabeledStatement										 { $$ = $1;} 
+		;
+		
+StatementNoShortIf
+		: StatementWithoutTrailingSubstatement					{$$ = $1; } 
+		| IfThenElseStatementNoShortIf							{$$ = $1; } 
+		;
+
+
+StatementWithoutTrailingSubstatement
+		: ExpressionStatement 									{ $$ = $1; } 
+		| Block													{ $$ = $1; } 
+		| BreakStatement										{ $$ = $1;} 
+		| DoStatement											{ $$ = $1; } 
+		| ContinueStatement										{ $$ = $1;} 
+		| ReturnStatement										{ $$ = $1;} 
+		| ThrowStatement										{ $$ = $1;} 
+		| SynchronizedStatement									{ $$ = $1;} 
+		| SwitchStatement										{ $$ = $1;} 
+		| AssertStatement										{ $$ = $1;} 
+		| TryStatement											{ $$ = $1;} 
+;
+AssertStatement
+    : Assert Expression                                              { $$ = new AssertStatement($2);}
+    | Assert Expression ':' Expression ';'	                         { $$ = new AssertStatement($2, $4);} 
+	;
+
+SwitchStatement
+    : Switch '(' Expression ')' SwitchBlock 	                     { $$ = new SwitchStatement($3, $5); }
+	;
+
+SwitchBlock
+    : '{' SwitchBlockStatementGroups SwitchLabels '}'	              { $$ = $2; }
+	; 
+
+SwitchBlockStatementGroups
+    : empty
+	| SwitchBlockStatementGroup                                       { $$ = new List<Statement> {$1}; }  
+	| SwitchBlockStatementGroups SwitchBlockStatementGroup            { $$ = $1; $$.Add($2); } 
+	;
+
+SwitchLabels
+    : empty
+	| SwitchLabel                                                      { $$ = new List<Statement> {$1};} 
+	| SwitchLabels SwitchLabel                                         { $$ = $1; $$.Add($2); }
+	;	 
+
+WhileStatement
+    : While '(' Expression ')' Statement                               { $$ = new WhileStatement($3, $5); }
+	;
+
+DoStatement
+    :  Do Statement While '(' Expression ')'                           { $$ = new DoStatement($2, $5); }
+	; 
+IfThenStatement
+		: IF '(' Expression ')' Statement						        { $$ = new IfStatement($3, $5,null); } 
+		;
+
+IfThenElseStatement
+		: IF '(' Expression ')' StatementNoShortIf ELSE Statement				{ $$ = new IfStatement($3, $5, $7); } 
+		;
+
+IfThenElseStatementNoShortIf
+	: IF '(' Expression ')' StatementNoShortIf ELSE StatementNoShortIf		{ $$ = new IfStatement($3, $5, $7); } 
+    ;
+
+LabeledStatement
+		: IDENTIFIER ':' Statement								      { $$ = new LabeledStatement($1,$3);} 
+		;
+
+	Block 
+		: '{' BlockStatements_Opt '}'							{ $$ = new BlockStatement($2); } 
+;
+
+BlockStatements_Opt
+		: BlockStatements										{ $$ = $1; } 
+		| /* Empty */											{ $$ = null; } 
+;
+
+BlockStatements
+		: BlockStatement										{ $$ = new List<Statement> { $1 };} 
+		| BlockStatements BlockStatement						{ $$ = $1; $$.Add($2); } 
+;
+   
+
+
+BreakStatement
+		: BREAK Identifier_opt ';'			{ if($2 == null){$$ = new BreakStatement();} else {$$ = new BreakStatement($2);} } 
+; 
+ContinueStatement
+		: CONTINUE Identifier_opt ';'	    { if($2 == null){$$ = new ContinueStatement();} else {$$ = new ContinueStatement($2);} } 
+		;
+
+
+Expression
+    : LambdaExpression
+    | AssignmentExpression 
+	;
+
+LambdaExpression
+	: LambdaParameters Selection LambdaBody	
+	;
+
+LambdaParameters
+    : Identifier
+    | '(' FormalParameterList_opt ')'
+    | '(' InferredFormalParameterList ')'
+	;
+
+LambdaParameters
+	: Identifier
+	| '(' FormalParameterList_opt ')'
+	| '(' InferredFormalParameterList ')'
+	;
+
+FormalParameterList_opt
+	: empty
+	| FormalParameterList
+	| FormalParameterList_opt FormalParameterList
+	;
+
+LambdaBody
+	: Expression 
+	| Block
+	;
+
+InferredFormalParameterList
+	: Identifier CommaIdentifiers
+	;	
+
+CommaIdentifiers		
+	: empty
+	| CommaIdentifier
+	| CommaIdentifiers CommaIdentifier
+	;
+
+FormalParameterList
+	 : ReceiverParameter
+     | FormalParameters ',' LastFormalParameter
+     | LastFormalParameter 
+	 ;
+
+CommaIdentifier
+	: ',' Identifier
+	;
+
+LastFormalParameter
+	: FormalParameter
+	| '{'VariableModifier'}' UnannType '{'Annotation'}' VariableDeclaratorId 
+	;
+
+UnannType
+	: UnannPrimitiveType
+	| UnannReferenceType
+	;
+
+UnannPrimitiveType
+	: NumericType 
+	| Boolean
+	;
+
+NumericType
+	: IntegralType 
+	| FloatingPointType
+	;
+
+IntegralType
+	: Int
+	| Byte
+	| Short 
+	| Long
+	| Char 
+	;
+
+FloatingPointType
+    : Float
+	| Double
+	;
+
+UnannReferenceType
+	: UnannArrayType
+	| UnannClassOrInterfaceType
+	| UnannTypeVariable
+	;
+
+UnannArrayType
+	: UnannTypeVariable Dims
+	| UnannClassOrInterfaceType Dims
+	| UnannPrimitiveType Dims
+	;
+
+UnannClassOrInterfaceType
+    : ClassType
+	| InterfaceType
+	;
+
+ClassType
+    :                                                     // ClassType in §4 (Types, Values, and Variables)
+	;
+
+InterfaceType
+    :                                                       // InterfaceType in §4 (Types, Values, and Variables)
+	;
+
+UnannTypeVariable
+	: Identifier
+	;
+
+VariableModifier
+	//| Anotation
+	: Final
+	;
+
+FormalParameters
+    :FormalParameter  comma_FormalParameter_opt 
+    |ReceiverParameter comma_FormalParameter_opt 
+    ; 
+
+comma_FormalParameter_opt
+    : empty
+	|',' FormalParameter
+	| comma_FormalParameter_opt ',' FormalParameter
+	;
+
+FormalParameter
+	: VariableModifiers UnannType VariableDeclaratorId
+	;
+
+VariableModifiers
+	: empty
+	| VariableModifier
+	| VariableModifiers VariableModifier
+	;
+
+VariableModifier_opt
+    : empty
+	| VariableModifier
+	| VariableModifier_opt VariableModifier
+	;
+
+
+VariableDeclaratorId
+	: Identifier Dims_opt
+	;
+
+Dims_opt
+	: empty
+	| Dims
+	;
+
+Dims
+	: Annotations '[' ']'
+	| Dims Annotations '[' ']'
+	;
+
+Annotations
+	: empty
+	| Annotation
+	| Annotations Annotation
+	;
+
+Annotation
+	: /* more */
+	;
+
+ReceiverParameter
+    : Annotations UnannType '[' Identifier '.' ']' This 
+	;
+
+
+
+SwitchBlockStatementGroup
+    : SwitchLabels BlockStatements 
+	;
+
+SwitchLabel
+    : Case ConstantExpression ':'
+    | Case EnumConstantName ':'
+    | Default ':'
+	;
+
+ConstantExpression
+    : Expression	
+	;
+EnumConstantName
+    : Identifier
+	;
+
+WhileStatementNoShortIf
+   : While '(' Expression ')' StatementNoShortIf                         
+   ;
+
+ForStatement
+    : BasicForStatement
+	| EnhancedForStatement
+	;
+
+ForStatementNoShortIf
+   : BasicForStatementNoShortIf
+   | EnhancedForStatementNoShortIf 
+   ; 
+BasicForStatementNoShortIf
+   : For '(' ForInit_opt  Expression_opt  ForUpdate_opt ')' StatementNoShortIf 
+   ;
+
+EnhancedForStatementNoShortIf
+    : For '(' VariableModifiers UnannType VariableDeclaratorId ':' Expression ')' StatementNoShortIf 
+	;
+
+BasicForStatement
+    : For '(' ForInit_opt  Expression_opt  ForUpdate_opt ')' Statement 
+	;
+
+ForUpdate_opt
+    : empty
+	| ForUpdate
+	| ForUpdate_opt ForUpdate
+	;
+ForUpdate 
+    : StatementExpressionList
+	;
+
+
+Expression_opt
+    : empty
+	| Expression
+	| Expression_opt Expression
+	;
+
+
+EnhancedForStatement
+    :  For '(' VariableModifier_opt UnannType VariableDeclaratorId ':' Expression ')' Statement
+	; 
+
+ForInit_opt
+    : empty
+	| ForInit
+    ;
+
+ForInit
+    : StatementExpressionList
+	| LocalVariableDeclaration
+	;
+
+StatementExpressionList
+    : StatementExpression Comma_StatementExpression_opt
+	;
+
+Comma_StatementExpression_opt
+    : empty
+	| ',' StatementExpression
+	| Comma_StatementExpression_opt ',' StatementExpression
+	;
+
+StatementExpression
+    :                                                            // AssignmentExpression in §15 (Expressions)
+	;
+
+
+AssignmentExpression
+	:                                                                  // AssignmentExpression in §15 (Expressions)            
+	;
+
+Assignment
+    :                                                                  // AssignmentExpression in §15 (Expressions)            
+	;
+
+empty
+    : 
+	;	
+
+EmptyStatement
+	: 
+	;
+
+ExpressionStatement
+  :
+  ;
+
+IfThenElseStatement
+  :
+  ;
+
+IfThenElseStatementNoShortIf
+  :
+  ;
+
+
+
+BreakStatement
+		: 
+        ;
+IfThenStatement
+   :
+   ;
+
+ThrowStatement
+    :
+    ;
+
+TryStatement
+	:
+    ;
+
+LabeledStatementNoShortIf
+   :
+   ;
+
+ReturnStatement
+   :
+   ;
+
+SynchronizedStatement
+   :
+   ;
 %%
 
 public Parser(Scanner scanner) : base(scanner)
