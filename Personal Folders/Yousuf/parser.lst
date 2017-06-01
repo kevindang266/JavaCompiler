@@ -8,7 +8,7 @@
 // ==========================================================================
 
 
-%namespace javaCompiler.Parser
+%namespace m11j-IFN600
 
 %output=javaCompilerParser.cs
 %union {
