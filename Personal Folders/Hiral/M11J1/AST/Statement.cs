@@ -222,7 +222,70 @@ namespace M11J1.AST
             }
         }
     }
+    public class LabeledStatement : Statement
+    {
+        
+        private string name;
+        private statement stat;
 
+        public LabeledStatement(string name, Statement stat)
+        {
+            this.name = name;
+            this.statement = stat;
+        }
+
+        public override void Dump(int indent)
+        {
+            Label(indent, "LabelStatement\n");
+            name.Dump(indent + 1, "Name");
+            stat.Dump(indent + 1, "Statement");
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return statement.ResolveNames(scope);
+        }
+
+        public override void TypeCheck()
+        {
+            statement.TypeCheck();
+        }
+        public override void GenCode()
+        {
+
+        }
+    }
+
+    public class BreakStatement : Statement
+    {
+        
+        private String str;
+
+        public BreakStatement(String str)
+        {
+            this.Name = str;
+        }
+        public override void Dump(int indent)
+        {
+            Label(indent, "BreakStatement\n");
+            str.Dump(indent + 1, "String");
+           
+        }
+
+        public override bool ResolveNames(LexicalScope scope)
+        {
+            return true;
+        }
+        public override void TypeCheck()
+        {
+            
+        }
+        public override void GenCode()
+        {
+            
+
+        }
+    }
 
     public class IfThenElseStatement : Statement
     {
