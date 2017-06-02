@@ -18,6 +18,7 @@
 	public List<AST.Parameter> parameters;
 	public List<AST.Statement> statements;
 	public List<string> listString;
+	public List<AST.Expression> arguments;
 	public List<AST.VariableDeclaration> variableList;
 	public AST.CompoundStatement compoundStatement;
 	public AST.VariableDeclarationList variableDeclarationList;
@@ -25,6 +26,7 @@
 	public AST.VariableDeclaration variableDeclaration;
 	public AST.Statement statement;
 	public AST.Expression expression;
+	public AST.MethodInvocation methodinvocation;
 
     public int num;
     public string name;
@@ -54,7 +56,7 @@
 %type <programType> Result, UnannType, UnannPrimitiveType, UnannReferenceType, NumericType, UnannArrayType, UnannTypeVariable
 %type <methodDeclarator> MethodDeclarator
 %type <parameters> FormalParameterList
-%type <argument> ArgumentList
+%type <arguments> ArgumentList
 %type <methodInvocation> MethodInvocation
 %type <parameter> FormalParameter
 %type <name> VariableDeclaratorId, VariableDeclarator
@@ -227,15 +229,16 @@ ExpressionStatement
 
 StatementExpression
 	: Assignment											{ $$ = new AST.ExpressionStatement($1); }
-	| MethodInvocation                                      
+	| MethodInvocation                                                                 
 	;
 
 MethodInvocation
-    : Identifier '(' ArgumentList ')'                       
+    : Identifier '(' ArgumentList ')'                        
 	;
 
 ArgumentList                                                 
-    : Expression
+    : /* empty */                                         
+	| Expression                                             { $$ = $1; }       
 	;
 
 SelectionStatement
