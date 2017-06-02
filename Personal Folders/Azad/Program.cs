@@ -1,5 +1,5 @@
 using System.IO;
-using group2JavaCompiler.AST;
+using M11J1.AST;
 
 namespace group2JavaCompiler
 {
