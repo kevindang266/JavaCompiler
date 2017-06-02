@@ -42,6 +42,18 @@ namespace M11J1.AST
             _header.TypeCheck();
             _statements.TypeCheck();
         }
+
+        public override void GenCode(string file)
+        {
+            string modifier = string.Empty;
+            foreach (var methodModifier in _methodModifiers)
+            {
+                modifier += " " + methodModifier.ToString().ToLower();
+            }
+            Emit(file, ".method {0} ", modifier);
+            _header.GenCode(file);
+            _statements.GenCode(file);
+        }
     }
 
     public class MethodHeader : Node
@@ -75,6 +87,12 @@ namespace M11J1.AST
         public override void TypeCheck()
         {
             _methodDeclarator.TypeCheck();
+        }
+
+        public override void GenCode(string file)
+        {
+            Emit(file, "{0} ", _result.CLRName());
+            _methodDeclarator.GenCode(file);
         }
     }
 
@@ -113,19 +131,6 @@ namespace M11J1.AST
             {
                 parameter.ResolveNames(scope);
             }
-            //LexicalScope.SetParentScope(scope);
-            //foreach (var parameter in _parameters)
-            //{
-            //    parameter.ResolveNames(scope);
-            //    var decl = parameter.GetVariableDeclaration() as IDeclaration;
-            //    if (decl != null)
-            //    {
-            //        foreach (var name in decl.GetList())
-            //        {
-            //            LexicalScope.SymbolTable[name.GetName()] = name;
-            //        }
-            //    }
-            //}
         }
 
         public override void TypeCheck()
@@ -134,6 +139,12 @@ namespace M11J1.AST
             {
                 parameter.TypeCheck();
             }
+        }
+
+        public override void GenCode(string file)
+        {
+            Emit(file, "{0} (string[] args) {{", _methodName);
+            Emit(file, ".entrypoint");
         }
     }
 }
