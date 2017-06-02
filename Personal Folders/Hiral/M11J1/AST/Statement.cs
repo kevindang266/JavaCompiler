@@ -11,9 +11,9 @@ namespace M11J1.AST
     public class IfThenStatement : Statement
     {
         private Expression cond;
-        private Statement thenStmt;
+        private Statement thenstmt;
 
-        public IfThenStatement(Expression cond, Statement thenStmt)
+        public IfThenStatement(Expression cond, Statement thenstmt)
         {
             _cond = cond;
             _thenStmt = thenStmt;
@@ -31,7 +31,6 @@ namespace M11J1.AST
 
         public override void ResolveNames(LexicalScope scope)
         {
-
 
             if (_thenStmt == null)
             {
@@ -644,7 +643,9 @@ namespace M11J1.AST
             }
 
         }
-
+       // switch statement require lable for  all of the label statements,so it required to create them and then pass them to any label in the switch blocks.
+        /// Also note that if there is a default statement then after the switch block the break statement needs to point to that,
+/// otherwise it needs to point to the end of the switch block
 
         public override void GenCode()
         {
