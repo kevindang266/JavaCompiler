@@ -1,6 +1,6 @@
-%namespace M11J-IFN660
+%namespace M11J
 
-%output=javaCompilerParser.cs
+%output=M11J1.cs
 %{
 public static AST.Class root;
 %}
