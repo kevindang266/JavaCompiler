@@ -123,6 +123,12 @@ namespace M11J1.AST
             this.Statements = _state;
         }
 
+        public override void Dump(int indent)
+        {
+            Label(indent, "WhileStatement\n");
+            cond.Dump(indent + 1, "Expression");
+            stat.Dump(indent + 1, "Statement");
+        }
         public override bool ResolveNames(LexicalScope scope)
         {
 
