@@ -3,10 +3,13 @@
     public class CompilationUnit : Node
     {
         private ClassDeclaration _classDeclaration;
+        private string _compilationName;
 
-        public CompilationUnit (ClassDeclaration classDeclaration)
+        public CompilationUnit(ClassDeclaration classDeclaration)
         {
+            _compilationName = "Test";
             _classDeclaration = classDeclaration;
+            _classDeclaration.CompilationName = _compilationName;
         }
 
         public override void Dump(int indent)
@@ -23,6 +26,12 @@
         public override void TypeCheck()
         {
             _classDeclaration.TypeCheck();
+        }
+
+        public override void GenCode(string file)
+        {
+            Emit(file, ".assembly {0} {{}}", _compilationName);
+            _classDeclaration.GenCode(file);
         }
     }
 }
