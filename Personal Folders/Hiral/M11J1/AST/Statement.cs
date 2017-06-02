@@ -646,7 +646,7 @@ namespace M11J1.AST
         }
 
 
-        public override void GenCode(StringBuilder sb)
+        public override void GenCode()
         {
         }
     }
