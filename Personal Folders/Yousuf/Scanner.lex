@@ -1,4 +1,4 @@
-%namespace group2JavaCompiler
+%namespace M11J1
 
 %visibility public
 
