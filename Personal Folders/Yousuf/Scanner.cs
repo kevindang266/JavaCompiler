@@ -32,7 +32,7 @@ using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
 
-namespace group2JavaCompiler
+namespace M11J1
 {   
     /// <summary>
     /// Summary Canonical example of GPLEX automaton
