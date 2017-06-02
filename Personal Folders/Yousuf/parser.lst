@@ -8,9 +8,9 @@
 // ==========================================================================
 
 
-%namespace m11j-IFN600
+%namespace M11J1
 
-%output=javaCompilerParser.cs
+%output=Parser.cs
 %union {
     public int Integer;
     public string String;
