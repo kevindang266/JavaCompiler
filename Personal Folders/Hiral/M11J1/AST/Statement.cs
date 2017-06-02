@@ -707,6 +707,43 @@ namespace M11J1.AST
             }
         }
 
+        public class TryStatement : Statement
+        {
+            private Statement TryStmts, CatchStmts, FinallyStmts;
+
+            public TryStatement(Statement tryStatements, Statement CatchStmts, Statement FinallyStmts)
+            {
+                this.TryStmts = tryStatements;
+                this.CatchStmts = CatchStmts;
+                this.FinallyStmts = FinallyStmts;
+            }
+
+            public override bool ResolveNames(LexicalScope scope)
+            {
+                var newScope = getNewScope(scope, null);
+                bool loopResolve = TryStmts.ResolveNames(newScope);
+                if (CatchStmts != null)
+                    loopResolve = loopResolve & CatchStmts.ResolveNames(newScope);
+                if (FinallyStmts != null)
+                    loopResolve = loopResolve & FinallyStmts.ResolveNames(newScope);
+                return loopResolve;
+            }
+
+            public override void TypeCheck()
+            {
+                TryStmts.TypeCheck();
+                if (CatchStmts != null)
+                    CatchStmts.TypeCheck();
+                if (FinallyStmts != null)
+                    FinallyStmts.TypeCheck();
+            }
+            public override void GenCode()
+            {
+                
+            }
+
+        }
+
     }
 
 
