@@ -18,7 +18,7 @@ namespace M11J1
             if (Parser.Root != null)
             {
                 SemanticAnalysis(Parser.Root);
-                //Parser.Root.Dump(0);
+                Parser.Root.Dump(0);
                 CodeGeneration(filename, Parser.Root);
             }
 

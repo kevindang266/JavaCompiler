@@ -54,6 +54,8 @@
 %type <programType> Result, UnannType, UnannPrimitiveType, UnannReferenceType, NumericType, UnannArrayType, UnannTypeVariable
 %type <methodDeclarator> MethodDeclarator
 %type <parameters> FormalParameterList
+%type <argument> ArgumentList
+%type <methodInvocation> MethodInvocation
 %type <parameter> FormalParameter
 %type <name> VariableDeclaratorId, VariableDeclarator
 %type <statements> BlockStatements
@@ -225,6 +227,15 @@ ExpressionStatement
 
 StatementExpression
 	: Assignment											{ $$ = new AST.ExpressionStatement($1); }
+	| MethodInvocation                                      
+	;
+
+MethodInvocation
+    : Identifier '(' ArgumentList ')'                       
+	;
+
+ArgumentList                                                 
+    : Expression
 	;
 
 SelectionStatement

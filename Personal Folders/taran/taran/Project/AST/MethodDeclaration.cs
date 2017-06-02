@@ -147,4 +147,56 @@ namespace M11J1.AST
             Emit(file, ".entrypoint");
         }
     }
+
+    public class MethodInvocation : Node
+
+    {
+
+        private string _methodName;
+        private List<Expression> _expressions;
+
+
+
+        public MethodInvocation(string methodName, List<Expression> expressions)
+
+        {
+            _methodName = methodName;
+            _expressions = expressions;
+
+        }
+
+
+
+        public override void Dump(int indent)
+
+        {
+            Label(indent, $"Method Invocation:{ _methodName}\n");
+
+            foreach (var expression in _expressions)
+            {
+                expression.Dump(indent + 1);
+            } 
+        }
+        public override void ResolveNames(LexicalScope scope)
+        {
+            foreach (var expression in _expressions)
+            {
+                expression.ResolveNames(scope);
+            }
+        }
+
+        public override void TypeCheck()
+        {
+            foreach (var expression in _expressions)
+            {
+                expression.TypeCheck();
+            }
+        }
+
+        public override void GenCode(string file)
+        {
+            throw new System.NotImplementedException();
+        }
+
+    }
 }

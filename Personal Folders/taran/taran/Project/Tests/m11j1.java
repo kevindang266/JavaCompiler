@@ -5,7 +5,10 @@
 		int x, y;
 		x = 42;
 		if (x < 3)
-			y++;
+		{
+		x= y++;
+		}
+			
 		else
 		{
 			int z;

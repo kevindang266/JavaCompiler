@@ -1,10 +1,10 @@
 
 // ==========================================================================
-//  GPPG error listing for yacc source file <parser.y - 26/05/2017 9:03:33 PM>
+//  GPPG error listing for yacc source file <parser.y - 2/06/2017 8:03:50 PM>
 // ==========================================================================
 //  Version:  1.5.2
 //  Machine:  LAPTOP-D82G4GJQ
-//  DateTime: 26/05/2017 9:03:36 PM
+//  DateTime: 2/06/2017 8:04:06 PM
 //  UserName: Tarandeep
 // ==========================================================================
 
@@ -86,14 +86,17 @@
 %nonassoc NoElse
 %nonassoc Else
 %left '+' '-'
-%left "++"
-//---^^^^^
-// Error: Syntax error, unexpected litstring, expecting '<', or ident, or litchar
-// ------------------------------------------------------------------------------
-%left "--"
+%left OpInc
+%left OpDec
 %left '*' '/'
 
 %%
+// Error: NonTerminal symbol "MethodName" has no productions
+// Warning: Terminating MethodName fixes the following size-2 NonTerminal set
+   // {MethodInvocation, MethodName}
+// Error: There are 2 non-terminating NonTerminal Symbols
+   //  {MethodInvocation, MethodName}
+// --------------------------------------------------------------------------
 
 CompilationUnit
 	: ClassDeclaration										{ Root = $1; }
@@ -239,6 +242,15 @@ ExpressionStatement
 
 StatementExpression
 	: Assignment											{ $$ = new AST.ExpressionStatement($1); }
+	| MethodInvocation                                     
+	;
+
+MethodInvocation
+    : MethodName '(' ArgumentList ')'                       { $$ = new AST.MethodInvocation($1, $2); }
+	;
+
+ArgumentList
+    : Expression
 	;
 
 SelectionStatement
@@ -324,17 +336,11 @@ PostfixExpression
 	;
 
 PostIncrementExpression
-    : PostfixExpression "++"                              
-//---^^^^^^^^^^^^^^^^^^^^^^^
-// Error: Key "++" was not found in token alias list
-// -------------------------------------------------
+    : PostfixExpression OpInc                             
 	;
 
 PostDecrementExpression
-    : PostfixExpression "--"                             
-//---^^^^^^^^^^^^^^^^^^^^^^^
-// Error: Key "--" was not found in token alias list
-// -------------------------------------------------
+    : PostfixExpression OpDec                            
 	;
  
 Primary
