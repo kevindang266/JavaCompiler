@@ -745,6 +745,68 @@ namespace M11J1.AST
 
         }
 
+        public class ContinueStatement : Statement
+        {
+            
+            private string Name;
+
+            public ContinueStatement(String Name)
+            {
+                this.Name = Name;
+            }
+            public override void Dump(int indent)
+            {
+                Label(indent, "ContinueStatement\n");
+                name.Dump(indent + 1);
+              
+            }
+            public override bool ResolveNames(LexicalScope scope)
+            {
+                return true;
+            }
+            public override void TypeCheck()
+            {
+            }
+            public override void GenCode()
+            {
+
+            }
+        }
+
+        public class ReturnStatement : Statement
+        {
+            
+            private Expression exp;
+
+            public ReturnStatement(Expression Expr)
+            {
+                this.exp = exp;
+            }
+
+            public override void Dump(int indent)
+            {
+                Label(indent, "ReturnStatement\n");
+                exp.Dump(indent + 1);
+               
+            
+
+            public override bool ResolveNames(LexicalScope scope)
+            {
+                return Expr.ResolveNames(scope);
+            }
+            public override void TypeCheck()
+            {
+                Expr.TypeCheck();
+
+            }
+            public override void GenCode()
+            {
+
+                
+
+            }
+        }
+
     }
 
 
