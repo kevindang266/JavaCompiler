@@ -1,5 +1,5 @@
-%using javaCompiler.Parser;
-%namespace javaCompiler.Lexer
+%using M11J1.Parser;
+%namespace M11J1.Lexer
 
 %visibility public
 
