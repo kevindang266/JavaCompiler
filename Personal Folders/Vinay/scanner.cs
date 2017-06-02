@@ -6,8 +6,9 @@
 //
 //  GPLEX Version:  1.2.2
 //  Machine:  PC-PC
+//  DateTime: 6/2/2017 6:28:40 PM
 //  UserName: pc
-//  GPLEX input file <scanner.lex - 5/12/2017 10:35:25 AM>
+//  GPLEX input file <scanner.lex - 6/2/2017 6:23:58 PM>
 //  GPLEX frame file <embedded resource>
 //
 //  Option settings: unicode, parser, minimize
