@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.IO;
-namespace group2JavaCompiler.AST
+namespace M11J1.AST
 {
     public class Method : Node
     {
