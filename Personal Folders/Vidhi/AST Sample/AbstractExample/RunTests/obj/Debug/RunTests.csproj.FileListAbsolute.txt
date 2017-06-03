@@ -1,0 +1,12 @@
+H:\M11J1\RunTests\bin\Debug\RunTests.exe.config
+H:\M11J1\RunTests\bin\Debug\RunTests.exe
+H:\M11J1\RunTests\bin\Debug\RunTests.pdb
+H:\M11J1\RunTests\obj\Debug\RunTests.csprojResolveAssemblyReference.cache
+H:\M11J1\RunTests\obj\Debug\RunTests.exe
+H:\M11J1\RunTests\obj\Debug\RunTests.pdb
+C:\Users\Ankit\Desktop\C# projectcopies\AbstractExample\RunTests\bin\Debug\RunTests.exe.config
+C:\Users\Ankit\Desktop\C# projectcopies\AbstractExample\RunTests\bin\Debug\RunTests.exe
+C:\Users\Ankit\Desktop\C# projectcopies\AbstractExample\RunTests\bin\Debug\RunTests.pdb
+C:\Users\Ankit\Desktop\C# projectcopies\AbstractExample\RunTests\obj\Debug\RunTests.csprojResolveAssemblyReference.cache
+C:\Users\Ankit\Desktop\C# projectcopies\AbstractExample\RunTests\obj\Debug\RunTests.exe
+C:\Users\Ankit\Desktop\C# projectcopies\AbstractExample\RunTests\obj\Debug\RunTests.pdb

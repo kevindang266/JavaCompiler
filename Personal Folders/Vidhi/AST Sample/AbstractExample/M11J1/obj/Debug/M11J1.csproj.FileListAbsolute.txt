@@ -1,0 +1,20 @@
+C:\Users\n9913017\Desktop\M11J1\M11J1\bin\Debug\M11J1.exe
+H:\M11J1\M11J1\bin\Debug\M11J1.exe.config
+H:\M11J1\M11J1\obj\Debug\M11J1.csprojResolveAssemblyReference.cache
+H:\M11J1\M11J1\bin\Debug\M11J1.exe
+H:\M11J1\M11J1\bin\Debug\M11J1.pdb
+H:\M11J1\M11J1\bin\Debug\QUT.ShiftReduceParser.dll
+H:\M11J1\M11J1\obj\Debug\M11J1.exe
+H:\M11J1\M11J1\obj\Debug\M11J1.pdb
+C:\Users\KienDang\Downloads\AbstractExample\M11J1\bin\Debug\M11J1.exe.config
+C:\Users\KienDang\Downloads\AbstractExample\M11J1\obj\Debug\M11J1.exe
+C:\Users\KienDang\Downloads\AbstractExample\M11J1\obj\Debug\M11J1.pdb
+C:\Users\KienDang\Downloads\AbstractExample\M11J1\bin\Debug\M11J1.exe
+C:\Users\KienDang\Downloads\AbstractExample\M11J1\bin\Debug\M11J1.pdb
+C:\Users\KienDang\Downloads\AbstractExample\M11J1\obj\Debug\M11J1.csprojResolveAssemblyReference.cache
+C:\Users\Ankit\Desktop\C# projectcopies\AbstractExample\M11J1\bin\Debug\M11J1.exe.config
+C:\Users\Ankit\Desktop\C# projectcopies\AbstractExample\M11J1\bin\Debug\M11J1.exe
+C:\Users\Ankit\Desktop\C# projectcopies\AbstractExample\M11J1\bin\Debug\M11J1.pdb
+C:\Users\Ankit\Desktop\C# projectcopies\AbstractExample\M11J1\obj\Debug\M11J1.csprojResolveAssemblyReference.cache
+C:\Users\Ankit\Desktop\C# projectcopies\AbstractExample\M11J1\obj\Debug\M11J1.exe
+C:\Users\Ankit\Desktop\C# projectcopies\AbstractExample\M11J1\obj\Debug\M11J1.pdb
