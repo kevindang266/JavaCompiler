@@ -1,5 +1,5 @@
 # M11J-IFN660
-This is a Java complier project called M11J IFN660
+This is a Java complier project written in C#
 
 # Practical  
 Examples or shared projects.
